@@ -31,6 +31,9 @@ command W w !sudo tee % > /dev/null
 " 7 lines when scrolling
 set so=7
 
+" Find cursor easier
+set cursorline
+
 " Avoid garbled characters in Chinese language windows OS
 let $LANG='en'
 set langmenu=en
@@ -85,6 +88,7 @@ set magic
 
 " Show matching brackets when text indicator is over them
 set showmatch
+
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
@@ -169,11 +173,7 @@ au BufRead,BufNewFile Makefile* set noexpandtab
 " Mouse mode always on
 set mouse=a
 
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
-map <c-space> ?
-
-" Fast ,noh
+" Turn off search highlight ,nohlsearch
 map <Leader><space> :noh<cr>
 
 " Smart way to move between windows
@@ -235,6 +235,10 @@ set laststatus=2
 """"""""""""""""""""""""""""""""""""""""
 " Editor remaps
 """"""""""""""""""""""""""""""""""""""""
+" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
+map <space> /
+map <c-space> ?
+
 " ,jk returns to normal mode
 let g:easyescape_chars = { "j": 1, "k": 1 }
 let g:easyescape_timeout = 50
@@ -281,6 +285,20 @@ if has("autocmd")
     autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
 endif
 
+""""""""""""""""""""""""""""""""""""""""
+" Folding
+""""""""""""""""""""""""""""""""""""""""
+" Enable code folding
+set foldenable
+
+" Only lv>10 blocks will be folded on open
+set foldlevelstart=10
+
+" Max fold level
+set foldnestmax=10
+
+" Fold based on indent
+set foldmethod=indent
 
 """"""""""""""""""""""""""""""""""""""""
 " => Spell checking
