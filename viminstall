@@ -1,0 +1,19 @@
+#!/bin/bash
+# Nicholas Mahdavi
+# nickmahda@gmail.com
+
+cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
+
+DIR=`pwd`
+
+[ -d ~/.vim ] && mv ~/.vim ~/.vim.backup
+
+git clone git://github.com/nickmahda/.vim.git ~/.vim
+
+cd ~/.vim
+
+git submodule init
+
+git submodule update
+
+echo "Vim is fully set up"

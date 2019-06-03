@@ -1,0 +1,35 @@
+#!/bin/bash
+# Nicholas Mahdavi
+# nickmahda@gmail.com
+
+cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
+
+DIR=`pwd`
+
+{ git submodule init && git submodule update } || { echo "Failed to update submodules"; exit 0 }
+
+for f in *rc *profile gitconfig zsh/; do
+  mkdir -pv backup
+  [ -e ~/."$f" ] && mv -v ~/."$f" backup/."$f"
+  ln -sfv "$DIR/$f" ~/."$f"
+done
+
+cd tmux
+
+for f in .tmux*; do
+    [ -e ~/"$f" ] && mv -v ~/"$f" backup/"$f"
+    ln -sfv "$DIR/tmux/$f" ~/"$f"
+done
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    [ -z "$(which brew)" ] && ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+    brew install cmake coreutils emacs gcc gnu-chess htop nano nginx opencv pkg-config python tmux tree vim zsh zsh-history-substring-search
+    brew cask install google-chrome discord eqmac firefox gimp inkscape insomniax java opera-neon osxfuse spotify xquartz virtualbox
+
+fi
+
+echo "Moving to vim install"
+
+cd $DIR
+./viminstall
