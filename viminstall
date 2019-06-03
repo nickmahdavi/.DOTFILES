@@ -16,4 +16,14 @@ git submodule init
 
 git submodule update
 
+ln -s ~/.vim/vimrc ~/.vimrc
+
+cd bundle
+
+for f in *; do
+    cd f
+    [ -d .git ] && git checkout master
+    cd ..
+done
+
 echo "Vim is fully set up"

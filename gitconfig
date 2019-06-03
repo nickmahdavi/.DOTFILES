@@ -1,22 +1,22 @@
 # This is Git's per-user configuration file.
 [user]
 # Please adapt and uncomment the following lines:
-	name = nickmahda (NMS)
-	email = nickmahda@gmail.com
+    name = nickmahda (NMS)
+    email = nickmahda@gmail.com
 [alias]
-        last = log -1 HEAD
-        force-pull = "!git checkout master; git branch backup; git stash; git fetch --all; git reset --hard origin/master; echo \"Old changes saved in branch backup and stashed. Please delete once finished.\""
-	lgb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches
-        up = !git pull --rebase --prune $@ && git submodule update --init --recursive
-        c = !git add -A && git commit -m
-	cp = !git add -A && git commit -m $@ && git push -u origin $(git rev-parse --abbrev-ref HEAD)
-        save = !git add -A && git commit -m 'SAVEPOINT'
-        wip = commit -am "WIP"
-        amend = commit -a --amend
-        undo = reset HEAD~1 --mixed
-        open = "!f() { REPO_URL=$(git config remote.origin.url); open ${REPO_URL%%.git}; }; f"
-        browse = !git open
-        p = !git push origin $(git rev-parse --abbrev-ref HEAD)
-        co = !git checkout
+    last = log -1 HEAD
+    force-pull = "!git checkout master; git branch backup; git stash; git fetch --all; git reset --hard origin/master; echo \"Old changes saved in branch backup and stashed. Please delete once finished.\""
+    lgb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches
+    up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+    c = !git add -A && git commit -m
+    cp = !git add -A && git commit -m $@ && git push -u origin $(git rev-parse --abbrev-ref HEAD)
+    save = !git add -A && git commit -m 'SAVEPOINT'
+    wip = commit -am "WIP"
+    amend = commit -a --amend
+    undo = reset HEAD~1 --mixed
+    open = "!f() { REPO_URL=$(git config remote.origin.url); open ${REPO_URL%%.git}; }; f"
+    browse = !git open
+    p = !git push origin $(git rev-parse --abbrev-ref HEAD)
+    co = !git checkout
 [credential]
-	helper = osxkeychain
+    helper = osxkeychain

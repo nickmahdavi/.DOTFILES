@@ -47,6 +47,7 @@ export USER_AGENT='/u/RecitalBot. Contact /u/beetbug for information'
 
 export VIMRC=~/.vim/vimrc
 
+local gversion=9
 
 #----------------------------------------#
 #            ALIASES/FUNCTIONS           #
@@ -71,9 +72,9 @@ alias t="tail -f"
 alias h2o='nohup java -jar /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/h2o/backend/bin/h2o.jar > /dev/null 2>&1 & disown'
 alias hkill='pkill -f "/usr/bin/java -jar /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/h2o/backend/bin/h2o.jar"'
 alias g=git
-alias gcc="gcc-9"
-alias g++="g++-9"
-alias c++="c++-9"
+alias gcc="gcc-$gversion"
+alias g++="g++-$gversion"
+alias c++="c++-$gversion"
 alias v=vim
 
 f() { find . -name "*$@*" -print; } # Find all files under the current directory
@@ -84,18 +85,9 @@ fe() { find . -name '*'"$@" -print | grep -v node_ | grep -v .git; } # Find file
 fjs() { echo "find . -name '*.js' | grep -v node_ | grep -v .git | xargs grep $@ 2>/dev/null"; find . -name '*.js' | grep -v node_ | grep -v .git | xargs grep $@ 2>/dev/null; }
 fall() { echo "find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null"; find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null; }
 
-man ()
-{
-    if [[ $@ == "gcc" ]]; then
-        command man gcc-8
-    elif [[ $@ == "g++" ]]; then
-        command man g++-8
-    elif [[ $@ == "c++" ]]; then
-        command man c++-8
-    else
-        command man "$@"
-    fi
-}
+man () { if [[ $@ == "gcc" ]]; then command man gcc-$gversion; elif
+            [[ $@ == "g++" ]]; then command man g++-$gversion; elif
+            [[ $@ == "c++" ]]; then command man c++-$gversion; else command man "$@"; fi }
 
 awscp () {
     if ! [ -z $1 ] && ! [ -z $2 ]; then
@@ -107,17 +99,10 @@ awscp () {
 
 pf () {
     local home=`ps aux | grep "$1" | grep -v grep`
-    if [[ -z `echo $home` ]]; then
-        echo "No local results found"
-    else
-        echo "$home"
-    fi
+    [[ -z `echo $home` ]] && echo "No local results found" || echo "$home"
 }
 
-sshc ()
-{
-    ssh -i ~/.ssh/$key $instance
-}
+sshc () { ssh -i ~/.ssh/$key $instance; }
 
 tunnel ()
 {
@@ -164,10 +149,22 @@ duck ()
 }
 
 vim-pkg () {
+    local wdir=`pwd`
     if [ -z "$1" ]; then
         echo "Must pass a package url"
+    elif [ "$1" = "update" ]; then
+        cd ~/.vim/bundle
+        for i in `ls`; do
+            cd "$i"
+            git pull
+            cd ..
+        done
+        cd $wdir
+    elif [ "$1" = "list" ]; then
+        cd ~/.vim/bundle
+        /bin/ls -1
+        cd $wdir
     else
-        twdir=`pwd`
-        cd ~/.vim/bundle/ && git clone "$1" && cd "$twdir"
+        cd ~/.vim/bundle/ && git clone "$1" && cd "$wdir"
     fi
 }

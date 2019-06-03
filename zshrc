@@ -12,14 +12,13 @@ setopt HIST_IGNORE_ALL_DUPS
 # setopt INC_APPEND_HISTORY
 # setopt SHARE_HISTORY
 setopt APPEND_HISTORY
-setopt menu_complete
+# setopt menu_complete
 
 DISABLE_CORRECTION="true"
 
-# Autoload
+# Autoload prompt
 
 autoload -U promptinit; promptinit
-autoload -Uz compinit; compinit
 prompt pure
 
 # Bindings
@@ -40,8 +39,7 @@ zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character t
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*'
 zstyle :compinstall filename '/Users/nicmahd/.zshrc'
 
-autoload -Uz compinit
-compinit
+autoload -Uz compinit; compinit
 # End of lines added by compinstall
 
 # History
@@ -71,7 +69,7 @@ fi
 #              ZSH_PLUGINS               #
 #----------------------------------------#
 
-# -------------HIGHLIGHTERS------------- #
+# Highlighters
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
@@ -80,7 +78,7 @@ ZSH_HIGHLIGHT_PATTERNS+=('*rm -rf*' 'fg=white,bold,bg=red')
 ZSH_HIGHLIGHT_PATTERNS+=('rm *' 'fg=white,bg=red')
 ZSH_HIGHLIGHT_PATTERNS+=('rm -rf /*' 'fg=green,bold,bg=red')
 
-# ZSH_HIGHLIGHT_STYLES[default]='fg=green' #GREENISH 
+# ZSH_HIGHLIGHT_STYLES[default]='fg=green' #GREENISH
 # ZSH_HIGHLIGHT_STYLES[command]='fg=blue' #BLUE = 027
 ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=cyan,bold' #117
 ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=yellow,bold' #121

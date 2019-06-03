@@ -8,7 +8,7 @@ DIR=`pwd`
 
 git submodule init && git submodule update
 
-for f in *rc *profile gitconfig zsh; do
+for f in var *rc *profile gitconfig zsh; do
   mkdir -pv backup
   [ -e ~/."$f" ] && mv -v ~/."$f" backup/."$f"
   ln -sfv "$DIR/$f" ~/."$f"
@@ -28,7 +28,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     [ -z "$(which brew)" ] && ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
     brew install cmake coreutils emacs gcc gnu-chess htop nano nginx opencv pkg-config python tmux tree vim zsh zsh-history-substring-search
-    brew cask install google-chrome discord eqmac firefox gimp inkscape insomniax java opera-neon osxfuse spotify xquartz virtualbox
+    brew cask install google-chrome discord eqmac firefox gimp inkscape java opera-neon osxfuse spotify xquartz virtualbox
 
 fi
 
