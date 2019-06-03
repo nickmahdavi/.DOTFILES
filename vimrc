@@ -241,9 +241,7 @@ map <c-space> ?
 
 " ,jk returns to normal mode
 let g:easyescape_chars = { "j": 1, "k": 1 }
-let g:easyescape_timeout = 50
-cnoremap jk <ESC>
-cnoremap kj <ESC>
+let g:easyescape_timeout = 150
 
 " Semicolon acts as colon
 vnoremap ; :
