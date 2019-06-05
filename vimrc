@@ -24,6 +24,8 @@ nmap <leader>w :w!<cr>
 " (useful for handling the permission-denied error)
 command W w !sudo tee % > /dev/null
 
+" Smart case
+set smartcase
 
 """"""""""""""""""""""""""""""""""""""""
 " UI
@@ -31,7 +33,7 @@ command W w !sudo tee % > /dev/null
 " 7 lines when scrolling
 set so=7
 
-" Find cursor easier
+" Find cursor
 set cursorline
 
 " Avoid garbled characters in Chinese language windows OS
@@ -52,7 +54,7 @@ else
     set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 endif
 
-"Always show current position
+" Always show current position
 set ruler
 
 " Show line numbers
@@ -106,6 +108,9 @@ endif
 " Add a bit extra margin to the left
 set foldcolumn=1
 
+" Lists - numbers, bullet points, etc
+set fo+=n
+
 
 """"""""""""""""""""""""""""""""""""""""
 " Colors and fonts
@@ -117,7 +122,7 @@ syntax enable
 set showcmd
 
 " Set utf8 as standard encoding and en_US as the standard language
-set encoding=utf8
+set encoding=UTF-8
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -398,14 +403,17 @@ execute pathogen#infect()
 
 " NERDtree
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+map <C-i> :NERDTreeToggle<cr><C-w><C-p>
 map <C-n> :NERDTreeToggle<cr>
-map <C-i> :NERDTreeToggle<cr><C-w><Right>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " autocmd! VimEnter * NERDTree | wincmd w
 
 " vim-airline
 set list
-set listchars=tab:•\ ,trail:•,extends:»,precedes:«
+" set listchars=tab:•\ ,trail:•,extends:»,precedes:«
+set listchars=tab:□\ ,trail:•,extends:»,precedes:«
+au CmdlineEnter * redraws
+let g:airline_powerline_fonts = 1
 
 " rainbow-parentheses
 au VimEnter * RainbowParenthesesToggle
