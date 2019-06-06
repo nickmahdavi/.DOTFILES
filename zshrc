@@ -19,7 +19,15 @@ DISABLE_CORRECTION="true"
 # Autoload prompt
 
 autoload -U promptinit; promptinit
-prompt pure
+# prompt pure
+# Number of jobs in background
+# PROMPT='%(1j.[%j] .)%(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f '
+# One line prompt
+# prompt_newline='%666v'
+# PROMPT=" $PROMPT"
+
+# source ~/.zsh/purepower
+# prompt powerlevel10k
 
 # Bindings
 
