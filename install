@@ -17,8 +17,19 @@ done
 [ -d ~/.zsh ] && mv -v ~/.zsh backup/zsh
 ln -sfv "$DIR/zsh" ~/.zsh
 
-ln -sfv "$DIR/zsh/pure.zsh" /usr/local/share/zsh/site-functions/prompt_pure_setup
-ln -sfv "$DIR/zsh/async.zsh" /usr/local/share/zsh/site-functions/async
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    [ -z "$(which brew)" ] && ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+    brew install cmake coreutils emacs gcc gnu-chess htop nano nginx opencv pkg-config python tmux tree vim zsh zsh-history-substring-search
+    brew cask install google-chrome discord eqmac firefox gimp inkscape java opera-neon osxfuse spotify xquartz virtualbox
+
+fi
+
+cd zsh
+
+git submodule init && git submodule update
+
+ln -sfv $PWD/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
 
 ITERM_PATH=~/Library/Application\ Support/iTerm2
 
@@ -35,13 +46,6 @@ done
 
 ln -sfv ./Blex Mono Nerd Font Complete.ttf ~/Library/Fonts/
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    [ -z "$(which brew)" ] && ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
-    brew install cmake coreutils emacs gcc gnu-chess htop nano nginx opencv pkg-config python tmux tree vim zsh zsh-history-substring-search
-    brew cask install google-chrome discord eqmac firefox gimp inkscape java opera-neon osxfuse spotify xquartz virtualbox
-
-fi
 
 echo "Moving to vim install"
 
