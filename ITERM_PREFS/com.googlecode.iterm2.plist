@@ -1747,7 +1747,7 @@
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>943 196 445 77 0 0 1440 900 </string>
+	<string>943 62 445 77 0 0 1440 900 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
 	<string>520 561 400 129 0 0 1440 877 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
@@ -1755,13 +1755,13 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 126 606 469 0 0 1440 877 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>509 464 928 394 0 0 1440 900 </string>
+	<string>509 256 796 486 0 0 1440 877 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>127 443 592 584 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 422 1440 478 0 0 1440 900 </string>
+	<string>0 298 850 567 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>96 385 850 477 0 0 1440 900 </string>
+	<string>96 295 850 567 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 10</key>
 	<string>449 237 850 537 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 11</key>
@@ -1777,7 +1777,7 @@
 	<key>NSWindow Frame iTerm Window 16</key>
 	<string>575 88 850 537 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>272 187 850 597 0 0 1440 877 </string>
+	<string>272 205 850 567 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
 	<string>217 0 850 537 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
@@ -2209,6 +2209,7 @@
 				<string>nano</string>
 				<string>vim</string>
 				<string>su</string>
+				<string>gitstatusd-darwi</string>
 			</array>
 			<key>Keyboard Map</key>
 			<dict>
@@ -5108,7 +5109,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-06-01T06:50:38Z</date>
+	<date>2019-06-04T21:44:16Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>

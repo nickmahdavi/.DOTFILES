@@ -26,8 +26,8 @@ autoload -U promptinit; promptinit
 # prompt_newline='%666v'
 # PROMPT=" $PROMPT"
 
-# source ~/.zsh/purepower
-# prompt powerlevel10k
+source ~/.zsh/purepower
+prompt powerlevel10k
 
 # Bindings
 
