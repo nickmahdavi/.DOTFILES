@@ -21,7 +21,7 @@ ln -s ~/.vim/vimrc ~/.vimrc
 cd bundle
 
 for f in *; do
-    cd f
+    cd $f
     [ -d .git ] && git checkout master
     cd ..
 done
