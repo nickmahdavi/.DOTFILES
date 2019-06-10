@@ -49,7 +49,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     su - $usrname -c 'brew install cmake coreutils emacs gcc gnu-chess htop nano nginx opencv pkg-config python tmux tree vim zsh'
     su - $usrname -c 'brew cask install google-chrome discord eqmac firefox gimp inkscape java opera-neon osxfuse spotify xquartz virtualbox'
 
-elif [[ "$OSTYPE" == "linux"* ]]; then
+else if [[ "$OSTYPE" == "linux"* ]]; then
     apt install emacs gnuchess htop pkg-config python3-dev tmux zsh
     echo "You may have to compile vim from scratch to work with this .vimrc."
 fi
