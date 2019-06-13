@@ -2,28 +2,6 @@
 # Nicholas Mahdavi
 # nickmahda@gmail.com
 
-if [ $(id -u) -ne 0 ]; then
-    echo "To install many of the packages, superuser is required."
-    echo "The packages include: brew/apt packages, various zsh prompts, and more."
-    read -rp "Do you want to continue? [y/N]" response
-    if [[ "$response" =~ ^([yY][eE][sS|[yY])+$ ]]; then
-        no_root=1
-    else
-        exit 1
-fi
-
-while [ -z "$multi" ]; do
-    read -rp "Do multiple users use this computer? (y/N/q)" response
-    case "$response" in
-       [yY][eE][sS]|[yY]) multi=1 ;;
-       [nN][oO]|[nN]) multi=0 ;;
-       [qQ][uU][iI][tT]|[qQ]) exit 0 ;;
-       *) echo "Please enter a valid response." ;;
-    esac
-done
-
-usrname=$(who am i)
-
 cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
 
 DIR=$(pwd)
@@ -40,31 +18,34 @@ done
 ln -sfv "$DIR/zsh" ~/.zsh
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    if [ -z "$(which brew)" ] && ((no_root)); then
-       su - $usrname -c 'ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
+    if [ -z "$(which brew)" ]; then
+        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    fi
 
-    if su - $usrname -c "test -w /usr/local/"; then
-        ((multi)) && { chmod g+w /usr/local; chgrp staff /usr/local } || chown -R $usrname $(su - $usrname -c 'brew --prefix')/*
+    sudo chown -R $(whoami) $(brew --prefix)/*
 
-    su - $usrname -c 'brew install cmake coreutils emacs gcc gnu-chess htop nano nginx opencv pkg-config python tmux tree vim zsh'
-    su - $usrname -c 'brew cask install google-chrome discord eqmac firefox gimp inkscape java opera-neon osxfuse spotify xquartz virtualbox'
+    brew install cmake coreutils emacs gcc gnu-chess htop nano nginx opencv pkg-config python tmux tree vim zsh
+    brew cask install google-chrome discord eqmac firefox gimp inkscape java opera-neon osxfuse spotify xquartz virtualbox
+
+    ITERM_PATH=~/Library/Application\ Support/iTerm2
+
+    mkdir $ITERM_PATH
+    [ -d $ITERM_PATH/ITERM_PREFS ] && mv -k $ITERM_PATH/ITERM_PREFS backup/ITERM_PREFS
+    ln -sfv $DIR/ITERM_PREFS $ITERM_PATH/ITERM_PREFS
+
+    ln -sfv $DIR/Blex Mono Nerd Font Complete.ttf ~/Library/Fonts/
 
 else if [[ "$OSTYPE" == "linux"* ]]; then
-    apt install emacs gnuchess htop pkg-config python3-dev tmux zsh
+    sudo apt install emacs gnuchess htop pkg-config python3-dev tmux zsh
     echo "You may have to compile vim from scratch to work with this .vimrc."
+
+    cp $DIR/Blex Mono Nerd Font Complete.ttf ~/.fonts/
+    fc-cache -fv
 fi
 
 cd zsh
 
-git submodule init && git submodule update
-
-ln -sfv $PWD/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
-
-ITERM_PATH=~/Library/Application\ Support/iTerm2
-
-mkdir $ITERM_PATH
-[ -d $ITERM_PATH/ITERM_PREFS ] && mv -k $ITERM_PATH/ITERM_PREFS backup/ITERM_PREFS
-ln -sfv $DIR/ITERM_PREFS $ITERM_PATH/ITERM_PREFS
+sudo ln -sfv $PWD/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
 
 cd tmux
 
@@ -72,8 +53,6 @@ for f in .tmux*; do
     [ -e ~/"$f" ] && mv -v ~/"$f" backup/"$f"
     ln -sfv "$DIR/tmux/$f" ~/"$f"
 done
-
-ln -sfv ./Blex Mono Nerd Font Complete.ttf ~/Library/Fonts/
 
 echo "Moving to vim install"
 

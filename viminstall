@@ -6,24 +6,15 @@ cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
 
 DIR=`pwd`
 
-[ -d ~/.vim ] && mv ~/.vim ~/.vim.backup
+[ -d ~/.vim/ ] && mv ~/.vim/ ~/.vim.backup/
+[ -f ~/.vimrc ] && mv ~/.vimrc ~/.vimrc.backup
 
 git clone git://github.com/nickmahda/.vim.git ~/.vim
 
 cd ~/.vim
 
-git submodule init
+git submodule init && git submodule update
 
-git submodule update
-
-ln -s ~/.vim/vimrc ~/.vimrc
-
-cd bundle
-
-for f in *; do
-    cd $f
-    [ -d .git ] && git checkout master
-    cd ..
-done
+ln -sfv ~/.vim/vimrc ~/.vimrc
 
 echo "Vim is fully set up"
