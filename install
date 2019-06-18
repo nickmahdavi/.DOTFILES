@@ -33,9 +33,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     [ -d $ITERM_PATH/ITERM_PREFS ] && mv -k $ITERM_PATH/ITERM_PREFS backup/ITERM_PREFS
     ln -sfv $DIR/ITERM_PREFS $ITERM_PATH/ITERM_PREFS
 
-    ln -sfv $DIR/Blex Mono Nerd Font Complete.ttf ~/Library/Fonts/
+    cp Blex\ Mono\ Nerd\ Font\ Complete.ttf ~/Library/Fonts/
 
-else if [[ "$OSTYPE" == "linux"* ]]; then
+elif [[ "$OSTYPE" == "linux"* ]]; then
     sudo apt install emacs gnuchess htop pkg-config python3-dev tmux zsh
     echo "You may have to compile vim from scratch to work with this .vimrc."
 
@@ -49,7 +49,7 @@ sudo ln -sfv $PWD/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/sit
 
 cd tmux
 
-for f in .tmux*; do
+for f in .tmux.conf .tmux.conf.local; do
     [ -e ~/"$f" ] && mv -v ~/"$f" backup/"$f"
     ln -sfv "$DIR/tmux/$f" ~/"$f"
 done

@@ -63,7 +63,7 @@ export KEYTIMEOUT=1
 # Plugins
 
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
