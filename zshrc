@@ -29,11 +29,6 @@ autoload -U promptinit; promptinit
 source ~/.zsh/purepower
 prompt powerlevel10k
 
-# Bindings
-
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
 # Completion
 
 # The following lines were added by compinstall
@@ -66,6 +61,10 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# Bindings
+
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 ## VARIABLE FILE
 if [ -f ~/.var ]; then

@@ -27,7 +27,6 @@ export PATH="/opt/bin:$PATH"
 # openCV
 export PKG_CONFIG_PATH=/usr/local/Cellar/opencv/4.0.1/lib/pkgconfig
 
-
 #----------------------------------------#
 #                VARIABLES               #
 #----------------------------------------#
@@ -71,30 +70,23 @@ alias sudo="sudo "
 alias t="tail -f"
 alias h2o='nohup java -jar /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/h2o/backend/bin/h2o.jar > /dev/null 2>&1 & disown'
 alias hkill='pkill -f "/usr/bin/java -jar /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/h2o/backend/bin/h2o.jar"'
-alias g=git
+alias g="git"
 alias gcc="gcc-$gversion"
 alias g++="g++-$gversion"
 alias c++="c++-$gversion"
-alias v=vim
+alias sort="gsort"
 
-f() { find . -name "*$@*" -print; } # Find all files under the current directory
-ff() { find . -type f -print | grep -v node_ | grep -v .git ; }
-ffjs() { find . -type f -name "*.js" -print | grep -v node_ | grep -v .git; }
-fs() { find . -name "$@"'*' -print | grep -v node_ | grep -v .git; } # Find file whose name starts with a given string
-fe() { find . -name '*'"$@" -print | grep -v node_ | grep -v .git; } # Find file whose name ends with a given string
-fjs() { echo "find . -name '*.js' | grep -v node_ | grep -v .git | xargs grep $@ 2>/dev/null"; find . -name '*.js' | grep -v node_ | grep -v .git | xargs grep $@ 2>/dev/null; }
-fall() { echo "find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null"; find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null; }
+f () { find . -name "*$@*" -print; } # Find all files under the current directory
+ff () { find . -type f -print | grep -v node_ | grep -v .git ; }
+ffpy () { find . -type f -name "*.py" -print | grep -v node_ | grep -v .git; }
+fs () { find . -name "$@"'*' -print | grep -v node_ | grep -v .git; } # Find file whose name starts with a given string
+fe () { find . -name '*'"$@" -print | grep -v node_ | grep -v .git; } # Find file whose name ends with a given string
+fpy () { echo "find . -name '*.py' | grep -v node_ | grep -v .git | xargs grep $@ 2>/dev/null"; find . -name '*.js' | grep -v node_ | grep -v .git | xargs grep $@ 2>/dev/null; }
+fall () { echo "find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null"; find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null; }
 
 man () { if [[ $@ == "gcc" ]]; then command man gcc-$gversion; elif
             [[ $@ == "g++" ]]; then command man g++-$gversion; elif
-            [[ $@ == "c++" ]]; then command man c++-$gversion; else command man "$@"; fi }
-
-awscp () {
-    if ! [ -z $1 ] && ! [ -z $2 ]; then
-        scp -i ~/.ssh/botkey.pem ${instance}:$1 ~/$2
-    else
-        echo "Must provide both a input and output file"
-    fi
+            [[ $@ == "c++" ]]; then command man c++-$gversion; else command man "$@"; fi
 }
 
 pf () {
@@ -123,6 +115,7 @@ activate ()
 
 duck ()
 {
+    [ -n "$2" ] && depth="$2" ||
     if [ -d "$1" ]; then
         if [ -n "$2" ]; then
             if [[ $2 =~ '^[0-9]+$' ]]; then

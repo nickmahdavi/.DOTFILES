@@ -10,6 +10,7 @@ git submodule init && git submodule update
 
 for f in var *rc *profile gitconfig; do
   mkdir -pv backup
+  cmp --silent ~/."$f" "$f" && continue
   [ -e ~/."$f" ] && mv -v ~/."$f" backup/."$f"
   ln -sfv "$DIR/$f" ~/."$f"
 done
@@ -25,15 +26,18 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     sudo chown -R $(whoami) $(brew --prefix)/*
 
     brew install cmake coreutils emacs gcc gnu-chess htop nano nginx opencv pkg-config python tmux tree vim zsh
-    brew cask install google-chrome discord eqmac firefox gimp inkscape java opera-neon osxfuse spotify xquartz virtualbox
+
+    brew cask install google-chrome discord eqmac firefox flux gimp inkscape java opera-neon osxfuse spotify xquartz virtualbox
 
     ITERM_PATH=~/Library/Application\ Support/iTerm2
 
-    mkdir $ITERM_PATH
-    [ -d $ITERM_PATH/ITERM_PREFS ] && mv -k $ITERM_PATH/ITERM_PREFS backup/ITERM_PREFS
+    mkdir -pv $ITERM_PATH
+    [ -d $ITERM_PATH/ITERM_PREFS ] && mv -v $ITERM_PATH/ITERM_PREFS backup/ITERM_PREFS
     ln -sfv $DIR/ITERM_PREFS $ITERM_PATH/ITERM_PREFS
 
     cp Blex\ Mono\ Nerd\ Font\ Complete.ttf ~/Library/Fonts/
+
+    /usr/local/bin/pip3 install flask pandas praw jupyter virtualenv scikit-learn scikit-plot scikit-image prawcore numpy scipy beautifulsoup4 urllib3
 
 elif [[ "$OSTYPE" == "linux"* ]]; then
     sudo apt install emacs gnuchess htop pkg-config python3-dev tmux zsh
@@ -41,6 +45,9 @@ elif [[ "$OSTYPE" == "linux"* ]]; then
 
     cp $DIR/Blex Mono Nerd Font Complete.ttf ~/.fonts/
     fc-cache -fv
+
+    /usr/bin/pip3 install flask pandas praw jupyter virtualenv scikit-learn scikit-plot scikit-image prawcore numpy scipy beautifulsoup4 urllib3
+
 fi
 
 cd zsh
@@ -50,6 +57,7 @@ sudo ln -sfv $PWD/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/sit
 cd tmux
 
 for f in .tmux.conf .tmux.conf.local; do
+    cmp --silent ~/"$f" "$f" && continue
     [ -e ~/"$f" ] && mv -v ~/"$f" backup/"$f"
     ln -sfv "$DIR/tmux/$f" ~/"$f"
 done
