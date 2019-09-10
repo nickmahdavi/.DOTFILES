@@ -46,7 +46,7 @@ export USER_AGENT='/u/RecitalBot. Contact /u/beetbug for information'
 
 export VIMRC=~/.vim/vimrc
 
-local gversion=9
+export gversion=9
 
 #----------------------------------------#
 #            ALIASES/FUNCTIONS           #
@@ -89,6 +89,21 @@ man () { if [[ $@ == "gcc" ]]; then command man gcc-$gversion; elif
             [[ $@ == "c++" ]]; then command man c++-$gversion; else command man "$@"; fi
 }
 
+cd () {
+    local dir=$PWD
+
+    builtin cd "$@"
+
+    if [ -d "venv" ] || [ -d "env" ]; then
+        activate
+    fi
+
+    if ! [[ $PWD/ = $dir/* ]] && [ -d "venv" ] || [ -d "env" ]; then
+        deactivate
+    fi
+
+}
+
 pf () {
     local home=`ps aux | grep "$1" | grep -v grep`
     [[ -z `echo $home` ]] && echo "No local results found" || echo "$home"
@@ -104,13 +119,14 @@ tunnel ()
 
 activate ()
 {
-    if [ -f ./bin/activate ]; then
-        source ./bin/activate
-    elif [ -f ./activate ]; then
-        source ./activate
-    else
-        echo "Not in a venv directory"
-    fi
+    declare -a paths=("/bin" "/env/bin" "/venv/bin" "")
+    for p in $paths; do
+        if [ -f ."$p"/activate ]; then
+            source ."$p"/activate
+            return 0
+        fi
+    done
+    echo "Not in a venv directory"
 }
 
 duck ()

@@ -92,3 +92,6 @@ ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=yellow,bold' #121
 # ZSH_HIGHLIGHT_STYLES[builtin]='fg=134'
 # ZSH_HIGHLIGHT_STYLES[arg0]='fg=027'
 # ZSH_HIGHLIGHT_STYLES[function]='fg=cyan'
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh

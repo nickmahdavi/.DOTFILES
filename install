@@ -8,15 +8,26 @@ DIR=$(pwd)
 
 git submodule init && git submodule update
 
-for f in var *rc *profile gitconfig; do
-  mkdir -pv backup
+for f in var zshrc gitconfig tmux.conf.local; do
   cmp --silent ~/."$f" "$f" && continue
-  [ -e ~/."$f" ] && mv -v ~/."$f" backup/."$f"
+  [ -e ~/."$f" ] && { mkdir -pv backup; mv -v ~/."$f" backup/"$f" }
   ln -sfv "$DIR/$f" ~/."$f"
 done
 
+cmp --silent ~/.tmux.conf tmux/.tmux.conf && continue
+[ -e ~/.tmux.conf ] && mv -v ~/.tmux.conf backup/.tmux.conf
+ln -sfv "$DIR/tmux/.tmux.conf" ~/.tmux.conf
+
+[ -e ~/.bash_profile ] && { mkdir -pv backup; mv -v ~/.bash_profile backup/bash_profile }
+echo -e "if [ -f ~/.bashrc ]; then\n    source ~/.bashrc\nfi" > ~/.bash_profile
+
+[ -e ~/.bashrc ] && { mkdir -pv backup; mv -v ~/.bashrc backup/bashrc }
+echo -e "if [ -f ~/.var ]; then\n    source ~/.var\nfi" > ~/.bashrc
+
 [ -d ~/.zsh ] && mv -v ~/.zsh backup/zsh
 ln -sfv "$DIR/zsh" ~/.zsh
+
+sudo ln -sfv $PWD/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     if [ -z "$(which brew)" ]; then
@@ -27,13 +38,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
     brew install cmake coreutils emacs gcc gnu-chess htop nano nginx opencv pkg-config python tmux tree vim zsh
 
-    brew cask install google-chrome discord eqmac firefox flux gimp inkscape java opera-neon osxfuse spotify xquartz virtualbox
-
-    ITERM_PATH=~/Library/Application\ Support/iTerm2
-
-    mkdir -pv $ITERM_PATH
-    [ -d $ITERM_PATH/ITERM_PREFS ] && mv -v $ITERM_PATH/ITERM_PREFS backup/ITERM_PREFS
-    ln -sfv $DIR/ITERM_PREFS $ITERM_PATH/ITERM_PREFS
+    # brew cask install google-chrome discord eqmac firefox flux gimp inkscape iterm2 java opera-neon osxfuse selfcontrol spotify the-unarchiver xquartz virtualbox visual-studio-code vnc-viewer
 
     cp Blex\ Mono\ Nerd\ Font\ Complete.ttf ~/Library/Fonts/
 
@@ -50,17 +55,7 @@ elif [[ "$OSTYPE" == "linux"* ]]; then
 
 fi
 
-cd zsh
-
-sudo ln -sfv $PWD/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
-
-cd tmux
-
-for f in .tmux.conf .tmux.conf.local; do
-    cmp --silent ~/"$f" "$f" && continue
-    [ -e ~/"$f" ] && mv -v ~/"$f" backup/"$f"
-    ln -sfv "$DIR/tmux/$f" ~/"$f"
-done
+cd $DIR/zsh
 
 echo "Moving to vim install"
 
