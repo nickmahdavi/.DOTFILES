@@ -14,15 +14,8 @@ fi
 # gettext
 export PATH="/usr/local/opt/gettext/bin:$PATH"
 
-# icu4c (HomeBrew)
-export PATH="/usr/local/opt/icu4c/bin:$PATH"
-export PATH="/usr/local/opt/icu4c/sbin:$PATH"
-
 # opt
 export PATH="/opt/bin:$PATH"
-
-# /usr/local/bin
-#if [[ $PATH != *"/usr/local/bin"* ]];then export PATH="/usr/local/bin:$PATH";fi
 
 # openCV
 export PKG_CONFIG_PATH=/usr/local/Cellar/opencv/4.0.1/lib/pkgconfig
@@ -52,10 +45,7 @@ export gversion=9
 #            ALIASES/FUNCTIONS           #
 #----------------------------------------#
 
-alias c="clear"
-alias h="history"
-alias o="open ."
-alias p="cat"
+alias openn="open ."
 alias k="kill"
 alias ll="ls -lAFGrthO"
 alias ls="ls -G"
@@ -65,9 +55,8 @@ alias python="python3"
 alias locate="locate -i" # case insensitive
 alias grep="grep --color=always"
 alias notebook="nohup jupyter notebook > /dev/null 2>&1 & disown"
-alias jkill="pkill -f jupyter"
 alias sudo="sudo "
-alias t="tail -f"
+alias taill="tail -f"
 alias h2o='nohup java -jar /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/h2o/backend/bin/h2o.jar > /dev/null 2>&1 & disown'
 alias hkill='pkill -f "/usr/bin/java -jar /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/h2o/backend/bin/h2o.jar"'
 alias g="git"
@@ -83,48 +72,22 @@ fs () { find . -name "$@"'*' -print | grep -v node_ | grep -v .git; } # Find fil
 fe () { find . -name '*'"$@" -print | grep -v node_ | grep -v .git; } # Find file whose name ends with a given string
 fpy () { echo "find . -name '*.py' | grep -v node_ | grep -v .git | xargs grep $@ 2>/dev/null"; find . -name '*.js' | grep -v node_ | grep -v .git | xargs grep $@ 2>/dev/null; }
 fall () { echo "find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null"; find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null; }
+pf () { local home=$(ps aux | grep "$1" | grep -v grep); [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home" }
+jkill () { pkill -f jupyter || echo "No running notebooks" }
+# cd () { local dir=$PWD; builtin cd "$@"; { [ -d "venv" ] || [ -d "env" ] } && activate; { [[ $PWD/ = $dir/* ]] && [ -d "venv" ] || [ -d "env" ] } || deactivate }
+sshc () { ssh -i ~/.ssh/$key $instance; }
+tunnel () { kill $(pf 'ssh.*$1' | awk '{print $2}') > /dev/null 2>&1; ssh -i ~/.ssh/$key -fgNL $1:127.0.0.1:$1 $instance }
 
 man () { if [[ $@ == "gcc" ]]; then command man gcc-$gversion; elif
             [[ $@ == "g++" ]]; then command man g++-$gversion; elif
             [[ $@ == "c++" ]]; then command man c++-$gversion; else command man "$@"; fi
 }
 
-cd () {
-    local dir=$PWD
-
-    builtin cd "$@"
-
-    if [ -d "venv" ] || [ -d "env" ]; then
-        activate
-    fi
-
-    if ! [[ $PWD/ = $dir/* ]] && [ -d "venv" ] || [ -d "env" ]; then
-        deactivate
-    fi
-
-}
-
-pf () {
-    local home=`ps aux | grep "$1" | grep -v grep`
-    [[ -z `echo $home` ]] && echo "No local results found" || echo "$home"
-}
-
-sshc () { ssh -i ~/.ssh/$key $instance; }
-
-tunnel ()
-{
-    kill `pf 'ssh.*$1' | awk '{print $2}'` > /dev/null 2>&1
-    ssh -i ~/.ssh/$key -fgNL $1:127.0.0.1:$1 $instance
-}
-
 activate ()
 {
     declare -a paths=("/bin" "/env/bin" "/venv/bin" "")
     for p in $paths; do
-        if [ -f ."$p"/activate ]; then
-            source ."$p"/activate
-            return 0
-        fi
+        [ -f ."$p"/activate ] && { source ."$p"/activate; return 0 }
     done
     echo "Not in a venv directory"
 }
@@ -133,21 +96,9 @@ duck ()
 {
     [ -n "$2" ] && depth="$2" ||
     if [ -d "$1" ]; then
-        if [ -n "$2" ]; then
-            if [[ $2 =~ '^[0-9]+$' ]]; then
-                du -ckhd $2 $1 | sort -h
-            else
-                echo "Depth must be a number"
-            fi
-        else
-            du -ckhd 1 $1 | sort -h
-        fi
+        [ -n "$2" ] && { [[ $2 =~ '^[0-9]+$' ]] && du -ckhd $2 $1 | sort -h || echo "Depth must be a number" } || { du -ckhd 1 $1 | sort -h }
     elif [ -n "$2" ] && [ -d "$2" ]; then
-        if [[ $1 =~ '^[0-9]+$' ]]; then
-            du -ckhd $1 $2 | sort -h
-        else
-            echo "Depth must be a number"
-        fi
+        [[ $1 =~ '^[0-9]+$' ]] && { du -ckhd $1 $2 | sort -h } || { echo "Depth must be a number" }
     elif [[ $1 =~ '^[0-9]+$' ]]; then
         du -ckhd $1 | sort -h
     elif [ -n "$1" ]; then
@@ -158,12 +109,13 @@ duck ()
 }
 
 vim-pkg () {
-    local wdir=`pwd`
+    wdir=$(pwd)
+    local wdir
     if [ -z "$1" ]; then
         echo "Must pass a package url"
     elif [ "$1" = "update" ]; then
         cd ~/.vim/bundle
-        for i in `ls`; do
+        for i in *; do
             cd "$i"
             git pull
             cd ..
