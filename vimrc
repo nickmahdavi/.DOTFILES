@@ -10,6 +10,9 @@ set history=500
 filetype plugin on
 filetype indent on
 
+" Automatically cd to file
+set autochdir
+
 " Set to auto read when a file is changed from the outside
 set autoread
 
@@ -27,6 +30,10 @@ command W w !sudo tee % > /dev/null
 " Smart case
 set smartcase
 
+" Timeout on esc
+set ttimeout
+set ttimeoutlen=100
+
 """"""""""""""""""""""""""""""""""""""""
 " UI
 """"""""""""""""""""""""""""""""""""""""
@@ -35,12 +42,6 @@ set so=7
 
 " Find cursor
 set cursorline
-
-" Avoid garbled characters in Chinese language windows OS
-let $LANG='en'
-set langmenu=en
-source $VIMRUNTIME/delmenu.vim
-source $VIMRUNTIME/menu.vim
 
 " Turn on the Wild menu
 set wildmenu
@@ -100,11 +101,6 @@ set novisualbell
 set t_vb=
 set tm=500
 
-" Properly disable sound on errors on MacVim
-if has("gui_macvim")
-    autocmd GUIEnter * set vb t_vb=
-endif
-
 " Add a bit extra margin to the left
 set foldcolumn=1
 
@@ -115,6 +111,7 @@ set fo+=n
 """"""""""""""""""""""""""""""""""""""""
 " Colors and fonts
 """"""""""""""""""""""""""""""""""""""""
+
 " Syntax highlighting
 syntax enable
 
@@ -143,6 +140,8 @@ set ffs=unix,dos,mac
 set backupdir=~/.vim/tmp//,.
 set directory=~/.vim/tmp//,.
 
+" Redo with U instead of Ctrl+R
+noremap U <C-R>
 
 """"""""""""""""""""
 " => Text, tab and indent related
@@ -240,20 +239,27 @@ set laststatus=2
 """"""""""""""""""""""""""""""""""""""""
 " Editor remaps
 """"""""""""""""""""""""""""""""""""""""
+
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
 map <c-space> ?
 
 " ,jk returns to normal mode
 let g:easyescape_chars = { "j": 1, "k": 1 }
-let g:easyescape_timeout = 150
+let g:easyescape_timeout = 100
+" cnoremap jk <ESC>
+" cnoremap kj <ESC>
 
 " Semicolon acts as colon
 vnoremap ; :
 nnoremap ; :
 
 " Remap VIM 0 to first non-blank character
-map 0 ^
+noremap 0 ^
+noremap ^ 0
+
+" w!! writes with sudo
+cmap w!! w !sudo tee > /dev/null %
 
 " Remove all trailing whitespace with F5
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><cr>
@@ -262,11 +268,15 @@ nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><cr>
 nnoremap <expr> j v:count ? 'j' : 'gj'
 nnoremap <expr> k v:count ? 'k' : 'gk'
 
-" Move a line of text using ALT+[jk] or Command+[jk] on mac
-nmap <M-j> mz:m+<cr>`z
-nmap <M-k> mz:m-2<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+" Move a line of text using ALT+[jk] (working on Command+[jk] on mac)
+" nmap <M-j> mz:m+<cr>`z
+" nmap <M-k> mz:m-2<cr>`z
+nmap ∆ mz:m+<cr>`z
+nmap ˚ mz:m-2<cr>`z
+" vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+" vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+vmap ∆ :m'>+<cr>`<my`>mzgv`yo`z
+vmap ˚ :m'<-2<cr>`>my`<mzgv`yo`z
 
 if has("mac") || has("macunix")
   nmap <D-j> <M-j>
