@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block, everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 #----------------------------------------#
 #                  ZSH                   #
 #----------------------------------------#
@@ -26,7 +33,6 @@ autoload -U promptinit; promptinit
 # prompt_newline='%666v'
 # PROMPT=" $PROMPT"
 
-source ~/.zsh/purepower
 prompt powerlevel10k
 
 # Completion
@@ -42,7 +48,7 @@ zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character t
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*'
 zstyle :compinstall filename '/Users/nicmahd/.zshrc'
 
-autoload -Uz compinit; compinit
+autoload -Uz compinit; compinit -u
 # End of lines added by compinstall
 
 # History
@@ -51,7 +57,7 @@ HISTFILE=~/.zsh_history
 HISTSIZE=1000
 SAVEHIST=1000
 
-bindkey -v # Vim mode
+# bindkey -v # Vim mode
 bindkey "^?" backward-delete-char
 export KEYTIMEOUT=1
 
@@ -93,5 +99,7 @@ ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=yellow,bold' #121
 # ZSH_HIGHLIGHT_STYLES[arg0]='fg=027'
 # ZSH_HIGHLIGHT_STYLES[function]='fg=cyan'
 
+# source ~/.zsh/purepower
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-# [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh

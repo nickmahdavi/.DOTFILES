@@ -45,9 +45,8 @@ export gversion=9
 #            ALIASES/FUNCTIONS           #
 #----------------------------------------#
 
-alias openn="open ."
 alias k="kill"
-alias ll="ls -lAFGrthO"
+alias ll="ls -AFGhlOprt"
 alias ls="ls -G"
 alias l="ls -1Frt"
 alias pip="pip3"
@@ -64,6 +63,8 @@ alias gcc="gcc-$gversion"
 alias g++="g++-$gversion"
 alias c++="c++-$gversion"
 alias sort="gsort"
+alias tr="gtr"
+
 
 f () { find . -name "*$@*" -print; } # Find all files under the current directory
 ff () { find . -type f -print | grep -v node_ | grep -v .git ; }
@@ -74,39 +75,40 @@ fpy () { echo "find . -name '*.py' | grep -v node_ | grep -v .git | xargs grep $
 fall () { echo "find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null"; find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null; }
 pf () { local home=$(ps aux | grep "$1" | grep -v grep); [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home" }
 jkill () { pkill -f jupyter || echo "No running notebooks" }
-# cd () { local dir=$PWD; builtin cd "$@"; { [ -d "venv" ] || [ -d "env" ] } && activate; { [[ $PWD/ = $dir/* ]] && [ -d "venv" ] || [ -d "env" ] } || deactivate }
 sshc () { ssh -i ~/.ssh/$key $instance; }
 tunnel () { kill $(pf 'ssh.*$1' | awk '{print $2}') > /dev/null 2>&1; ssh -i ~/.ssh/$key -fgNL $1:127.0.0.1:$1 $instance }
+password () { < /dev/urandom | gtr -dc 'A-Za-z0-9"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' | head -c $1; echo }
+gpassword () { < /dev/urandom | gtr -dc A-Za-z0-9 | head -c $1; echo }
+unactivate () { [ ! -z $(command -v deactivate) ] && deactivate }
 
-man () { if [[ $@ == "gcc" ]]; then command man gcc-$gversion; elif
-            [[ $@ == "g++" ]]; then command man g++-$gversion; elif
-            [[ $@ == "c++" ]]; then command man c++-$gversion; else command man "$@"; fi
+cd ()
+{
+    local dir=$PWD
+    builtin cd "$@"
+
+    [[ $(pwd) == $(dirname "$VIRTUAL_ENV")/* ]] && return 0
+
+    [[ -d ./env ]] && unactivate || activate
+
+    return 0
 }
+
+man () { if [[ "$@" == "gcc" ]]; then command man gcc-$gversion; elif
+            [[ "$@" == "g++" ]]; then command man g++-$gversion; elif
+            [[ "$@" == "c++" ]]; then command man c++-$gversion; else command man "$@"; fi
+}
+
+open () { if [[ "$@" ]]; then command open "$@"; else command open .; fi }
 
 activate ()
 {
-    declare -a paths=("/bin" "/env/bin" "/venv/bin" "")
+    declare -a paths=("bin" "env/bin" "venv/bin" "")
     for p in $paths; do
-        [ -f ."$p"/activate ] && { source ."$p"/activate; return 0 }
+        [ -f ./"$p"/activate ] && { source ./"$p"/activate; return 0 }
     done
-    echo "Not in a venv directory"
 }
 
-duck ()
-{
-    [ -n "$2" ] && depth="$2" ||
-    if [ -d "$1" ]; then
-        [ -n "$2" ] && { [[ $2 =~ '^[0-9]+$' ]] && du -ckhd $2 $1 | sort -h || echo "Depth must be a number" } || { du -ckhd 1 $1 | sort -h }
-    elif [ -n "$2" ] && [ -d "$2" ]; then
-        [[ $1 =~ '^[0-9]+$' ]] && { du -ckhd $1 $2 | sort -h } || { echo "Depth must be a number" }
-    elif [[ $1 =~ '^[0-9]+$' ]]; then
-        du -ckhd $1 | sort -h
-    elif [ -n "$1" ]; then
-        echo "Depth must be a number"
-    else
-        du -ckhd 1 | sort -h
-    fi
-}
+# duck () { du -ckhd ${2-1} $1 | sort -h }
 
 vim-pkg () {
     wdir=$(pwd)
@@ -117,7 +119,7 @@ vim-pkg () {
         cd ~/.vim/bundle
         for i in *; do
             cd "$i"
-            git pull
+            git pull origin master
             cd ..
         done
         cd $wdir
