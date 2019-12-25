@@ -18,7 +18,7 @@ set autoread
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
-let mapleader = "\\"
+let mapleader = " "
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -65,7 +65,8 @@ set number
 set cmdheight=2
 
 " A buffer becomes hidden when it is abandoned
-set hid
+set hidden
+set confirm
 
 " Configure backspace so it acts like it should
 set whichwrap+=<,>h,l,[,]
@@ -181,10 +182,17 @@ set mouse=a
 map <Leader><space> :noh<cr>
 
 " Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+map <C-Up> <C-W>j
+map <C-Down> <C-W>k
+map <C-Left> <C-W>h
+map <C-Right> <C-W>l
+
+" Smart way to move between buffers
+map <C-j> :tabnext<cr>
+map <C-k> :tabprevious<cr>
+map <C-l> :bnext<cr>
+map <C-h> :bprevious<cr>
+map <C-h> :bprevious<cr>
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>:tabclose<cr>gT
@@ -192,15 +200,32 @@ map <leader>bd :Bclose<cr>:tabclose<cr>gT
 " Close all the buffers
 map <leader>ba :bufdo bd<cr>
 
-map <leader>l :bnext<cr>
-map <leader>h :bprevious<cr>
+" Move between tabs and buffers
+" map <leader>j :tabnext<cr>
+" map <leader>k :tabprevious<cr>
+" map <leader>l :bnext<cr>
+" map <leader>h :bprevious<cr>
+map <leader>l :tabnext<cr>
+map <leader>h :tabprevious<cr>
+map <Leader>s :ls<CR>
+map <Leader>g :e#<CR>
+" Clean this up
+nnoremap <Leader>1 :1b<CR>
+nnoremap <Leader>2 :2b<CR>
+nnoremap <Leader>3 :3b<CR>
+nnoremap <Leader>4 :4b<CR>
+nnoremap <Leader>5 :5b<CR>
+nnoremap <Leader>6 :6b<CR>
+nnoremap <Leader>7 :7b<CR>
+nnoremap <Leader>8 :8b<CR>
+nnoremap <Leader>9 :9b<CR>
+nnoremap <Leader>0 :10b<CR>
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
-map <leader>t<leader> :tabnext
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
@@ -241,14 +266,14 @@ set laststatus=2
 """"""""""""""""""""""""""""""""""""""""
 
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
-map <c-space> ?
+" map <space> /
+" map <c-space> ?
 
-" ,jk returns to normal mode
+" jk returns to normal mode
 let g:easyescape_chars = { "j": 1, "k": 1 }
 let g:easyescape_timeout = 100
-" cnoremap jk <ESC>
-" cnoremap kj <ESC>
+cnoremap jk <ESC>
+cnoremap kj <ESC>
 
 " Semicolon acts as colon
 vnoremap ; :
@@ -257,9 +282,6 @@ nnoremap ; :
 " Remap VIM 0 to first non-blank character
 noremap 0 ^
 noremap ^ 0
-
-" w!! writes with sudo
-cmap w!! w !sudo tee > /dev/null %
 
 " Remove all trailing whitespace with F5
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><cr>
@@ -295,7 +317,7 @@ fun! CleanExtraSpaces()
 endfun
 
 if has("autocmd")
-    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
+    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee,*.cpp :call CleanExtraSpaces()
 endif
 
 """"""""""""""""""""""""""""""""""""""""
@@ -435,3 +457,9 @@ au Syntax * RainbowParenthesesLoadBraces
 let g:NERDTreeFileExtensionHighlightFullName = 1
 let g:NERDTreeExactMatchHighlightFullName = 1
 let g:NERDTreePatternMatchHighlightFullName = 1
+
+let g:airline#extensions#tabline#enabled = 1 " Use the airline tabline (replacement for buftabline)
+let g:airline#extensions#tabline#show_tab_nr = 1
+let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
+let g:airline#extensions#tabline#excludes = ['branches', 'index']
+let g:airline#extensions#tabline#buffer_idx_mode = 1
