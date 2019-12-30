@@ -182,10 +182,10 @@ set mouse=a
 map <Leader><space> :noh<cr>
 
 " Smart way to move between windows
-map <C-Up> <C-W>j
-map <C-Down> <C-W>k
-map <C-Left> <C-W>h
-map <C-Right> <C-W>l
+map <C-Up> <C-W>k
+map <C-Down> <C-W>j
+map ˙ <C-W>h
+map ¬ <C-W>l
 
 " Smart way to move between buffers
 map <C-j> :tabnext<cr>
@@ -209,6 +209,7 @@ map <leader>l :tabnext<cr>
 map <leader>h :tabprevious<cr>
 map <Leader>s :ls<CR>
 map <Leader>g :e#<CR>
+
 " Clean this up
 nnoremap <Leader>1 :1b<CR>
 nnoremap <Leader>2 :2b<CR>
@@ -220,6 +221,9 @@ nnoremap <Leader>7 :7b<CR>
 nnoremap <Leader>8 :8b<CR>
 nnoremap <Leader>9 :9b<CR>
 nnoremap <Leader>0 :10b<CR>
+
+" Edit the vimrc
+nnoremap <Leader>vr :e ~/.vimrc<CR>
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
@@ -265,7 +269,13 @@ set laststatus=2
 " Editor remaps
 """"""""""""""""""""""""""""""""""""""""
 
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
+" Cursor
+if $TERM_PROGRAM =~ "iTerm.app"
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+endif
+
+"Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 " map <space> /
 " map <c-space> ?
 
@@ -355,7 +365,7 @@ map <leader>s? z=
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Quickly open a buffer for scribble
-map <leader>q :e ~/buffer<cr>
+map <leader>s :e ~/buffer<cr>
 
 " Quickly open a markdown buffer for scribble
 map <leader>x :e ~/buffer.md<cr>
