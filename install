@@ -11,31 +11,32 @@ git submodule init && git submodule update
 
 for f in var zshrc gitconfig tmux.conf.local p10k.zsh; do
   cmp --silent ~/."$f" "$f" && continue
-  [ -e ~/."$f" ] && { mkdir -pv backup; mv -v ~/."$f" backup/"$f" }
+  [ -e ~/."$f" ] && { mkdir -pv backup; mv -v ~/."$f" backup/"$f"; }
   ln -sfv "$DIR/$f" ~/."$f"
 done
 
 cd tmux
 
-for f in ./.tmux.*; do
-    cmp --silent ~/.tmux.conf "$f" && continue
+for f in .tmux.*; do
+    cmp --silent ~/"$f" "$f" && continue
     [ -e ~/"$f" ] && mv -v ~/"$f" backup/"$f"
     ln -sfv "$DIR/$f" ~/"$f"
+done
 
 cd ..
 
-[ -e ~/.bash_profile ] && { mkdir -pv backup; mv -v ~/.bash_profile backup/bash_profile }
-echo -e "if [ -f ~/.bashrc ]; then\n    source ~/.bashrc\nfi" > ~/.bash_profile
-
-[ -e ~/.bashrc ] && { mkdir -pv backup; mv -v ~/.bashrc backup/bashrc }
-echo -e "if [ -f ~/.var ]; then\n    source ~/.var\nfi" > ~/.bashrc
+# [ -e ~/.bashrc ] && { mkdir -pv backup; mv -v ~/.bashrc backup/bashrc; }
+echo -e "if [ -f ~/.var ]; then\n    source ~/.var\nfi" >> ~/.bashrc
 
 [ -d ~/.zsh ] && mv -v ~/.zsh backup/zsh
 ln -sfv "$DIR/zsh" ~/.zsh
 
-sudo ln -sfv $PWD/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
+sudo ln -sfv $PWD/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
+    [ -e ~/.bash_profile ] && { mkdir -pv backup; mv -v ~/.bash_profile backup/bash_profile; }
+    echo -e "if [ -f ~/.bashrc ]; then\n    source ~/.bashrc\nfi" > ~/.bash_profile
+
     if [ -z "$(which brew)" ]; then
         ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     fi
@@ -46,7 +47,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
     # brew cask install appcleaner apple-juice google-chrome discord docker eqmac firefox flux gimp inkscape iterm2 java karabiner-elements latest opera-neon omnidisksweeper osxfuse overkill selfcontrol spotify the-unarchiver xquartz virtualbox visual-studio-code vnc-viewer
 
-    cp Blex\ Mono.ttf ~/Library/Fonts/
+    cp BlexMono.ttf ~/Library/Fonts/
 
     /usr/local/bin/pip3 install $pip_pkg
 
@@ -54,7 +55,7 @@ elif [[ "$OSTYPE" == "linux"* ]]; then
     sudo apt install emacs htop pkg-config python3-dev tmux zsh # gnuchess
     echo "You may have to compile vim from scratch to work with this .vimrc."
 
-    cp $DIR/Blex\ Mono.ttf ~/.fonts/
+    cp $DIR/BlexMono.ttf ~/.fonts/
     fc-cache -fv
 
     /usr/bin/pip3 install $pip_pkg

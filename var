@@ -2,10 +2,6 @@
 #                  PATH                  #
 #----------------------------------------#
 
-# Python 3.7
-export PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin:$PATH"
-export PATH="/Users/nicmahd/Library/Python/3.7/bin:$PATH"
-
 # Python modules
 if [ -d "~/Project-Mango/src" ]; then
     export PYTHONPATH=$PYTHONPATH:$HOME/Project-Mango/src/
@@ -24,9 +20,8 @@ export PKG_CONFIG_PATH=/usr/local/Cellar/opencv/4.0.1/lib/pkgconfig
 #                VARIABLES               #
 #----------------------------------------#
 
-export ip=52.11.172.134
-export user=ubuntu
-export key=botkey.pem
+export ip=photino.local
+export user=pi
 export instance=$user@$ip
 
 export HOMEBREW_AUTO_UPDATE_SECS=604800
@@ -64,7 +59,8 @@ alias g++="g++-$gversion"
 alias c++="c++-$gversion"
 alias sort="gsort"
 alias tr="gtr"
-
+alias ip="ipconfig getifaddr en0"
+alias eip="curl ifconfig.me; echo"
 
 f () { find . -name "*$@*" -print; } # Find all files under the current directory
 ff () { find . -type f -print | grep -v node_ | grep -v .git ; }
@@ -75,11 +71,17 @@ fpy () { echo "find . -name '*.py' | grep -v node_ | grep -v .git | xargs grep $
 fall () { echo "find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null"; find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null; }
 pf () { local home=$(ps aux | grep "$1" | grep -v grep); [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home" }
 jkill () { pkill -f jupyter || echo "No running notebooks" }
-sshc () { ssh -i ~/.ssh/$key $instance; }
-tunnel () { kill $(pf 'ssh.*$1' | awk '{print $2}') > /dev/null 2>&1; ssh -i ~/.ssh/$key -fgNL $1:127.0.0.1:$1 $instance }
+sshc () { ssh $instance; } # -i ~/.ssh/$key
 password () { < /dev/urandom | gtr -dc 'A-Za-z0-9"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' | head -c $1; echo }
 gpassword () { < /dev/urandom | gtr -dc A-Za-z0-9 | head -c $1; echo }
 unactivate () { [ ! -z $(command -v deactivate) ] && deactivate }
+n () { cd /Users/nicmahd/Desktop/school/notes/9.2/$1 }
+
+tunnel ()
+{
+    kill $(pf 'ssh.*$1' | awk '{print $2}') > /dev/null 2>&1
+    ssh -fgNL $1:127.0.0.1:$1 $instance # -i ~/.ssh/$key
+}
 
 cd ()
 {
@@ -104,7 +106,7 @@ activate ()
 {
     declare -a paths=("bin" "env/bin" "venv/bin" "")
     for p in $paths; do
-        [ -f ./"$p"/activate ] && { source ./"$p"/activate; return 0 }
+        [ -f ./"$p"/activate ] && { source ./"$p"/activate; return 0; }
     done
 }
 

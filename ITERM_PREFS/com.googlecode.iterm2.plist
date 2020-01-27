@@ -8,6 +8,8 @@
 	<true/>
 	<key>AppleAntiAliasingThreshold</key>
 	<integer>1</integer>
+	<key>ApplePressAndHoldEnabled</key>
+	<false/>
 	<key>AppleScrollAnimationEnabled</key>
 	<integer>0</integer>
 	<key>AppleSmoothFixedFontsSizeThreshold</key>
@@ -19,6 +21,8 @@
 	<key>BracketedPasteMode</key>
 	<true/>
 	<key>CheckTestRelease</key>
+	<true/>
+	<key>ConvertDosNewlines</key>
 	<true/>
 	<key>CopySelection</key>
 	<false/>
@@ -1686,7 +1690,7 @@
 	<key>HideActivityIndicator</key>
 	<false/>
 	<key>HideScrollbar</key>
-	<false/>
+	<true/>
 	<key>HideTab</key>
 	<true/>
 	<key>HideTabCloseButton</key>
@@ -1729,7 +1733,7 @@
 	gAKACoAN0xAJChEVGVdOUy5rZXlzoxITFIADgASABaMWFxiABoAHgAiACVpJZGVudGlm
 	aWVyVVdpZHRoVkhpZGRlblEwI0BowAAAAAAACNIhIiMkWiRjbGFzc25hbWVYJGNsYXNz
 	ZXNcTlNEaWN0aW9uYXJ5oiMlWE5TT2JqZWN00xAJCicrGaMSExSAA4AEgAWjLC0YgAuA
-	DIAIgAlRMSNAdKGdsi0OVtIhIjM0Xk5TTXV0YWJsZUFycmF5ozM1JVdOU0FycmF5XxAP
+	DIAIgAlRMSNAc7Gdsi0OVtIhIjM0Xk5TTXV0YWJsZUFycmF5ozM1JVdOU0FycmF5XxAP
 	TlNLZXllZEFyY2hpdmVy0Tg5VUFycmF5gAEACAARABoAIwAtADIANwBGAEwAUQBcAGMA
 	ZgBoAGoAbABzAHsAfwCBAIMAhQCJAIsAjQCPAJEAnACiAKkAqwC0ALUAugDFAM4A2wDe
 	AOcA7gDyAPQA9gD4APwA/gEAAQIBBAEGAQ8BFAEjAScBLwFBAUQBSgAAAAAAAAIBAAAA
@@ -1754,12 +1758,14 @@
 	<string>520 561 400 129 0 0 1440 877 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>410 363 620 392 0 0 1440 877 </string>
+	<key>NSWindow Frame UKCrashReporter</key>
+	<string>99 293 592 584 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 877 1440 454 0 0 1440 877 </string>
+	<string>0 297 850 567 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>122 257 850 567 0 0 1440 877 </string>
+	<string>122 276 850 567 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>239 1 850 567 0 0 1440 900 </string>
+	<string>249 141 850 567 0 0 1440 877 </string>
 	<key>NeverWarnAboutShortLivedSessions_272441B3-F892-4765-BB4F-4D9B75D652C5</key>
 	<true/>
 	<key>NeverWarnAboutShortLivedSessions_272441B3-F892-4765-BB4F-4D9B75D652C5_selection</key>
@@ -5658,34 +5664,36 @@
 	<key>NoSyncAllAppVersions</key>
 	<array>
 		<string>3.3.3beta1</string>
-		<string>3.3.7beta4</string>
+		<string>3.3.7beta1</string>
+		<string>3.3.8beta5</string>
 		<string>3.3.7beta3</string>
-		<string>3.3.4beta1</string>
+		<string>3.3.8beta2</string>
+		<string>3.3.3beta2</string>
+		<string>3.3.8beta4</string>
 		<string>3.3.5beta3</string>
 		<string>3.3.7beta2</string>
-		<string>3.3.7beta1</string>
+		<string>3.3.4beta1</string>
+		<string>3.3.7beta4</string>
 		<string>3.3.2</string>
-		<string>3.3.3beta2</string>
+		<string>3.3.8beta1</string>
 	</array>
 	<key>NoSyncBFPRecents</key>
 	<array>
 		<string>BlexMono Nerd Font</string>
-		<string>Lantinghei TC</string>
-		<string>MesloLGS NF</string>
 	</array>
 	<key>NoSyncFrame_SharedPreferences</key>
 	<dict>
 		<key>screenFrame</key>
 		<string>{{0, 0}, {1440, 900}}</string>
 		<key>topLeft</key>
-		<string>{171, 840}</string>
+		<string>{387, 762}</string>
 	</dict>
 	<key>NoSyncInstallationId</key>
 	<string>12154483-A491-4DCE-9C15-D1D1912B7F64</string>
 	<key>NoSyncLastTipTime</key>
-	<real>596935609.45355201</real>
+	<real>597720464.85108399</real>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>65</integer>
+	<integer>96</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -6450,19 +6458,6 @@
 			</dict>
 		</array>
 	</dict>
-	<key>NoSyncSearchHistory2</key>
-	<array>
-		<string>policyja</string>
-		<string>polcy</string>
-		<string>polify</string>
-		<string>profile</string>
-		<string>haskell</string>
-		<string>title</string>
-		<string>jupyter</string>
-		<string>stats</string>
-		<string>matp</string>
-		<string>panas</string>
-	</array>
 	<key>NoSyncTipOfTheDayEligibilityBeganTime</key>
 	<real>587943599.54382205</real>
 	<key>NoSyncTipsToNotShow</key>
@@ -6473,6 +6468,7 @@
 		<string>0009</string>
 		<string>0059</string>
 		<string>0066</string>
+		<string>0073</string>
 		<string>0002</string>
 		<string>0045</string>
 		<string>0038</string>
@@ -6481,6 +6477,7 @@
 		<string>0031</string>
 		<string>0024</string>
 		<string>0067</string>
+		<string>0074</string>
 		<string>0010</string>
 		<string>0046</string>
 		<string>0003</string>
@@ -6501,6 +6498,7 @@
 		<string>0019</string>
 		<string>0040</string>
 		<string>0069</string>
+		<string>0076</string>
 		<string>0012</string>
 		<string>0048</string>
 		<string>0005</string>
@@ -6509,12 +6507,14 @@
 		<string>0041</string>
 		<string>0034</string>
 		<string>0027</string>
+		<string>0077</string>
 		<string>0013</string>
 		<string>0049</string>
 		<string>0006</string>
 		<string>0020</string>
 		<string>0056</string>
 		<string>0063</string>
+		<string>0070</string>
 		<string>0042</string>
 		<string>0035</string>
 		<string>0028</string>
@@ -6523,6 +6523,7 @@
 		<string>0007</string>
 		<string>0057</string>
 		<string>0064</string>
+		<string>0071</string>
 		<string>0000</string>
 		<string>0029</string>
 		<string>0050</string>
@@ -6533,12 +6534,13 @@
 		<string>0008</string>
 		<string>0058</string>
 		<string>0065</string>
+		<string>0072</string>
 		<string>0001</string>
 		<string>0037</string>
 		<string>000</string>
 		<string>0044</string>
 		<string>0051</string>
-		<string>0070</string>
+		<string>0078</string>
 	</array>
 	<key>OpenArrangementAtStartup</key>
 	<false/>
@@ -6608,7 +6610,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-12-02T06:10:47Z</date>
+	<date>2020-01-24T20:57:42Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateRelaunchingMarker</key>
@@ -6616,7 +6618,7 @@
 	<key>SeparateStatusBarsPerPane</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<true/>
+	<false/>
 	<key>ShowNewOutputIndicator</key>
 	<true/>
 	<key>ShowPaneTitles</key>
@@ -6631,10 +6633,14 @@
 	<integer>6</integer>
 	<key>TabStyleWithAutomaticOption</key>
 	<integer>0</integer>
+	<key>TabTransform</key>
+	<integer>0</integer>
 	<key>TabViewType</key>
 	<integer>0</integer>
 	<key>TimeBetweenTips</key>
 	<real>86400</real>
+	<key>UKCrashReporterLastCrashReportDate</key>
+	<real>1577236480</real>
 	<key>UseBorder</key>
 	<false/>
 	<key>VisualIndicatorForEsc</key>
@@ -7415,7 +7421,7 @@
 	<key>findMode_iTerm</key>
 	<integer>0</integer>
 	<key>iTerm Version</key>
-	<string>3.3.7beta4</string>
+	<string>3.3.8beta5</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>6</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
