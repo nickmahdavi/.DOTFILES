@@ -41,7 +41,7 @@ set ttimeoutlen=100
 set so=7
 
 " Find cursor
-set cursorline
+" set cursorline
 
 " Turn on the Wild menu
 set wildmenu
@@ -113,6 +113,9 @@ set fo+=n
 " Colors and fonts
 """"""""""""""""""""""""""""""""""""""""
 
+" Airline
+let g:airline_theme='base16color'
+
 " Syntax highlighting
 syntax enable
 
@@ -178,8 +181,12 @@ au BufRead,BufNewFile Makefile* set noexpandtab
 " Mouse mode always on
 set mouse=a
 
+" Go to my notes shit
+nnoremap <Leader>no :cd /Users/nicmahd/Desktop/school/notes<CR>
+
 " Turn off search highlight ,nohlsearch
-map <Leader><space> :noh<cr>
+" map <Leader><space> :noh<cr>
+map <Leader>/ :noh<cr>
 
 " Smart way to move between windows
 map <C-Up> <C-W>k
@@ -205,10 +212,12 @@ map <leader>ba :bufdo bd<cr>
 " map <leader>k :tabprevious<cr>
 " map <leader>l :bnext<cr>
 " map <leader>h :bprevious<cr>
-map <leader>l :tabnext<cr>
-map <leader>h :tabprevious<cr>
+" map <leader>l :tabnext<cr>
+" map <leader>h :tabprevious<cr>
 map <Leader>s :ls<CR>
-map <Leader>g :e#<CR>
+" map <Leader>g :e#<CR>
+map <Leader>g :Goyo<CR>
+map <Leader>l :Limelight<CR>
 
 " Clean this up
 nnoremap <Leader>1 :1b<CR>
@@ -241,13 +250,16 @@ au TabLeave * let g:lasttab = tabpagenr()
 " Super useful when editing files in the same directory
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
+" And for buffers
+map <leader>be :edit <c-r>=expand("%:p:h")<cr>/
+
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " Specify the behavior when switching between buffers
 try
-  set switchbuf=useopen,usetab,newtab
-  set stal=2
+set switchbuf=useopen,usetab,newtab
+set stal=2
 catch
 endtry
 
@@ -271,8 +283,16 @@ set laststatus=2
 
 " Cursor
 if $TERM_PROGRAM =~ "iTerm.app"
-    let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+let $t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
+let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+endif
+
+if exists('$TMUX')
+let &t_SI = "\<Esc>Ptmux;\<Esc>\e[5 q\<Esc>\\"
+let &t_EI = "\<Esc>Ptmux;\<Esc>\e[2 q\<Esc>\\"
+else
+let &t_SI = "\e[5 q"
+let &t_EI = "\e[2 q"
 endif
 
 "Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
@@ -311,23 +331,23 @@ vmap ∆ :m'>+<cr>`<my`>mzgv`yo`z
 vmap ˚ :m'<-2<cr>`>my`<mzgv`yo`z
 
 if has("mac") || has("macunix")
-  nmap <D-j> <M-j>
-  nmap <D-k> <M-k>
-  vmap <D-j> <M-j>
-  vmap <D-k> <M-k>
+nmap <D-j> <M-j>
+nmap <D-k> <M-k>
+vmap <D-j> <M-j>
+vmap <D-k> <M-k>
 endif
 
 " Delete trailing white space on save, useful for some filetypes ;)
 fun! CleanExtraSpaces()
-    let save_cursor = getpos(".")
-    let old_query = getreg('/')
-    silent! %s/\s\+$//e
-    call setpos('.', save_cursor)
-    call setreg('/', old_query)
+let save_cursor = getpos(".")
+let old_query = getreg('/')
+silent! %s/\s\+$//e
+call setpos('.', save_cursor)
+call setreg('/', old_query)
 endfun
 
 if has("autocmd")
-    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee,*.cpp :call CleanExtraSpaces()
+autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee,*.cpp :call CleanExtraSpaces()
 endif
 
 """"""""""""""""""""""""""""""""""""""""
@@ -379,60 +399,60 @@ map <leader>pp :setlocal paste!<cr>
 """"""""""""""""""""""""""""""""""""""""
 " Returns true if paste mode is enabled
 function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    endif
-    return ''
+if &paste
+    return 'PASTE MODE  '
+endif
+return ''
 endfunction
 
 " Don't close window, when deleting a buffer
 command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
-    let l:currentBufNum = bufnr("%")
-    let l:alternateBufNum = bufnr("#")
+let l:currentBufNum = bufnr("%")
+let l:alternateBufNum = bufnr("#")
 
-    if buflisted(l:alternateBufNum)
-        buffer #
-    else
-        bnext
-    endif
+if buflisted(l:alternateBufNum)
+    buffer #
+else
+    bnext
+endif
 
-    if bufnr("%") == l:currentBufNum
-        new
-    endif
+if bufnr("%") == l:currentBufNum
+    new
+endif
 
-    if buflisted(l:currentBufNum)
-        execute("bdelete! ".l:currentBufNum)
-    endif
+if buflisted(l:currentBufNum)
+    execute("bdelete! ".l:currentBufNum)
+endif
 endfunction
 
 function! CmdLine(str)
-    call feedkeys(":" . a:str)
+call feedkeys(":" . a:str)
 endfunction
 
 function! VisualSelection(direction, extra_filter) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
+let l:saved_reg = @"
+execute "normal! vgvy"
 
-    let l:pattern = escape(@", "\\/.*'$^~[]")
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
+let l:pattern = escape(@", "\\/.*'$^~[]")
+let l:pattern = substitute(l:pattern, "\n$", "", "")
 
-    if a:direction == 'gv'
-        call CmdLine("Ack '" . l:pattern . "' " )
-    elseif a:direction == 'replace'
-        call CmdLine("%s" . '/'. l:pattern . '/')
-    endif
+if a:direction == 'gv'
+    call CmdLine("Ack '" . l:pattern . "' " )
+elseif a:direction == 'replace'
+    call CmdLine("%s" . '/'. l:pattern . '/')
+endif
 
-    let @/ = l:pattern
-    let @" = l:saved_reg
+let @/ = l:pattern
+let @" = l:saved_reg
 endfunction
 
 function! s:DiffWithSaved()
-  let filetype=&ft
-  diffthis
-  vnew | r # | normal! 1Gdd
-  diffthis
-  exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+let filetype=&ft
+diffthis
+vnew | r # | normal! 1Gdd
+diffthis
+exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
 endfunction
 com! Diff call s:DiffWithSaved()
 
@@ -473,3 +493,30 @@ let g:airline#extensions#tabline#show_tab_nr = 1
 let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
 let g:airline#extensions#tabline#excludes = ['branches', 'index']
 let g:airline#extensions#tabline#buffer_idx_mode = 1
+
+" Color name (:help cterm-colors) or ANSI code
+let g:limelight_conceal_ctermfg = 'gray'
+let g:limelight_conceal_ctermfg = 240
+
+" Color name (:help gui-colors) or RGB color
+let g:limelight_conceal_guifg = 'DarkGray'
+let g:limelight_conceal_guifg = '#777777'
+
+" Default: 0.5
+let g:limelight_default_coefficient = 0.7
+
+" Number of preceding/following paragraphs to include (default: 0)
+let g:limelight_paragraph_span = 1
+
+" Beginning/end of paragraph
+"   When there's no empty line between the paragraphs
+"   and each paragraph starts with indentation
+let g:limelight_bop = '^\s'
+let g:limelight_eop = '\ze\n^\s'
+
+" Highlighting priority (default: 10)
+"   Set it to -1 not to overrule hlsearch
+let g:limelight_priority = -1
+
+autocmd! User GoyoEnter Limelight
+autocmd! User GoyoLeave Limelight!
