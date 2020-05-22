@@ -289,8 +289,10 @@ tmux_conf_copy_to_os_clipboard=false
 # set -gu prefix2
 # unbind C-a
 unbind C-b
-set -g prefix Home
-bind Home send-prefix
+unbind Home
+set -g prefix C-a
+bind C-a send-prefix
+#bind Home send-prefix
 
 # move status line to top
 #set -g status-position top

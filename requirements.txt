@@ -1,0 +1,16 @@
+flask
+keras
+tensorflow
+pandas
+praw
+jupyter
+virtualenv
+scikit-learn
+scikit-plot
+scikit-image
+prawcore
+numpy
+scipy
+beautifulsoup4
+urllib3
+

@@ -5,7 +5,6 @@
 cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
 
 DIR=$(pwd)
-pip_pkg=(flask pandas praw jupyter virtualenv scikit-learn scikit-plot scikit-image prawcore numpy scipy beautifulsoup4 urllib3)
 
 git submodule init && git submodule update
 
@@ -25,13 +24,13 @@ done
 
 cd ..
 
-# [ -e ~/.bashrc ] && { mkdir -pv backup; mv -v ~/.bashrc backup/bashrc; }
+[ -e ~/.bashrc ] && { mkdir -pv backup; mv -v ~/.bashrc backup/bashrc; }
 echo -e "if [ -f ~/.var ]; then\n    source ~/.var\nfi" >> ~/.bashrc
 
 [ -d ~/.zsh ] && mv -v ~/.zsh backup/zsh
 ln -sfv "$DIR/zsh" ~/.zsh
 
-sudo ln -sfv $PWD/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
+sudo ln -sfv $DIR/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     [ -e ~/.bash_profile ] && { mkdir -pv backup; mv -v ~/.bash_profile backup/bash_profile; }
@@ -43,22 +42,22 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
     sudo chown -R $(whoami) $(brew --prefix)/*
 
-    brew install cmake coreutils emacs gcc gnu-chess htop nano nginx opencv pkg-config python tmux tree vim zsh
+    brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh # cmake emacs gnu-chess htop nginx opencv tree
 
-    # brew cask install appcleaner apple-juice google-chrome discord docker eqmac firefox flux gimp inkscape iterm2 java karabiner-elements latest opera-neon omnidisksweeper osxfuse overkill selfcontrol spotify the-unarchiver xquartz virtualbox visual-studio-code vnc-viewer
+    brew cask install appcleaner apple-juice discord dozer eqmac firefox flux gimp google-backup-and-sync google-chrome iterm2 karabiner-elements latest omnidisksweeper overkill selfcontrol slack spotify the-unarchiver telegram ticktick visual-studio-code vnc-viewer zotero # docker
 
-    cp BlexMono.ttf ~/Library/Fonts/
+    cp $DIR/BlexMono.ttf ~/Library/Fonts/
 
-    /usr/local/bin/pip3 install $pip_pkg
+    /usr/local/bin/pip3 install -r ./requirements.txt
 
 elif [[ "$OSTYPE" == "linux"* ]]; then
-    sudo apt install emacs htop pkg-config python3-dev tmux zsh # gnuchess
+    sudo apt install pkg-config python3-dev tmux zsh # emacs htop gnuchess
     echo "You may have to compile vim from scratch to work with this .vimrc."
 
     cp $DIR/BlexMono.ttf ~/.fonts/
     fc-cache -fv
 
-    /usr/bin/pip3 install $pip_pkg
+    /usr/bin/pip3 install $DIR/requirements.txt
 fi
 
 echo "Moving to vim install"
