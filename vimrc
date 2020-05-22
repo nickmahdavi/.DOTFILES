@@ -1,4 +1,4 @@
-" Credit https://github.com/seagle0128/dotfiles/blob/master/.vimrc
+" Credit https://github.com/seagle0128/dotfiles/^[[1~blob/master/.vimrc
 
 """"""""""""""""""""""""""""""""""""""""
 " General
@@ -18,7 +18,7 @@ set autoread
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
-let mapleader = " "
+let mapleader=" "
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -184,7 +184,7 @@ set mouse=a
 " Go to my notes shit
 nnoremap <Leader>no :cd /Users/nicmahd/Desktop/school/notes<CR>
 
-" Turn off search highlight ,nohlsearch
+" Turn off search highlight
 " map <Leader><space> :noh<cr>
 map <Leader>/ :noh<cr>
 
@@ -199,13 +199,19 @@ map <C-j> :tabnext<cr>
 map <C-k> :tabprevious<cr>
 map <C-l> :bnext<cr>
 map <C-h> :bprevious<cr>
-map <C-h> :bprevious<cr>
 
-" Close the current buffer
+" Close the current buffer/tab
 map <leader>bd :Bclose<cr>:tabclose<cr>gT
 
 " Close all the buffers
 map <leader>ba :bufdo bd<cr>
+" map <leader>bo :%bdelete|edit #|normal `\"<cr>
+
+" Useful mappings for managing tabs
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove
 
 " Move between tabs and buffers
 " map <leader>j :tabnext<cr>
@@ -233,12 +239,6 @@ nnoremap <Leader>0 :10b<CR>
 
 " Edit the vimrc
 nnoremap <Leader>vr :e ~/.vimrc<CR>
-
-" Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
@@ -317,16 +317,18 @@ noremap ^ 0
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><cr>
 
 " j and k move between visual lines
-nnoremap <expr> j v:count ? 'j' : 'gj'
-nnoremap <expr> k v:count ? 'k' : 'gk'
+noremap <expr> j v:count ? 'j' : 'gj'
+noremap <expr> k v:count ? 'k' : 'gk'
+noremap <expr> gj v:count ? 'j' : 'j'
+noremap <expr> gk v:count ? 'k' : 'k'
 
 " Move a line of text using ALT+[jk] (working on Command+[jk] on mac)
-" nmap <M-j> mz:m+<cr>`z
-" nmap <M-k> mz:m-2<cr>`z
+nmap <M-j> mz:m+<cr>`z
+nmap <M-k> mz:m-2<cr>`z
+vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 nmap ∆ mz:m+<cr>`z
 nmap ˚ mz:m-2<cr>`z
-" vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-" vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 vmap ∆ :m'>+<cr>`<my`>mzgv`yo`z
 vmap ˚ :m'<-2<cr>`>my`<mzgv`yo`z
 
@@ -368,7 +370,7 @@ set foldmethod=indent
 """"""""""""""""""""""""""""""""""""""""
 " => Spell checking
 """"""""""""""""""""""""""""""""""""""""
-" Pressing ,ss will toggle and untoggle spell checking
+" Pressing <Leader>ss will toggle and untoggle spell checking
 map <leader>ss :setlocal spell!<cr>
 
 " Shortcuts using <leader>
@@ -385,7 +387,7 @@ map <leader>s? z=
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Quickly open a buffer for scribble
-map <leader>s :e ~/buffer<cr>
+map <leader>k :e ~/buffer<cr>
 
 " Quickly open a markdown buffer for scribble
 map <leader>x :e ~/buffer.md<cr>
