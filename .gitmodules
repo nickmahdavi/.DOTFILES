@@ -25,9 +25,6 @@
 [submodule "bundle/vim-nerdtree-syntax-highlight"]
 	path = bundle/vim-nerdtree-syntax-highlight
 	url = https://github.com/tiagofumo/vim-nerdtree-syntax-highlight.git
-[submodule "bundle/YouCompleteMe"]
-	path = bundle/YouCompleteMe
-	url = https://github.com/ycm-core/YouCompleteMe
 [submodule "goyo.vim"]
 	path = bundle/goyo.vim
 	url = https://github.com/junegunn/goyo.vim
