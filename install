@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Nicholas Mahdavi
 # nickmahda@gmail.com
 
@@ -30,8 +31,6 @@ echo -e "if [ -f ~/.var ]; then\n    source ~/.var\nfi" >> ~/.bashrc
 [ -d ~/.zsh ] && mv -v ~/.zsh backup/zsh
 ln -sfv "$DIR/zsh" ~/.zsh
 
-sudo ln -sfv $DIR/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
-
 if [[ "$OSTYPE" == "darwin"* ]]; then
     [ -e ~/.bash_profile ] && { mkdir -pv backup; mv -v ~/.bash_profile backup/bash_profile; }
     echo -e "if [ -f ~/.bashrc ]; then\n    source ~/.bashrc\nfi" > ~/.bash_profile
@@ -44,9 +43,11 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
     brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh # cmake emacs gnu-chess htop nginx opencv tree
 
-    brew cask install appcleaner apple-juice discord dozer eqmac firefox flux gimp google-backup-and-sync google-chrome iterm2 karabiner-elements latest omnidisksweeper overkill selfcontrol slack spotify the-unarchiver telegram ticktick visual-studio-code vnc-viewer zotero # docker
+    # brew cask install appcleaner apple-juice discord dozer eqmac firefox flux gimp google-backup-and-sync google-chrome iterm2 karabiner-elements latest omnidisksweeper overkill selfcontrol slack spotify the-unarchiver telegram ticktick visual-studio-code vnc-viewer zotero # docker
 
     cp $DIR/BlexMono.ttf ~/Library/Fonts/
+
+    curl https://bootstrap.pypa.io/ez_setup.py | python
 
     /usr/local/bin/pip3 install -r ./requirements.txt
 
@@ -59,6 +60,8 @@ elif [[ "$OSTYPE" == "linux"* ]]; then
 
     /usr/bin/pip3 install $DIR/requirements.txt
 fi
+
+sudo ln -sfv $DIR/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
 
 echo "Moving to vim install"
 
