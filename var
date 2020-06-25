@@ -2,11 +2,6 @@
 #                  PATH                  #
 #----------------------------------------#
 
-# Python modules
-if [ -d "~/Project-Mango/src" ]; then
-    export PYTHONPATH=$PYTHONPATH:$HOME/Project-Mango/src/
-fi
-
 # gettext
 export PATH="/usr/local/opt/gettext/bin:$PATH"
 
@@ -25,12 +20,6 @@ export user=pi
 export instance=$user@$ip
 
 export HOMEBREW_AUTO_UPDATE_SECS=604800
-
-export BOT_USERNAME='RecitalBot'
-export BOT_PASSWORD='spel_icup_nibba'
-export CLIENT_SECRET='YI7bG1KKzCgAlO1engP9JuvU48k'
-export CLIENT_ID='wDx0kCAQPPRzsA'
-export USER_AGENT='/u/RecitalBot. Contact /u/beetbug for information'
 
 export VIMRC=~/.vim/vimrc
 
