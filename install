@@ -7,23 +7,24 @@ cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
 
 DIR=$(pwd)
 
-git submodule init && git submodule update
+echo "Updating submodules"
+
+git -q submodule init && git -q submodule update
+
+mov () {
+  [ -e ~/."$1" ] && { mkdir -pv backup; mv -v ~/."$1" backup/"$1"; }
+  ln -sfv "$DIR/$1" ~/."$1"
+}
 
 for f in var zshrc gitconfig tmux.conf.local p10k.zsh; do
   cmp --silent ~/."$f" "$f" && continue
-  [ -e ~/."$f" ] && { mkdir -pv backup; mv -v ~/."$f" backup/"$f"; }
-  ln -sfv "$DIR/$f" ~/."$f"
+  mov $f
 done
 
-cd tmux
+(cd tmux || exit
 
-for f in .tmux.*; do
-    cmp --silent ~/"$f" "$f" && continue
-    [ -e ~/"$f" ] && mv -v ~/"$f" backup/"$f"
-    ln -sfv "$DIR/$f" ~/"$f"
-done
-
-cd ..
+cmp --silent ~/.tmux.conf .tmux.conf
+mov .tmux.conf)
 
 [ -e ~/.bashrc ] && { mkdir -pv backup; mv -v ~/.bashrc backup/bashrc; }
 echo -e "if [ -f ~/.var ]; then\n    source ~/.var\nfi" >> ~/.bashrc
@@ -36,34 +37,34 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     echo -e "if [ -f ~/.bashrc ]; then\n    source ~/.bashrc\nfi" > ~/.bash_profile
 
     if [ -z "$(which brew)" ]; then
-        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     fi
 
-    sudo chown -R $(whoami) $(brew --prefix)/*
+    sudo chown -R "$(whoami)" "$(brew --prefix)"/*
 
-    brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh # cmake emacs gnu-chess htop nginx opencv tree
+    # brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh # cmake emacs gnu-chess htop nginx opencv tree
 
     # brew cask install appcleaner apple-juice discord dozer eqmac firefox flux gimp google-backup-and-sync google-chrome iterm2 karabiner-elements latest omnidisksweeper overkill selfcontrol slack spotify the-unarchiver telegram ticktick visual-studio-code vnc-viewer zotero # docker
 
-    cp $DIR/BlexMono.ttf ~/Library/Fonts/
+    cp "$DIR"/BlexMono.ttf ~/Library/Fonts/
 
-    curl https://bootstrap.pypa.io/ez_setup.py | python
+    # curl https://bootstrap.pypa.io/ez_setup.py | python
 
-    /usr/local/bin/pip3 install -r ./requirements.txt
+    # /usr/local/bin/pip3 install -r ./requirements.txt
 
 elif [[ "$OSTYPE" == "linux"* ]]; then
-    sudo apt install pkg-config python3-dev tmux zsh # emacs htop gnuchess
-    echo "You may have to compile vim from scratch to work with this .vimrc."
+    # sudo apt install pkg-config python3-dev tmux zsh # emacs htop gnuchess
+    # echo "You may have to compile vim from scratch to work with this .vimrc."
 
-    cp $DIR/BlexMono.ttf ~/.fonts/
+    cp "$DIR"/BlexMono.ttf ~/.fonts/
     fc-cache -fv
 
-    /usr/bin/pip3 install $DIR/requirements.txt
+    # /usr/bin/pip3 install "$DIR"/requirements.txt
 fi
 
-sudo ln -sfv $DIR/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
+sudo ln -sfv "$DIR"/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
 
 echo "Moving to vim install"
 
-cd $DIR
+cd "$DIR" || exit
 ./viminstall
