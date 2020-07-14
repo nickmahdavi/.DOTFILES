@@ -43,6 +43,7 @@ alias g="git"
 alias k="kill"
 alias ip="ipconfig getifaddr en0"
 alias eip="curl ifconfig.me; echo"
+alias notebook="nohup jupyter notebook > /dev/null 2>&1 & disown"
 
 alias taill="tail -f"
 
@@ -52,7 +53,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     alias hkill='pkill -f "/usr/bin/java -jar /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/h2o/backend/bin/h2o.jar"'
     alias switch="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
     alias gcc="gcc-$gversion"
-    alias notebook="nohup jupyter notebook > /dev/null 2>&1 & disown"
     alias g++="g++-$gversion"
     alias c++="c++-$gversion"
     alias sort="gsort"
