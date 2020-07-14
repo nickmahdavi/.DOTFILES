@@ -2,6 +2,8 @@
 #                  PATH                  #
 #----------------------------------------#
 
+export PYTHONPATH="~/DataScience/message_nlp/message_nlp:$PYTHONPATH"
+
 # gettext
 export PATH="/usr/local/opt/gettext/bin:$PATH"
 
@@ -15,8 +17,8 @@ export PKG_CONFIG_PATH=/usr/local/Cellar/opencv/4.0.1/lib/pkgconfig
 #                VARIABLES               #
 #----------------------------------------#
 
-export ip=photino.local
-export user=pi
+export ip=34.220.92.164
+export user=nickmahdavi
 export instance=$user@$ip
 
 export HOMEBREW_AUTO_UPDATE_SECS=604800
@@ -74,7 +76,7 @@ n () { cd /Users/nicmahd/Desktop/school/notes/9.2/$1 }
 tunnel ()
 {
     kill $(pf 'ssh.*$1' | awk '{print $2}') > /dev/null 2>&1
-    ssh -fgNL $1:127.0.0.1:$1 $instance # -i ~/.ssh/$key
+    ssh -fgNL $1:127.0.0.1:$1 $instance -i ~/.ssh/id_rsa
 }
 
 cd ()
