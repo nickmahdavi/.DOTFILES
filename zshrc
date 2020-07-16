@@ -73,9 +73,7 @@ bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 ## VARIABLE FILE
-if [ -f ~/.var ]; then
-    source ~/.var
-fi
+[ -f ~/.var ] && source ~/.var
 
 
 #----------------------------------------#
