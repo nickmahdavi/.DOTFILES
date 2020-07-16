@@ -2,16 +2,9 @@
 #                  PATH                  #
 #----------------------------------------#
 
-export PYTHONPATH="~/DataScience/message_nlp/message_nlp:$PYTHONPATH"
-
-# gettext
-export PATH="/usr/local/opt/gettext/bin:$PATH"
-
-# opt
-export PATH="/opt/bin:$PATH"
-
-# openCV
-export PKG_CONFIG_PATH=/usr/local/Cellar/opencv/4.0.1/lib/pkgconfig
+if [ -f ~/.path ]; then
+    source ~/.path
+fi
 
 #----------------------------------------#
 #                VARIABLES               #
@@ -44,13 +37,10 @@ alias k="kill"
 alias ip="ipconfig getifaddr en0"
 alias eip="curl ifconfig.me; echo"
 alias notebook="nohup jupyter notebook > /dev/null 2>&1 & disown"
-
 alias taill="tail -f"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     alias tr="gtr"
-    alias h2o='nohup java -jar /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/h2o/backend/bin/h2o.jar > /dev/null 2>&1 & disown'
-    alias hkill='pkill -f "/usr/bin/java -jar /Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/h2o/backend/bin/h2o.jar"'
     alias switch="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
     alias gcc="gcc-$gversion"
     alias g++="g++-$gversion"
@@ -65,13 +55,12 @@ fs () { find . -name "$@"'*' -print | grep -v node_ | grep -v .git; } # Find fil
 fe () { find . -name '*'"$@" -print | grep -v node_ | grep -v .git; } # Find file whose name ends with a given string
 fpy () { echo "find . -name '*.py' | grep -v node_ | grep -v .git | xargs grep $@ 2>/dev/null"; find . -name '*.js' | grep -v node_ | grep -v .git | xargs grep $@ 2>/dev/null; }
 fall () { echo "find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null"; find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null; }
-# pf () { local home=$(ps aux | grep "$@" | grep -v grep); [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home" }
+pf () { local home=$(ps aux | grep "$@" | grep -v grep); [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home" }
 jkill () { pkill -f jupyter || echo "No running notebooks" }
 sshc () { ssh $instance; } # -i ~/.ssh/$key
 password () { < /dev/urandom | gtr -dc 'A-Za-z0-9"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' | head -c $1; echo }
 gpassword () { < /dev/urandom | gtr -dc A-Za-z0-9 | head -c $1; echo }
 unactivate () { [ ! -z $(command -v deactivate) ] && deactivate }
-n () { cd /Users/nicmahd/Desktop/school/notes/9.2/$1 }
 
 tunnel ()
 {
@@ -107,7 +96,7 @@ activate ()
     done
 }
 
-# duck () { du -ckhd ${2:-1} {$1:-.} | [ -z "$3" ] && sort -h }
+duck () { du -ckhd ${2:-1} {$1:-.} | [ -z "$3" ] && sort -h }
 
 vim-pkg () {
     wdir=$(pwd)

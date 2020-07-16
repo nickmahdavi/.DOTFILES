@@ -9,14 +9,6 @@ DIR=$(pwd)
 
 git submodule init && git submodule update
 
-while getopts "pcb" o; do
-    case "$o" in
-        p) p=1;;
-        c) c=1;;
-        b) b=1;;
-    esac
-done
-
 mov () {
   [ -e ~/."$1" ] && { mkdir -pv backup; mv -v ~/."$1" backup/"$1"; }
   ln -sfv "$DIR/$1" ~/."$1"
@@ -32,7 +24,7 @@ done
 cmp --silent ~/.tmux.conf .tmux.conf
 mov .tmux.conf)
 
-[ "$b" ] && [ -e ~/.bashrc ] && { mkdir -pv backup; mv -v ~/.bashrc backup/bashrc; }
+# [ -e ~/.bashrc ] && { mkdir -pv backup; mv -v ~/.bashrc backup/bashrc; }
 echo -e "if [ -f ~/.var ]; then\n    source ~/.var\nfi" >> ~/.bashrc
 
 [ -d ~/.zsh ] && mv -v ~/.zsh backup/zsh
@@ -48,9 +40,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
     sudo chown -R "$(whoami)" "$(brew --prefix)"/*
 
-    [ "$p" ] && brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh # cmake emacs gnu-chess htop nginx opencv tree
+    # brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh # cmake emacs gnu-chess htop nginx opencv tree
 
-    [ "$c" ] && brew cask install appcleaner apple-juice discord dozer eqmac firefox flux gimp google-backup-and-sync google-chrome iterm2 karabiner-elements latest omnidisksweeper overkill selfcontrol slack spotify the-unarchiver telegram ticktick visual-studio-code vnc-viewer zotero # docker
+    # brew cask install appcleaner apple-juice discord dozer eqmac firefox flux gimp google-backup-and-sync google-chrome iterm2 karabiner-elements latest omnidisksweeper overkill selfcontrol slack spotify the-unarchiver telegram ticktick visual-studio-code vnc-viewer zotero # docker
 
     cp "$DIR"/BlexMono.ttf ~/Library/Fonts/
 
@@ -59,7 +51,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     # /usr/local/bin/pip3 install -r ./requirements.txt
 
 elif [[ "$OSTYPE" == "linux"* ]]; then
-    [ "$p" ] && sudo apt install pkg-config python3-dev tmux zsh # emacs htop gnuchess
+    # sudo apt install pkg-config python3-dev tmux zsh # emacs htop gnuchess
+    # echo "You may have to compile vim from scratch to work with this .vimrc."
 
     cp "$DIR"/BlexMono.ttf ~/.fonts/
     fc-cache -fv
@@ -68,6 +61,8 @@ elif [[ "$OSTYPE" == "linux"* ]]; then
 fi
 
 sudo ln -sfv "$DIR"/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
+
+touch ~/.path
 
 echo "Moving to vim install"
 

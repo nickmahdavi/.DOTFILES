@@ -57,7 +57,7 @@ HISTFILE=~/.zsh_history
 HISTSIZE=1000
 SAVEHIST=1000
 
-# bindkey -v # Vim mode
+bindkey -v # Vim mode
 bindkey "^?" backward-delete-char
 export KEYTIMEOUT=1
 
@@ -84,7 +84,7 @@ fi
 
 # Highlighters
 
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
 typeset -A ZSH_HIGHLIGHT_PATTERNS
 ZSH_HIGHLIGHT_PATTERNS+=('*rm -rf*' 'fg=white,bold,bg=red')
