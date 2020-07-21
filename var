@@ -16,6 +16,8 @@ export HOMEBREW_AUTO_UPDATE_SECS=604800
 
 export VIMRC=~/.vim/vimrc
 
+export EDITOR=vim
+
 export gversion=9
 
 #----------------------------------------#
