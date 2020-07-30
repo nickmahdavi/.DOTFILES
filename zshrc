@@ -85,7 +85,7 @@ bindkey '^[[B' history-substring-search-down
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
 typeset -A ZSH_HIGHLIGHT_PATTERNS
-ZSH_HIGHLIGHT_PATTERNS+=('*rm -rf*' 'fg=white,bold,bg=red')
+ZSH_HIGHLIGHT_PATTERNS+=('rm -rf' 'fg=white,bold,bg=red')
 ZSH_HIGHLIGHT_PATTERNS+=('rm *' 'fg=white,bg=red')
 ZSH_HIGHLIGHT_PATTERNS+=('rm -rf /*' 'fg=green,bold,bg=red')
 
