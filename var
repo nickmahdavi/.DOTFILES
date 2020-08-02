@@ -3,6 +3,7 @@
 #----------------------------------------#
 
 [ -f ~/.path ] && source ~/.path
+[ -f ~/.var.local ] && source ~/.var.local
 
 #----------------------------------------#
 #                VARIABLES               #
@@ -24,8 +25,6 @@ export gversion=9
 #            ALIASES/FUNCTIONS           #
 #----------------------------------------#
 
-[[ "$OSTYPE" == "darwin"* ]] && alias ll="ls -AFGhlOprt" || alias ll="ls -AFGhlprt"
-alias ls="ls -G"
 alias l="ls -1Frt"
 alias pip="pip3"
 alias python="python3"
@@ -40,12 +39,17 @@ alias notebook="nohup jupyter notebook > /dev/null 2>&1 & disown"
 alias taill="tail -f"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
+    alias ll="ls -AFGhlOprt"
+    alias ls="ls -G"
     alias tr="gtr"
     alias switch="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
     alias gcc="gcc-$gversion"
     alias g++="g++-$gversion"
     alias c++="c++-$gversion"
     alias sort="gsort"
+else
+    alias ll="ls -AFGhlprt"
+    alias ls="ls --color=always"
 fi
 
 f () { find . -name "*$@*" -print; } # Find all files under the current directory

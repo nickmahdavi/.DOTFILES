@@ -73,7 +73,11 @@ bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 ## VARIABLE FILE
-[ -f ~/.var ] && source ~/.var
+if [[ "$OSTYPE" == "linux"* ]]; then
+    [ -f ~/.variables ] && source ~/.variables
+else
+    [ -f ~/.var ] && source ~/.var
+fi
 
 
 #----------------------------------------#

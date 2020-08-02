@@ -65,6 +65,8 @@ elif [[ "$OSTYPE" == "linux"* ]]; then
     fc-cache -fv
 
     [ "$c" ] && /usr/bin/pip3 install "$DIR"/requirements.txt
+
+    mv ~/.var ~/.variables
 fi
 
 sudo ln -sfv "$DIR"/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
