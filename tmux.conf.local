@@ -278,7 +278,7 @@ tmux_conf_copy_to_os_clipboard=false
 #set -g history-limit 10000
 
 # start with mouse mode enabled
-#set -g mouse on
+set -g mouse on
 
 # force Vi mode
 #   really you should export VISUAL or EDITOR environment variable, see manual
@@ -292,7 +292,7 @@ unbind C-b
 unbind Home
 set -g prefix C-a
 bind C-a send-prefix
-#bind Home send-prefix
+bind Home send-prefix
 
 # move status line to top
 #set -g status-position top
