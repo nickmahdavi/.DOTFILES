@@ -9,8 +9,6 @@
 #                VARIABLES               #
 #----------------------------------------#
 
-export DISPLAY=:0
-
 export ip=34.220.92.164
 export user=nickmahdavi
 export instance=$user@$ip
@@ -23,25 +21,21 @@ export EDITOR=vim
 
 export gversion=9
 
-export C=/mnt/c
-export H=/mnt/c/Users/nickmahd
-
 #----------------------------------------#
 #            ALIASES/FUNCTIONS           #
 #----------------------------------------#
 
 alias l="ls -1Frt"
+alias lss="/bin/ls"
 alias pip="pip3"
 alias python="python3"
 alias locate="locate -i" # case insensitive
+alias g="git"
 alias grep="grep --color=always"
 alias sudo="sudo "
-alias g="git"
-alias k="kill"
 alias ip="ipconfig getifaddr en0"
 alias eip="curl ifconfig.me; echo"
 alias notebook="nohup jupyter notebook > /dev/null 2>&1 & disown"
-alias taill="tail -f"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     alias ll="ls -AFGhlOprt"
@@ -58,12 +52,8 @@ else
 fi
 
 f () { find . -name "*$@*" -print; } # Find all files under the current directory
-ff () { find . -type f -print | grep -v node_ | grep -v .git ; }
-ffpy () { find . -type f -name "*.py" -print | grep -v node_ | grep -v .git; }
 fs () { find . -name "$@"'*' -print | grep -v node_ | grep -v .git; } # Find file whose name starts with a given string
 fe () { find . -name '*'"$@" -print | grep -v node_ | grep -v .git; } # Find file whose name ends with a given string
-fpy () { echo "find . -name '*.py' | grep -v node_ | grep -v .git | xargs grep $@ 2>/dev/null"; find . -name '*.js' | grep -v node_ | grep -v .git | xargs grep $@ 2>/dev/null; }
-fall () { echo "find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null"; find . | grep -v node_ | grep -v .git | grep -v TAG | xargs grep $@ 2>/dev/null; }
 pf () { local home=$(ps aux | grep "$@" | grep -v grep); [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home" }
 jkill () { pkill -f jupyter || echo "No running notebooks" }
 sshc () { ssh $instance; } # -i ~/.ssh/$key
@@ -86,13 +76,7 @@ cd ()
 
     [[ -d ./env ]] && unactivate || activate
 
-    clear
     return 0
-}
-
-man () { if [[ "$@" == "gcc" ]]; then command man gcc-$gversion; elif
-            [[ "$@" == "g++" ]]; then command man g++-$gversion; elif
-            [[ "$@" == "c++" ]]; then command man c++-$gversion; else command man "$@"; fi
 }
 
 open () { if [[ "$@" ]]; then command open "$@"; else command open .; fi }
