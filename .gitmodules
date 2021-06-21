@@ -1,15 +1,20 @@
 [submodule "tmux"]
 	path = tmux
 	url = https://github.com/gpakosz/.tmux.git
+	branch = master
 [submodule "zsh/zsh-autosuggestions"]
 	path = zsh/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions
+	branch = master
 [submodule "zsh/zsh-syntax-highlighting"]
 	path = zsh/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+	branch = master
 [submodule "zsh/powerlevel10k"]
 	path = zsh/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git
+	branch = master
 [submodule "zsh/zsh-history-substring-search"]
 	path = zsh/zsh-history-substring-search
 	url = https://github.com/zsh-users/zsh-history-substring-search.git
+	branch = master
