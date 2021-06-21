@@ -1,7 +1,7 @@
 # This is Git's per-user configuration file.
 [user]
 # Please adapt and uncomment the following lines:
-    name = nickmahd (NUS)
+    name = nickmahd
     email = nickmahda@gmail.com
 [alias]
     last = log -1 HEAD
@@ -20,3 +20,5 @@
     co = !git checkout
 [credential]
     helper = osxkeychain
+[core]
+	filemode = false
