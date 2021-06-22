@@ -11,15 +11,15 @@ fi
 
 # Opts
 
-unsetopt correct
-unsetopt correctall
-setopt autocd
-setopt extendedglob
+unsetopt CORRECT
+unsetopt CORRECTALL
+setopt AUTOCD
+setopt EXTENDEDGLOB
 setopt HIST_IGNORE_ALL_DUPS
 # setopt INC_APPEND_HISTORY
 # setopt SHARE_HISTORY
 setopt APPEND_HISTORY
-# setopt menu_complete
+setopt MENU_COMPLETE
 
 DISABLE_CORRECTION="true"
 
@@ -39,13 +39,13 @@ prompt powerlevel10k
 
 # The following lines were added by compinstall
 
-zstyle ':completion:*' completer _expand _complete _ignored _approximate _prefix
+zstyle ':completion:*' completer _complete _expand _ignored _approximate _prefix
 zstyle ':completion:*' expand prefix
 zstyle ':completion:*' file-sort access
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' insert-unambiguous false
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*'
+ zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+ zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*'
 zstyle :compinstall filename '/Users/nicmahd/.zshrc'
 
 autoload -Uz compinit; compinit -u
@@ -69,8 +69,10 @@ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Bindings
 
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+bindkey '\eOA' history-substring-search-up
+bindkey '\eOB' history-substring-search-down
+
+bindkey '^\\' undo
 
 ## VARIABLE FILE
 if [[ "$OSTYPE" == "linux"* ]]; then
