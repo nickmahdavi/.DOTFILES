@@ -16,7 +16,7 @@
     undo = reset HEAD~1 --mixed
     open = "!f () { REPO_URL=$(git config remote.origin.url); open ${${REPO_URL/git@github.com:/https://github.com/}%%.git}; }; f"
     browse = !git open
-    p = push origin $(git rev-parse --abbrev-ref HEAD)
+    p = "!git push origin $(git rev-parse --abbrev-ref HEAD)"
     co = checkout
 [credential]
     helper = osxkeychain
