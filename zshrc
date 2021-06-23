@@ -43,12 +43,16 @@ zstyle ':completion:*' completer _complete _expand _ignored _approximate _prefix
 zstyle ':completion:*' expand prefix
 zstyle ':completion:*' file-sort access
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' insert-unambiguous false
- zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
- zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=** r:|=** l:|=*'
-zstyle :compinstall filename '/Users/nicmahd/.zshrc'
+zstyle ':completion:*' ignore-parents parent pwd directory
+zstyle ':completion:*' insert-unambiguous true
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=* r:|=*' 'm:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=* r:|=* l:|=*'
+zstyle ':completion:*' original false
+zstyle ':completion:*' preserve-prefix '//[^/]##/'
+zstyle :compinstall filename '/home/nickmahd/.zshrc'
 
-autoload -Uz compinit; compinit -u
+autoload -Uz compinit
+compinit
 # End of lines added by compinstall
 
 # History
