@@ -7,14 +7,14 @@
     last = log -1 HEAD
     force-pull = "!git checkout master; git branch backup; git stash; git fetch --all; git reset --hard origin/master; echo \"Old changes saved in branch backup and stashed. Please delete once finished.\""
     lgb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches
-    up = !"f () { git pull --rebase --prune '$@' && git submodule update --init --recursive --remote }; f"
+    up = "!f () { git pull --rebase --prune $@ && git submodule update --init --recursive --remote }; f"
     c = !git add -A && git commit -m
-    cp = !"f () { git add -A; git commit -m '$@'; git push -u origin $(git rev-parse --abbrev-ref HEAD); }; f"
+    cp = "!f () { git add -A; git commit -m $@; git push -u origin $(git rev-parse --abbrev-ref HEAD); }; f"
     save = !git add -A && git commit -m 'SAVEPOINT'
     wip = commit -am "WIP"
     amend = commit -a --amend
     undo = reset HEAD~1 --mixed
-    open = "!f () { REPO_URL=$(git config remote.origin.url); open ${REPO_URL%%.git}; }; f"
+    open = "!f () { REPO_URL=$(git config remote.origin.url); open ${${REPO_URL/git@github.com:/https://github.com/}%%.git}; }; f"
     browse = !git open
     p = push origin $(git rev-parse --abbrev-ref HEAD)
     co = checkout

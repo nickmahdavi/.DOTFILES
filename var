@@ -79,7 +79,15 @@ cd ()
     return 0
 }
 
-open () { if [[ "$@" ]]; then command open "$@"; else command open .; fi }
+open ()
+{
+    if [[ "$@" ]]; then
+        command open "$@" 2> /dev/null || explorer.exe "$@" 2> /dev/null
+    else
+        command open . 2> /dev/null || explorer.exe . 2> /dev/null
+    fi
+    return 0
+}
 
 activate ()
 {
@@ -92,23 +100,17 @@ activate ()
 duck () { du -ckhd ${2:-1} ${1:-.} | [ -z "$3" ] && sort -n }
 
 vim-pkg () {
-    wdir=$(pwd)
-    local wdir
+    local wdir=$(pwd)
     if [ -z "$1" ]; then
         echo "Must pass a package url"
     elif [ "$1" = "update" ]; then
-        cd ~/.vim/bundle
-        for i in *; do
-            cd "$i"
-            git pull origin master
-            cd ..
-        done
-        cd $wdir
+        git submodule update --recursive --remote
     elif [ "$1" = "list" ]; then
         cd ~/.vim/bundle
         /bin/ls -1
         cd $wdir
     else
-        cd ~/.vim/bundle/ && git clone "$1" && cd "$wdir"
+        cd ~/.vim/ && git submodule add -b master "$1" bundle/
+        cd "$wdir"
     fi
 }
