@@ -15,11 +15,16 @@ export instance=$user@$ip
 
 export HOMEBREW_AUTO_UPDATE_SECS=604800
 
+export ZSHRC=~/.zshrc
 export VIMRC=~/.vim/vimrc
+export DOT=~/.DOTFILES
 
 export EDITOR=vim
 
 export gversion=9
+
+[ -d "/mnt/c" ] && export C=/mnt/c
+[ -d "/mnt/d" ] && export D=/mnt/d
 
 #----------------------------------------#
 #            ALIASES/FUNCTIONS           #
@@ -54,12 +59,10 @@ fi
 f () { find . -name "*$@*" -print; } # Find all files under the current directory
 fs () { find . -name "$@"'*' -print | grep -v node_ | grep -v .git; } # Find file whose name starts with a given string
 fe () { find . -name '*'"$@" -print | grep -v node_ | grep -v .git; } # Find file whose name ends with a given string
-pf () { local home=$(ps aux | grep "$@" | grep -v grep); [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home" }
-jkill () { pkill -f jupyter || echo "No running notebooks" }
+pf () { local home=$(ps aux | grep "$@" | grep -v grep); [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home"; }
+jkill () { pkill -f jupyter || echo "No running notebooks"; }
 sshc () { ssh $instance; } # -i ~/.ssh/$key
-password () { < /dev/urandom | gtr -dc 'A-Za-z0-9"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' | head -c $1; echo }
-gpassword () { < /dev/urandom | gtr -dc A-Za-z0-9 | head -c $1; echo }
-unactivate () { [ ! -z $(command -v deactivate) ] && deactivate }
+unactivate () { [ ! -z $(command -v deactivate) ] && deactivate; }
 
 tunnel ()
 {
@@ -114,3 +117,5 @@ vim-pkg () {
         cd "$wdir"
     fi
 }
+
+open-repo () { REPO_URL=$(git config remote.origin.url); open "${${REPO_URL/git@github.com:/https://github.com/}%%.git}"; }
