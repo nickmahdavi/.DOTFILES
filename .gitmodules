@@ -46,3 +46,7 @@
 	path = vim-darkspace
 	url = https://github.com/niklas-8/vim-darkspace
 	branch = master
+[submodule "bundle/vim-airline-themes"]
+    path = bundle/vim-airline-themes
+    url = https://github.com/vim-airline/vim-airline-themes
+    branch = master
