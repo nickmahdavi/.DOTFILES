@@ -81,6 +81,12 @@ bindkey '^\\' undo
 ## VARIABLE FILE
 [ -f ~/.vars ] && source ~/.vars
 
+if ! pgrep ssh-agent > /dev/null; then
+    rm -f /tmp/ssh-auth-sock
+    eval "$(ssh-agent -s -a /tmp/ssh-auth-sock)"
+else
+    export SSH_AUTH_SOCK=/tmp/ssh-auth-sock
+fi
 
 #----------------------------------------#
 #              ZSH_PLUGINS               #
