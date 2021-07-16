@@ -5,9 +5,12 @@
     email = nickmahda@gmail.com
 [alias]
     last = log -1 HEAD
+    ldiff = diff HEAD\\^ HEAD
+    ccontinue = rebase --continue
     force-pull = "!git checkout master; git branch backup; git stash; git fetch --all; git reset --hard origin/master; echo \"Old changes saved in branch backup and stashed. Please delete once finished.\""
     lgb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches
-    up = "!f () { git pull --rebase --prune \"$@\" && git submodule update --init --recursive --remote }; f" c = !git add -A && git commit -m
+    up = "!f () { git pull --rebase --prune \"$@\" && git submodule update --init --recursive --remote }; f"
+    c = !git add -A && git commit -m
     cp = "!f () { git add -A; git commit -m \"$@\"; git push -u origin $(git rev-parse --abbrev-ref HEAD); }; f"
     save = !git add -A && git commit -m 'SAVEPOINT'
     wip = commit -am "WIP"
@@ -20,4 +23,4 @@
 [credential]
     helper = osxkeychain
 [core]
-	filemode = false
+    filemode = false

@@ -79,11 +79,7 @@ bindkey '\eOB' history-substring-search-down
 bindkey '^\\' undo
 
 ## VARIABLE FILE
-if [[ "$OSTYPE" == "linux"* ]]; then
-    [ -f ~/.variables ] && source ~/.variables
-else
-    [ -f ~/.var ] && source ~/.var
-fi
+[ -f ~/.vars ] && source ~/.vars
 
 
 #----------------------------------------#

@@ -1,13 +1,12 @@
 #!/bin/bash
 
-# Nicholas Mahdavi
 # nickmahda@gmail.com
 
 cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
 
 DIR=$(pwd)
 
-git submodule init && git submodule foreach --recursive git pull origin master
+git submodule update --init --recursive --remote
 
 while getopts "pcb" o; do
     case "$o" in
@@ -17,63 +16,57 @@ while getopts "pcb" o; do
     esac
 done
 
+bacup() { { [ -e ~/."$1" ] || [ -d ~/."$1" ] } && { mkdir -pv $DIR/backup; mv -v ~/."$1" $DIR/backup/"$1"; } }
+
 mov () {
-  [ -e ~/."$1" ] && { mkdir -pv backup; mv -v ~/."$1" backup/"$1"; }
-  ln -sfv "$DIR/$1" ~/."$1"
+    bacup $1
+    ln -sfv "$DIR/$1" ~/."$1"
 }
 
-for f in var zshrc gitconfig tmux.conf.local p10k.zsh; do
-  cmp --silent ~/."$f" "$f" && continue
-  mov $f
+for f in vars zshrc gitconfig tmux.conf.local p10k.zsh; do
+    f=$(sed "s/\.//" "$f")
+    cmp --silent ~/."$f" "$f" || mov $f
 done
 
-cmp --silent ~/.tmux.conf ./tmux/.tmux.conf
-
 cd tmux || exit
+
 mov .tmux.conf
 
 cd .. || exit
 
-[ "$b" ] && [ -e ~/.bashrc ] && { mkdir -pv backup; mv -v ~/.bashrc backup/bashrc; }
-echo -e "[ -f ~/.var ] && source ~/.var" >> ~/.bashrc
+![ "$b" ] || bacup bashrc
+echo -e "[ -f ~/.vars ] && source ~/.vars" >> ~/.bashrc
 
-[ -d ~/.zsh ] && mv -v ~/.zsh backup/zsh
+bacup zsh
 ln -sfv "$DIR/zsh" ~/.zsh
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    [ -e ~/.bash_profile ] && { mkdir -pv backup; mv -v ~/.bash_profile backup/bash_profile; }
+    bacup bash_profile
     echo -e "[ -f ~/.bashrc ] && source ~/.bashrc" > ~/.bash_profile
 
     if [ -z "$(which brew)" ]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+        sudo chown -R "$(whoami)" "$(brew --prefix)"/*
     fi
-
-    sudo chown -R "$(whoami)" "$(brew --prefix)"/*
 
     [ "$p" ] && brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh # cmake emacs gnu-chess htop nginx opencv tree
 
-    [ "$c" ] && brew cask install appcleaner apple-juice discord dozer eqmac firefox flux gimp google-backup-and-sync google-chrome iterm2 karabiner-elements latest omnidisksweeper overkill selfcontrol slack spotify the-unarchiver telegram ticktick visual-studio-code vnc-viewer zotero # docker
+    [ "$c" ] && brew cask install apple-juice discord dozer eqmac flux google-backup-and-sync google-chrome iterm2 karabiner-elements overkill selfcontrol slack spotify the-unarchiver telegram visual-studio-code # appcleaner docker eqmac firefox gimp latest omnidisksweeper ticktick vnc-viewer zotero
 
     cp "$DIR"/BlexMono.ttf ~/Library/Fonts/
 
-    # curl https://bootstrap.pypa.io/ez_setup.py | python
-
-    [ "$c" ] && /usr/local/bin/pip3 install -r ./requirements.txt
+    [ "$c" ] && /usr/local/bin/pip3 install -r "$DIR"/requirements.txt
 
 elif [[ "$OSTYPE" == "linux"* ]]; then
-    [ "$p" ] && sudo apt install pkg-config python3-dev tmux zsh # emacs htop gnuchess
+    [ "$p" ] && sudo apt install git pkg-config python3-pip tmux vim zsh # emacs htop gnuchess
 
-    cp "$DIR"/BlexMono.ttf ~/.fonts/
-    fc-cache -fv
-
-    [ "$c" ] && /usr/bin/pip3 install "$DIR"/requirements.txt
-
-    mv ~/.var ~/.variables
+    [ "$c" ] && /usr/bin/pip3 install -r "$DIR"/requirements.txt
 fi
 
 sudo ln -sfv "$DIR"/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
 
 touch ~/.path
+touch ~/.vars.local
 
 echo "Moving to vim install"
 
