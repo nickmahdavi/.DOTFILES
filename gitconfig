@@ -10,6 +10,7 @@
     force-pull = "!git checkout master; git branch backup; git stash; git fetch --all; git reset --hard origin/master; echo \"Old changes saved in branch backup and stashed. Please delete once finished.\""
     lgb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches
     up = "!f () { git pull --rebase --prune \"$@\" && git submodule update --init --recursive --remote }; f"
+    sup = submodule update --init --recursive --remote
     c = !git add -A && git commit -m
     cp = "!f () { git add -A; git commit -m \"$@\"; git push -u origin $(git rev-parse --abbrev-ref HEAD); }; f"
     save = !git add -A && git commit -m 'SAVEPOINT'
@@ -17,7 +18,6 @@
     amend = commit -a --amend
     undo = reset HEAD~1 --mixed
     open = "!zsh -c \"source ~/.zshrc; open-repo\""
-    browse = !git open
     p = "!git push origin $(git rev-parse --abbrev-ref HEAD)"
     co = checkout
 [credential]
