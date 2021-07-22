@@ -24,7 +24,7 @@ bacup() {
 }
 
 mov () {
-    f=$(sed "s/\.//" <<< "$1")
+    f=$(sed "s/^\.//" <<< "$1")
     bacup $f
     cmp --silent ~/."$f" "$f" || ln -sfv "$DIR/$f" ~/."$f"
 }
