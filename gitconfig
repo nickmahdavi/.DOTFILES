@@ -9,17 +9,20 @@
     ccontinue = rebase --continue
     force-pull = "!git checkout master; git branch backup; git stash; git fetch --all; git reset --hard origin/master; echo \"Old changes saved in branch backup and stashed. Please delete once finished.\""
     lgb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches
-    up = "!f () { git pull --rebase --prune \"$@\" && git submodule update --init --recursive --remote }; f"
-    sup = submodule update --init --recursive --remote
-    c = !git add -A && git commit -m
-    cp = "!f () { git add -A; git commit -m \"$@\"; git push -u origin $(git rev-parse --abbrev-ref HEAD); }; f"
+    up = "!f () { git pull --rebase --prune \"$@\" && git submodule update --recursive --remote --merge }; f"
+    sup = submodule update --recursive --remote --merge
+    c = commit -m
+    ac = !git add -A && git commit -m
+    cp = "!f () { git commit -m \"$@\"; git push -u origin $(git rev-parse --abbrev-ref HEAD); }; f"
+    acp = "!f () { git add -A; git commit -m \"$@\"; git push -u origin $(git rev-parse --abbrev-ref HEAD); }; f"
+    p = "!git push -u origin $(git rev-parse --abbrev-ref HEAD)"
     save = !git add -A && git commit -m 'SAVEPOINT'
     wip = commit -am "WIP"
     amend = commit -a --amend
     undo = reset HEAD~1 --mixed
     open = "!zsh -c \"source ~/.zshrc; open-repo\""
-    p = "!git push origin $(git rev-parse --abbrev-ref HEAD)"
     co = checkout
+    com = checkout master
 [credential]
     helper = osxkeychain
 [core]
