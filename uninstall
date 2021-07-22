@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# nickmahda@gmail.com
+
+cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
+
+DIR=$(pwd)
+
+while getopts "tb" o; do
+    case "$o" in
+        t) t=1 ;;
+        b) b=1 ;;
+    esac
+done
+
+del () { [ -L ~/."$1" ] && rm ~/.$1 }
+
+for file in vars zshrc gitconfig tmux.conf.local tmux.conf p10k.zsh vimrc; do del $file; done
+for dir in vim zsh; do del $dir; done
+
+del /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
+
+if [ "$t" ]; then
+    pip freeze | xargs pip uninstall -y
+fi

@@ -18,8 +18,8 @@ done
 
 bacup() {
     if [ -e ~/."$1" ]; then
-	mkdir -pv $DIR/backup
-	mv -v ~/."$1" $DIR/backup/"$1"
+        mkdir -pv $DIR/backup
+        mv -v ~/."$1" $DIR/backup/"$1"
     fi
 }
 
@@ -29,14 +29,8 @@ mov () {
     cmp --silent ~/."$f" "$f" || ln -sfv "$DIR/$f" ~/."$f"
 }
 
-mov vars
-mov zshrc
-mov gitconfig
-mov tmux.conf.local
-mov p10k.zsh
-
-mov zsh
-mov vim
+for file in vars zshrc gitconfig tmux.conf.local p10k.zsh; do mov $file; done
+for dir in zsh vim; do mov $dir; done
 
 bacup vimrc
 ln -sfv $DIR/vim/.vimrc ~/.vimrc
@@ -57,22 +51,22 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     fi
 
     if [ "$p" ]; then
-	brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh
-	# cmake emacs gnu-chess htop nginx opencv tree
-	/usr/local/bin/pip3 install -r "$DIR"/requirements.txt
+        brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh
+        # cmake emacs gnu-chess htop nginx opencv tree
+        /usr/local/bin/pip3 install -r "$DIR"/requirements.txt
     fi
 
     if [ "$c" ]; then
-	brew cask install apple-juice discord dozer eqmac flux google-backup-and-sync google-chrome iterm2 karabiner-elements overkill selfcontrol slack spotify the-unarchiver telegram visual-studio-code
-	# appcleaner docker eqmac firefox gimp latest omnidisksweeper ticktick vnc-viewer zotero
+        brew cask install apple-juice discord dozer eqmac flux google-backup-and-sync google-chrome iterm2 karabiner-elements overkill selfcontrol slack spotify the-unarchiver telegram visual-studio-code
+        # appcleaner docker eqmac firefox gimp latest omnidisksweeper ticktick vnc-viewer zotero
     fi
 
     cp "$DIR"/BlexMono.ttf ~/Library/Fonts/
 
 elif [[ "$OSTYPE" == "linux"* ]]; then
     if [ "$p" ]; then
-	sudo apt install git pkg-config python3-pip tmux vim zsh # emacs htop gnuchess
-        /usr/bin/pip3 install -r "$DIR"/requirements.txt
+        sudo apt install git pkg-config python3-pip tmux vim zsh # emacs htop gnuchess
+        usr/bin/pip3 install -r "$DIR"/requirements.txt
     fi
 fi
 
