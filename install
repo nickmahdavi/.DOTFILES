@@ -16,7 +16,7 @@ while getopts "pcb" o; do
     esac
 done
 
-bacup() { { [ -e ~/."$1" ] || [ -d ~/."$1" ] } && { mkdir -pv $DIR/backup; mv -v ~/."$1" $DIR/backup/"$1"; } }
+bacup() { [ -e ~/."$1" ] && { mkdir -pv $DIR/backup; mv -v ~/."$1" $DIR/backup/"$1"; } }
 
 mov () {
     bacup $1
@@ -37,8 +37,11 @@ cd .. || exit
 ![ "$b" ] || bacup bashrc
 echo -e "[ -f ~/.vars ] && source ~/.vars" >> ~/.bashrc
 
-bacup zsh
-ln -sfv "$DIR/zsh" ~/.zsh
+mov zsh
+
+bacup vimrc
+mov vim
+ln -sfv $DIR/vim/.vimrc ~/.vimrc
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     bacup bash_profile
@@ -68,7 +71,6 @@ sudo ln -sfv "$DIR"/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/z
 touch ~/.path
 touch ~/.vars.local
 
-echo "Moving to vim install"
+echo "Done"
 
 cd "$DIR" || exit
-./viminstall
