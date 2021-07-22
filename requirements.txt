@@ -1,16 +1,14 @@
-flask
-keras
-tensorflow
+# flask
+# keras
+# tensorflow
 pandas
-praw
 jupyter
 virtualenv
-scikit-learn
-scikit-plot
-scikit-image
-prawcore
+# scikit-learn
+# scikit-plot
+# scikit-image
 numpy
 scipy
-beautifulsoup4
-urllib3
+# beautifulsoup4
+# urllib3
 
