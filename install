@@ -47,17 +47,16 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
     if [ -z "$(which brew)" ]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-        sudo chown -R "$(whoami)" "$(brew --prefix)"/*
     fi
 
     if [ "$p" ]; then
-        brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh
+        /opt/homebrew/bin/brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh
         # cmake emacs gnu-chess htop nginx opencv tree
         /usr/local/bin/pip3 install -r "$DIR"/requirements.txt
     fi
 
     if [ "$c" ]; then
-        brew cask install apple-juice discord dozer eqmac flux google-backup-and-sync google-chrome iterm2 karabiner-elements overkill selfcontrol slack spotify the-unarchiver telegram visual-studio-code
+        /opt/homebrew/bin/brew cask install apple-juice discord dozer eqmac flux google-backup-and-sync google-chrome iterm2 karabiner-elements overkill selfcontrol slack spotify the-unarchiver telegram visual-studio-code
         # appcleaner docker eqmac firefox gimp latest omnidisksweeper ticktick vnc-viewer zotero
     fi
 
@@ -70,7 +69,7 @@ elif [[ "$OSTYPE" == "linux"* ]]; then
     fi
 fi
 
-sudo ln -sfv "$DIR"/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
+# sudo ln -sfv "$DIR"/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
 
 touch ~/.path
 touch ~/.vars.local

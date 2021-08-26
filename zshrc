@@ -33,7 +33,7 @@ autoload -U promptinit; promptinit
 # prompt_newline='%666v'
 # PROMPT=" $PROMPT"
 
-prompt powerlevel10k
+source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 
 # Completion
 
