@@ -1,0 +1,13 @@
+Host home
+    Hostname 76.103.181.8
+    User nickmahd
+    Port 6399
+
+Host states
+    Hostname 34.220.92.164
+    User nickmahdavi
+
+Host *
+    AddKeysToAgent yes
+    UseKeychain yes
+    IdentityFile ~/.ssh/id_ed25519

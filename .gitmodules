@@ -51,7 +51,7 @@
 	url = https://github.com/tiagofumo/vim-nerdtree-syntax-highlight.git
 	branch = master
 [submodule "vim/vim-darkspace"]
-	path = vim/		vim-darkspace
+	path = vim/vim-darkspace
 	url = https://github.com/niklas-8/vim-darkspace
 	branch = master
 [submodule "vim/bundle/vim-airline-themes"]

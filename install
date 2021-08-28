@@ -16,7 +16,7 @@ while getopts "pcb" o; do
     esac
 done
 
-bacup() {
+bacup () {
     if [ -e ~/."$1" ]; then
         mkdir -pv $DIR/backup
         mv -v ~/."$1" $DIR/backup/"$1"
@@ -29,17 +29,27 @@ mov () {
     cmp --silent ~/."$f" "$f" || ln -sfv "$DIR/$f" ~/."$f"
 }
 
-for file in vars zshrc gitconfig tmux.conf.local p10k.zsh; do mov $file; done
-for dir in zsh vim; do mov $dir; done
+mov vars
+mov gitconfig
 
-bacup vimrc
-ln -sfv $DIR/vim/.vimrc ~/.vimrc
+mov zsh
+mov vim
+mov ssh
+
+cd $DIR/zsh
+mov zshrc
+mov p10k.zsh
+
+cd $DIR/vim
+mov vimrc
+
+cd $DIR/tmux
+mov .tmux.conf
+cd $DIR
+mov tmux.conf.local
 
 [ "$b" ] && bacup bashrc
 echo "[ -f ~/.vars ] && source ~/.vars" >> ~/.bashrc
-
-cd tmux && mov .tmux.conf
-cd .. || exit
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     [ "$b" ] && bacup bash_profile
@@ -52,7 +62,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     if [ "$p" ]; then
         /opt/homebrew/bin/brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh
         # cmake emacs gnu-chess htop nginx opencv tree
-        /usr/local/bin/pip3 install -r "$DIR"/requirements.txt
     fi
 
     if [ "$c" ]; then

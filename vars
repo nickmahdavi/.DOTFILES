@@ -1,17 +1,8 @@
 #----------------------------------------#
-#                  PATH                  #
-#----------------------------------------#
-
-[ -f ~/.path ] && source ~/.path
-[ -f ~/.vars.local ] && source ~/.vars.local
-
-#----------------------------------------#
 #                VARIABLES               #
 #----------------------------------------#
 
-export ip=34.220.92.164
-export user=nickmahdavi
-export instance=$user@$ip
+export name=home
 
 export HOMEBREW_AUTO_UPDATE_SECS=604800
 
@@ -31,46 +22,61 @@ export gversion=9
 #            ALIASES/FUNCTIONS           #
 #----------------------------------------#
 
-alias l="ls -1Frt"
-alias lss="/bin/ls"
-alias pip="pip3"
-alias python="python3"
-alias locate="locate -i" # case insensitive
-alias g="git"
-alias grep="grep --color=always"
-alias sudo="sudo "
-alias ip="ipconfig getifaddr en0"
-alias eip="curl ifconfig.me; echo"
-alias notebook="nohup jupyter notebook > /dev/null 2>&1 & disown"
-
 if [[ "$OSTYPE" == "darwin"* ]]; then
     alias ll="ls -AFGhlOprt"
     alias ls="ls -G"
     alias tr="gtr"
-    alias switch="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+    alias sort="gsort"
     alias gcc="gcc-$gversion"
     alias g++="g++-$gversion"
     alias c++="c++-$gversion"
-    alias sort="gsort"
+    alias locate="locate -i" # case insensitive
 else
     alias ll="ls -AFGhlprt"
     alias ls="ls --color=always"
 fi
 
-f () { find . -name "*$@*" -print; } # Find all files under the current directory
-fs () { find . -name "$@"'*' -print | grep -v node_ | grep -v .git; } # Find file whose name starts with a given string
-fe () { find . -name '*'"$@" -print | grep -v node_ | grep -v .git; } # Find file whose name ends with a given string
-pf () { local home=$(ps aux | grep "$@" | grep -v grep); [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home"; }
-jkill () { pkill -f jupyter || echo "No running notebooks"; }
-sshc () { ssh $instance; } # -i ~/.ssh/$key
-unactivate () { [ ! -z $(command -v deactivate) ] && deactivate; }
+alias l="ls -1Frt"
+alias lss="/bin/ls"
+alias grep="grep --color=always"
 
+alias pip="pip3"
+alias python="python3"
+
+alias ip="ipconfig getifaddr en0"
+alias eip="curl ifconfig.me; echo"
+alias attach="tmux attach -t"
+alias zload="sauce $ZSHRC"
+sauce () { [ -f $1 ] && source $1 }
+
+f () { find . -name "*$@*" -print; }
+fs () { find . -name "$@"'*' -print | grep -v node_ | grep -v .git; }
+fe () { find . -name '*'"$@" -print | grep -v node_ | grep -v .git; }
+pf () { local home=$(ps aux | grep "$@" | grep -v grep); [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home"; }
+duck () { du -ckhd ${2:-1} ${1:-.} | sort -n }
+
+sshc () { ssh $name; }
+sscp () { scp $name:$@ }
 tunnel ()
 {
     kill $(pf "ssh.*$1" | awk '{print $2}') > /dev/null 2>&1
     ssh -fgNL $1:127.0.0.1:$1 $instance -i ~/.ssh/id_rsa
 }
 
+alias g="git"
+open-repo () { REPO_URL=$(git config remote.origin.url); open "${${REPO_URL/git@github.com:/https://github.com/}%%.git}"; }
+
+alias notebook="nohup jupyter notebook > /dev/null 2>&1 & disown"
+jkill () { pkill -f jupyter || echo "No running notebooks"; }
+
+unactivate () { [ ! -z $(command -v deactivate) ] && deactivate; }
+activate ()
+{
+    declare -a paths=("bin" "env/bin" "venv/bin" "")
+    for p in $paths; do
+        [ -f ./"$p"/activate ] && { source ./"$p"/activate; return 0; }
+    done
+}
 cd ()
 {
     local dir=$PWD
@@ -93,15 +99,18 @@ open ()
     return 0
 }
 
-activate ()
+sudo ()
 {
-    declare -a paths=("bin" "env/bin" "venv/bin" "")
-    for p in $paths; do
-        [ -f ./"$p"/activate ] && { source ./"$p"/activate; return 0; }
-    done
+    local first=$1
+    if type $first | grep -q 'function'; then
+        shift && command sudo zsh -c "$(declare -f $first);$first $*"
+    elif type $first | grep -q 'alias'; then
+        alias sudo='\sudo '
+        eval "sudo $@"
+    else
+        command sudo "$@"
+    fi
 }
-
-duck () { du -ckhd ${2:-1} ${1:-.} | [ -z "$3" ] && sort -n }
 
 vim-pkg () {
     local wdir=$(pwd)
@@ -119,4 +128,3 @@ vim-pkg () {
     fi
 }
 
-open-repo () { REPO_URL=$(git config remote.origin.url); open "${${REPO_URL/git@github.com:/https://github.com/}%%.git}"; }
