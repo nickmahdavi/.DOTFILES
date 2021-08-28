@@ -66,3 +66,7 @@
 	path = vim/bundle/vim-notes
 	url = https://github.com/xolox/vim-notes
 	branch = master
+[submodule "vim/bundle/rainbow"]
+	path = vim/bundle/rainbow
+	url = https://github.com/luochen1990/rainbow
+	branch = master
