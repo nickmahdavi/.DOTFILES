@@ -480,10 +480,10 @@ au CmdlineEnter * redraws
 let g:airline_powerline_fonts = 1
 
 " rainbow-parentheses
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+" au VimEnter * RainbowParenthesesToggle
+" au Syntax * RainbowParenthesesLoadRound
+" au Syntax * RainbowParenthesesLoadSquare
+" au Syntax * RainbowParenthesesLoadBraces
 
 " nerdtree-syntax-highlight
 let g:NERDTreeFileExtensionHighlightFullName = 1
