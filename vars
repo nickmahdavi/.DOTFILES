@@ -22,6 +22,23 @@ export gversion=9
 #            ALIASES/FUNCTIONS           #
 #----------------------------------------#
 
+alias ip="ipconfig getifaddr en0"
+alias eip="curl ifconfig.me; echo"
+alias attach="tmux attach -t"
+alias zload="sauce $ZSHRC"
+alias notebook="nohup jupyter notebook > /dev/null 2>&1 & disown"
+jkill () { pkill -f jupyter || echo "No running notebooks"; }
+sauce () { [ -f $1 ] && source $1; }
+colors() { for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done }
+
+alias l="ls -1Frt"
+alias lss="/bin/ls"
+alias grep="grep --color=always"
+
+alias g="git"
+alias pip="pip3"
+alias python="python3"
+
 if [[ "$OSTYPE" == "darwin"* ]]; then
     alias ll="ls -AFGhlOprt"
     alias ls="ls -G"
@@ -30,24 +47,11 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     alias gcc="gcc-$gversion"
     alias g++="g++-$gversion"
     alias c++="c++-$gversion"
-    alias locate="locate -i" # case insensitive
+    alias locate="locate -i"
 else
     alias ll="ls -AFGhlprt"
     alias ls="ls --color=always"
 fi
-
-alias l="ls -1Frt"
-alias lss="/bin/ls"
-alias grep="grep --color=always"
-
-alias pip="pip3"
-alias python="python3"
-
-alias ip="ipconfig getifaddr en0"
-alias eip="curl ifconfig.me; echo"
-alias attach="tmux attach -t"
-alias zload="sauce $ZSHRC"
-sauce () { [ -f $1 ] && source $1 }
 
 f () { find . -name "*$@*" -print; }
 fs () { find . -name "$@"'*' -print | grep -v node_ | grep -v .git; }
@@ -63,11 +67,7 @@ tunnel ()
     ssh -fgNL $1:127.0.0.1:$1 $instance -i ~/.ssh/id_rsa
 }
 
-alias g="git"
 open-repo () { REPO_URL=$(git config remote.origin.url); open "${${REPO_URL/git@github.com:/https://github.com/}%%.git}"; }
-
-alias notebook="nohup jupyter notebook > /dev/null 2>&1 & disown"
-jkill () { pkill -f jupyter || echo "No running notebooks"; }
 
 unactivate () { [ ! -z $(command -v deactivate) ] && deactivate; }
 activate ()
@@ -88,7 +88,6 @@ cd ()
 
     return 0
 }
-
 open ()
 {
     if [[ "$@" ]]; then
