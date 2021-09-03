@@ -101,9 +101,9 @@ open ()
 sudo ()
 {
     local first=$1
-    if type $first | grep -q 'function'; then
+    if type $first 2>/dev/null | grep -q 'function'; then
         shift && command sudo zsh -c "$(declare -f $first);$first $*"
-    elif type $first | grep -q 'alias'; then
+    elif type $first 2>/dev/null | grep -q 'alias'; then
         alias sudo='\sudo '
         eval "sudo $@"
     else
