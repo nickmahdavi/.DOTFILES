@@ -50,14 +50,6 @@
 	path = vim/bundle/vim-nerdtree-syntax-highlight
 	url = https://github.com/tiagofumo/vim-nerdtree-syntax-highlight.git
 	branch = master
-[submodule "vim/vim-darkspace"]
-	path = vim/vim-darkspace
-	url = https://github.com/niklas-8/vim-darkspace
-	branch = master
-[submodule "vim/bundle/vim-airline-themes"]
-	path = vim/bundle/vim-airline-themes
-	url = https://github.com/vim-airline/vim-airline-themes
-	branch = master
 [submodule "vim/bundle/vim-misc"]
 	path = vim/bundle/vim-misc
 	url = https://github.com/xolox/vim-misc
