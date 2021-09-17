@@ -6,13 +6,12 @@ cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
 
 DIR=$(pwd)
 
-git submodule update --init --recursive --remote
+git submodule update --init --recursive --remote --merge
 
 while getopts "pcb" o; do
     case "$o" in
         p) p=1;;
         c) c=1;;
-        b) b=1;;
     esac
 done
 
@@ -23,36 +22,24 @@ bacup () {
     fi
 }
 
-mov () {
-    f=$(sed "s/^\.//" <<< "$1")
+mkdir -p ~/.ssh
+cd config
+
+for f in *; do
     bacup $f
-    cmp --silent ~/."$f" "$f" || ln -sfv "$DIR/$f" ~/."$f"
-}
+    ln -sfv $DIR/config/$f ~/.$f
+done
 
-mov vars
-mov gitconfig
-
-mov zsh
-mov vim
-mov ssh
-
-cd $DIR/zsh
-mov zshrc
-mov p10k.zsh
-
-cd $DIR/vim
-mov vimrc
-
-cd $DIR/tmux
-mov .tmux.conf
 cd $DIR
-mov tmux.conf.local
 
-[ "$b" ] && bacup bashrc
+ln -sfv $DIR/zsh ~/.zsh
+ln -sfv $DIR/vim ~/.vim
+
+ln -sfv $DIR/tmux/.tmux.conf ~/.tmux.conf
+
 echo "[ -f ~/.vars ] && source ~/.vars" >> ~/.bashrc
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    [ "$b" ] && bacup bash_profile
     echo "[ -f ~/.bashrc ] && source ~/.bashrc" >> ~/.bash_profile
 
     if [ -z "$(which brew)" ]; then
@@ -69,7 +56,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
         # appcleaner docker eqmac firefox gimp latest omnidisksweeper ticktick vnc-viewer zotero
     fi
 
-    cp "$DIR"/BlexMono.ttf ~/Library/Fonts/
+    # cp "$DIR"/BlexMono.ttf ~/Library/Fonts/
 
 elif [[ "$OSTYPE" == "linux"* ]]; then
     if [ "$p" ]; then

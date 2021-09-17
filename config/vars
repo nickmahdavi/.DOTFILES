@@ -33,7 +33,6 @@ jkill () { pkill -f jupyter || echo "No running notebooks"; }
 colors() { for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done }
 
 alias l="ls -1Frt"
-alias lss="/bin/ls"
 alias grep="grep --color=always"
 
 alias g="git"
@@ -41,8 +40,8 @@ alias pip="pip3"
 alias python="python3"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    alias ll="ls -AFGhlOprt"
-    alias ls="ls -G"
+#   alias ls="ls -G"
+    alias ll="ls -AFhlOprt"
     alias tr="gtr"
     alias sort="gsort"
     alias gcc="gcc-$gversion"
@@ -50,8 +49,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     alias c++="c++-$gversion"
     alias locate="locate -i"
 else
+#   alias ls="ls --color=always"
     alias ll="ls -AFGhlprt"
-    alias ls="ls --color=always"
 fi
 
 f () { find . -name "*$@*" -print; }
