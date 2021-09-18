@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# nickmahda@gmail.com
+
+cd "$(dirname "${BASH_SOURCE[0]}")"/.. || exit 1
+DIR=$(pwd)
+
+bacup () {
+    if [ -e ~/."$1" ] && ! [[ -L ~/."$1" ]]; then
+        mkdir -pv $DIR/backup
+        mv -v ~/."$1" $DIR/backup/"$1"
+    fi
+}
+
+mov () {
+    name=$(sed -E "s/^.*(\/|\.|\/\.)//" <<< "$1")
+    bacup $name
+    ln -sfv $1 ~/.$name
+}
+
+mkdir -p ~/.ssh
+touch ~/.vars.local
+
+mov $DIR/zsh
+mov $DIR/vim
+mov $DIR/tmux/.tmux.conf
+mov $DIR/bin
+for f in *; do mov $DIR/config/$f; done
+
+if [[ -n $1 ]]; then
+    echo "[ -f ~/.vars ] && source ~/.vars" >> ~/.bashrc
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        echo "[ -f ~/.bashrc ] && source ~/.bashrc" >> ~/.bash_profile
+    fi
+fi

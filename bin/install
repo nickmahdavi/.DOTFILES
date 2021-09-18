@@ -8,66 +8,38 @@ DIR=$(pwd)
 
 git submodule update --init --recursive --remote --merge
 
-while getopts "pcb" o; do
+while getopts "pc" o; do
     case "$o" in
         p) p=1;;
         c) c=1;;
     esac
 done
 
-bacup () {
-    if [ -e ~/."$1" ]; then
-        mkdir -pv $DIR/backup
-        mv -v ~/."$1" $DIR/backup/"$1"
-    fi
-}
-
-mkdir -p ~/.ssh
-cd config
-
-for f in *; do
-    bacup $f
-    ln -sfv $DIR/config/$f ~/.$f
-done
-
-cd $DIR
-
-ln -sfv $DIR/zsh ~/.zsh
-ln -sfv $DIR/vim ~/.vim
-
-ln -sfv $DIR/tmux/.tmux.conf ~/.tmux.conf
-
-echo "[ -f ~/.vars ] && source ~/.vars" >> ~/.bashrc
+./lnfix 1
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    echo "[ -f ~/.bashrc ] && source ~/.bashrc" >> ~/.bash_profile
-
-    if [ -z "$(which brew)" ]; then
+    if [[ -z "$(which brew)" ]]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     fi
 
-    if [ "$p" ]; then
+    if [[ "$p" ]]; then
         /opt/homebrew/bin/brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh
         # cmake emacs gnu-chess htop nginx opencv tree
     fi
 
-    if [ "$c" ]; then
+    if [[ "$c" ]]; then
         /opt/homebrew/bin/brew cask install apple-juice discord dozer eqmac flux google-backup-and-sync google-chrome iterm2 karabiner-elements overkill selfcontrol slack spotify the-unarchiver telegram visual-studio-code
         # appcleaner docker eqmac firefox gimp latest omnidisksweeper ticktick vnc-viewer zotero
     fi
 
-    # cp "$DIR"/BlexMono.ttf ~/Library/Fonts/
-
 elif [[ "$OSTYPE" == "linux"* ]]; then
-    if [ "$p" ]; then
+    if [[ "$p" ]]; then
         sudo apt install git pkg-config python3-pip tmux vim zsh # emacs htop gnuchess
         usr/bin/pip3 install -r "$DIR"/requirements.txt
     fi
 fi
 
 # sudo ln -sfv "$DIR"/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
-
-touch ~/.vars.local
 
 echo "Done"
 

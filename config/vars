@@ -2,6 +2,8 @@
 #                VARIABLES               #
 #----------------------------------------#
 
+export PATH=$PATH:~/.bin
+
 source ~/.vars.local
 
 export SSHNAME=home
