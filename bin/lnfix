@@ -2,18 +2,22 @@
 
 # nickmahda@gmail.com
 
-cd "$(dirname "${BASH_SOURCE[0]}")"/.. || exit 1
+cd $(dirname $(realpath $0))/..
 DIR=$(pwd)
 
 bacup () {
-    if [ -e ~/."$1" ] && ! [[ -L ~/."$1" ]]; then
-        mkdir -pv $DIR/backup
-        mv -v ~/."$1" $DIR/backup/"$1"
+    if [ -e ~/."$1" ]; then
+        if [[ -L ~/."$1" ]]; then
+            rm ~/."$1"
+        else
+            mkdir -pv $DIR/backup
+            mv -v ~/."$1" $DIR/backup/"$1"
+        fi
     fi
 }
 
 mov () {
-    name=$(sed -E "s/^.*(\/|\.|\/\.)//" <<< "$1")
+    name=$(sed -E "s/^.*(\/|\/\.)//" <<< "$1")
     bacup $name
     ln -sfv $1 ~/.$name
 }
@@ -25,6 +29,9 @@ mov $DIR/zsh
 mov $DIR/vim
 mov $DIR/tmux/.tmux.conf
 mov $DIR/bin
+bacup ~/.ssh/config && ln -sfv $DIR/ssh/config ~/.ssh/config
+
+cd $DIR/config
 for f in *; do mov $DIR/config/$f; done
 
 if [[ -n $1 ]]; then
