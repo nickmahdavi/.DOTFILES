@@ -80,7 +80,6 @@ fi
 
 # sudo ln -sfv "$DIR"/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
 
-touch ~/.path
 touch ~/.vars.local
 
 echo "Done"

@@ -11,11 +11,12 @@
     lgb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches
     up = "!f () { git pull --rebase --prune \"$@\" && git submodule update --recursive --remote --merge }; f"
     sup = submodule update --recursive --remote --merge
+    a = add -A
     c = commit -m
-    ac = !git add -A && git commit -m
-    cp = "!f () { git commit -m \"$@\"; git push -u origin $(git rev-parse --abbrev-ref HEAD); }; f"
-    acp = "!f () { git add -A; git commit -m \"$@\"; git push -u origin $(git rev-parse --abbrev-ref HEAD); }; f"
     p = "!git push -u origin $(git rev-parse --abbrev-ref HEAD)"
+    ac = "!git a && git c \"$@\""
+    cp = "!git c \"$@\" && git p"
+    acp = "!f () { git add -A; git commit -m \"$@\"; git push -u origin $(git rev-parse --abbrev-ref HEAD); }; f"
     save = !git add -A && git commit -m 'SAVEPOINT'
     wip = commit -am "WIP"
     amend = commit -a --amend

@@ -2,9 +2,11 @@
 #                VARIABLES               #
 #----------------------------------------#
 
-export name=home
+source ~/.vars.local
 
-export HOMEBREW_AUTO_UPDATE_SECS=604800
+export SSHNAME=home
+
+export HOMEBREW_AUTO_UPDATE_SECS=86400
 
 export ZSHRC=~/.zshrc
 export VIMRC=~/.vim/vimrc
@@ -25,10 +27,9 @@ export gversion=9
 alias ip="ipconfig getifaddr en0"
 alias eip="curl ifconfig.me; echo"
 alias attach="tmux attach -t"
-alias zload="sauce $ZSHRC"
+alias zload="source $ZSHRC"
 alias notebook="nohup jupyter notebook > /dev/null 2>&1 & disown"
 jkill () { pkill -f jupyter || echo "No running notebooks"; }
-sauce () { [ -f $1 ] && source $1; }
 colors() { for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done }
 
 alias l="ls -1Frt"

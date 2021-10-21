@@ -19,12 +19,7 @@ else
 fi
 
 # Files to source
-source ~/.vars
-
-sauce ~/.vars.local
-sauce ~/.path
-#p10k - to customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-sauce ~/.p10k.zsh
+[ -f ~/.vars ] && source ~/.vars
 
 #----------------------------------------#
 #                  ZSH                   #
@@ -37,11 +32,8 @@ unsetopt CORRECTALL
 setopt AUTOCD
 setopt EXTENDEDGLOB
 setopt HIST_IGNORE_ALL_DUPS
-# setopt INC_APPEND_HISTORY
-# setopt SHARE_HISTORY
 setopt APPEND_HISTORY
 setopt MENU_COMPLETE
-
 DISABLE_CORRECTION="true"
 
 #----- zsh prompt -----#
@@ -49,6 +41,7 @@ DISABLE_CORRECTION="true"
 # autoload -U promptinit; promptinit
 # prompt powerlevel10k
 source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
+source ~/.p10k.zsh
 
 #----- Completion -----#
 
@@ -75,21 +68,20 @@ HISTFILE=~/.zsh_history
 HISTSIZE=1000
 SAVEHIST=1000
 
-bindkey -v # Vim mode
-bindkey "^?" backward-delete-char
-export KEYTIMEOUT=1
-
 #----- Bindings -----#
 
+bindkey -v
+bindkey "^?" backward-delete-char
 bindkey '^\\' undo
+export KEYTIMEOUT=1
 
 #----------------------------------------#
 #              ZSH_PLUGINS               #
 #----------------------------------------#
 
-sauce ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-sauce ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
-sauce ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 #----- Highlighters -----#
 
@@ -104,11 +96,13 @@ ZSH_HIGHLIGHT_PATTERNS+=('rm -rf /*' 'fg=green,bold,bg=red')
 # ZSH_HIGHLIGHT_STYLES[command]='fg=blue' #BLUE = 027
 ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=cyan,bold' #117
 ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=yellow,bold' #121
-# ZSH_HIGHLIGHT_STYLES[builtin]='fg=134'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=134'
 # ZSH_HIGHLIGHT_STYLES[arg0]='fg=027'
-# ZSH_HIGHLIGHT_STYLES[function]='fg=cyan'
+ZSH_HIGHLIGHT_STYLES[function]='fg=cyan'
 
 #----- Substring search -----#
 
 bindkey '\eOA' history-substring-search-up
 bindkey '\eOB' history-substring-search-down
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
