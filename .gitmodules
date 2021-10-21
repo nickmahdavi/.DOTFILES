@@ -19,46 +19,46 @@
 	url = https://github.com/zsh-users/zsh-history-substring-search.git
 	branch = master
 [submodule "vim/bundle/nerdtree"]
-	path = vim/bundle/nerdtree
+	path = vim/pack/bundle/start/nerdtree/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
 	branch = master
 [submodule "vim/bundle/nerdtree-git-plugin"]
-	path = vim/bundle/nerdtree-git-plugin
+	path = vim/pack/bundle/start/nerdtree-git-plugin/nerdtree-git-plugin
 	url = https://github.com/Xuyuanp/nerdtree-git-plugin.git
 	branch = master
 [submodule "vim/bundle/undotree"]
-	path = vim/bundle/undotree
+	path = vim/pack/bundle/start/undotree/undotree
 	url = https://github.com/mbbill/undotree.git
 	branch = master
 [submodule "vim/bundle/vim-airline"]
-	path = vim/bundle/vim-airline
+	path = vim/pack/bundle/start/vim-airline/vim-airline
 	url = https://github.com/vim-airline/vim-airline.git
 	branch = master
 [submodule "vim/bundle/vim-devicons"]
-	path = vim/bundle/vim-devicons
+	path = vim/pack/bundle/start/vim-devicons/vim-devicons
 	url = https://github.com/ryanoasis/vim-devicons.git
 	branch = master
 [submodule "vim/bundle/vim-easyescape"]
-	path = vim/bundle/vim-easyescape
+	path = vim/pack/bundle/start/vim-easyescape/vim-easyescape
 	url = https://github.com/zhou13/vim-easyescape.git
 	branch = master
 [submodule "vim/bundle/vim-fugitive"]
-	path = vim/bundle/vim-fugitive
+	path = vim/pack/bundle/start/vim-fugitive/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
 	branch = master
 [submodule "vim/bundle/vim-nerdtree-syntax-highlight"]
-	path = vim/bundle/vim-nerdtree-syntax-highlight
+	path = vim/pack/bundle/start/vim-nerdtree-syntax-highlight/vim-nerdtree-syntax-highlight
 	url = https://github.com/tiagofumo/vim-nerdtree-syntax-highlight.git
 	branch = master
 [submodule "vim/bundle/vim-misc"]
-	path = vim/bundle/vim-misc
+	path = vim/pack/bundle/start/vim-misc/vim-misc
 	url = https://github.com/xolox/vim-misc
 	branch = master
 [submodule "vim/bundle/vim-notes"]
-	path = vim/bundle/vim-notes
+	path = vim/pack/bundle/start/vim-notes/vim-notes
 	url = https://github.com/xolox/vim-notes
 	branch = master
 [submodule "vim/bundle/rainbow"]
-	path = vim/bundle/rainbow
+	path = vim/pack/bundle/start/rainbow/rainbow
 	url = https://github.com/luochen1990/rainbow
 	branch = master
