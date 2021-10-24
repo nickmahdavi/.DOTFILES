@@ -42,7 +42,7 @@ alias pip="pip3"
 alias python="python3"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-#   alias ls="ls -G"
+    alias ls="ls -G"
     alias ll="ls -AFhlOprt"
     alias tr="gtr"
     alias sort="gsort"

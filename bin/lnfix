@@ -5,11 +5,13 @@
 cd $(dirname $(realpath $0))/..
 DIR=$(pwd)
 
+[[ $1 == "-b" ]] && b=1
+
 bacup () {
     if [ -e ~/."$1" ]; then
         if [[ -L ~/."$1" ]]; then
             rm ~/."$1"
-        else
+        elif ! [[ -z $b ]]; then
             mkdir -pv $DIR/backup
             mv -v ~/."$1" $DIR/backup/"$1"
         fi

@@ -62,3 +62,6 @@
 	path = vim/pack/bundle/start/rainbow
 	url = https://github.com/luochen1990/rainbow
 	branch = master
+[submodule "vim/pack/bundle/start/dracula"]
+	path = vim/pack/bundle/start/dracula
+	url = git@github.com:dracula/vim.git

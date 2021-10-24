@@ -114,10 +114,12 @@ set fo+=n
 """"""""""""""""""""""""""""""""""""""""
 
 " Airline
-" let g:airline_theme='base16_dracula'
+let g:airline_theme='dracula'
 
 " Syntax highlighting
+packadd! dracula
 syntax enable
+colorscheme dracula
 
 " Show incomplete command in status line
 set showcmd
@@ -520,3 +522,5 @@ let g:limelight_priority = -1
 
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
+
+autocmd vimenter * highlight Normal guibg=NONE
