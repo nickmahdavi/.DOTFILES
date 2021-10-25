@@ -65,3 +65,7 @@
 [submodule "vim/pack/bundle/start/dracula"]
 	path = vim/pack/bundle/start/dracula
 	url = git@github.com:dracula/vim.git
+[submodule "vim/pack/bundle/start/vim-markdown"]
+	path = vim/pack/bundle/start/vim-markdown
+	url = https://github.com/plasticboy/vim-markdown.git
+	branch = master

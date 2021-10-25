@@ -120,6 +120,7 @@ let g:airline_theme='dracula'
 packadd! dracula
 syntax enable
 colorscheme dracula
+highlight Normal ctermbg=234
 
 " Show incomplete command in status line
 set showcmd

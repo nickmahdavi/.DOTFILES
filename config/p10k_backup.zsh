@@ -33,6 +33,8 @@
     # =========================[ Line #1 ]=========================
     context                 # user@hostname
     vcs                     # git status
+    # =========================[ Line #2 ]=========================
+    newline                 # \n
     dir                     # current directory
     prompt_char             # prompt symbol
   )
@@ -43,8 +45,12 @@
   # last prompt line gets hidden if it would overlap with left prompt.
   typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
+    status                  # exit code of the last command
+    command_execution_time  # duration of the last command
+    background_jobs         # presence of background jobs
     # direnv                  # direnv status (https://direnv.net/)
     # asdf                    # asdf version manager (https://github.com/asdf-vm/asdf)
+    virtualenv              # python virtual environment (https://docs.python.org/3/library/venv.html)
     # anaconda                # conda environment (https://conda.io/)
     # pyenv                   # python environment (https://github.com/pyenv/pyenv)
     # goenv                   # go environment (https://github.com/syndbg/goenv)
@@ -71,6 +77,7 @@
     # kubecontext             # current kubernetes context (https://kubernetes.io/)
     # terraform               # terraform workspace (https://www.terraform.io)
     # terraform_version     # terraform version (https://www.terraform.io)
+    aws                     # aws profile (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)
     # aws_eb_env              # aws elastic beanstalk environment (https://aws.amazon.com/elasticbeanstalk/)
     # azure                   # azure account name (https://docs.microsoft.com/en-us/cli/azure)
     # gcloud                  # google cloud cli account and project (https://cloud.google.com/)
@@ -83,14 +90,20 @@
     # midnight_commander      # midnight commander shell (https://midnight-commander.org/)
     # nix_shell               # nix shell (https://nixos.org/nixos/nix-pills/developing-with-nix-shell.html)
     # vpn_ip                # virtual private network indicator
+    load                  # CPU load
     # disk_usage            # disk usage
+    ram                   # free RAM
     # swap                  # used swap
     # todo                    # todo items (https://github.com/todotxt/todo.txt-cli)
     # timewarrior             # timewarrior tracking status (https://timewarrior.net/)
     # taskwarrior             # taskwarrior task count (https://taskwarrior.org/)
+    wifi                  # wifi speed
     # =========================[ Line #2 ]=========================
+    newline               # \n
     # ip                    # ip address and bandwidth usage for a specified network interface
+    public_ip             # public IP address
     # proxy                 # system-wide http/https/ftp proxy
+    battery               # internal battery
     time                    # current time
     # example               # example user-defined segment (see prompt_example function below)
   )
@@ -141,9 +154,8 @@
   # Ruler, a.k.a. the horizontal line before each prompt. If you set it to true, you'll
   # probably want to set POWERLEVEL9K_PROMPT_ADD_NEWLINE=false above and
   # POWERLEVEL9K_MULTILINE_FIRST_PROMPT_GAP_CHAR=' ' below.
-  typeset -g POWERLEVEL9K_PROMPT_ADD_NEWLINE=false
-  typeset -g POWERLEVEL9K_SHOW_RULER=false #false
-  typeset -g POWERLEVEL9K_RULER_CHAR=''        # reasonable alternative: '─'
+  typeset -g POWERLEVEL9K_SHOW_RULER=true #false
+  typeset -g POWERLEVEL9K_RULER_CHAR='·'        # reasonable alternative: '─'
   typeset -g POWERLEVEL9K_RULER_FOREGROUND=242
 
   # Filler between left and right prompt on the first prompt line. You can set it to '·' or '─'

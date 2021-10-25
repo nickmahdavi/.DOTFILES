@@ -12,6 +12,7 @@ export HOMEBREW_AUTO_UPDATE_SECS=86400
 
 export ZSHRC=~/.zshrc
 export VIMRC=~/.vim/vimrc
+export VPKG=~/.vim/pack/bundle/start
 export DOT=~/.DOTFILES
 export VAR=~/.vars
 
@@ -51,7 +52,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     alias c++="c++-$gversion"
     alias locate="locate -i"
 else
-#   alias ls="ls --color=always"
+    alias ls="ls --color=always"
     alias ll="ls -AFGhlprt"
 fi
 
@@ -118,14 +119,14 @@ vim-pkg () {
     if [ -z "$1" ]; then
         echo "Must pass a package url"
     elif [ "$1" = "update" ]; then
-        git submodule update --recursive --remote
-    elif [ "$1" = "list" ]; then
-        cd ~/.vim/bundle
-        /bin/ls -1
+        cd ~/.vim && git submodule update --recursive --remote
         cd $wdir
+    elif [ "$1" = "list" ]; then
+        /bin/ls -1 $VPKG
     else
-        cd ~/.vim/ && git submodule add -b master "$1" bundle/
-        cd "$wdir"
+        cd $VPKG
+        git submodule add -b master "$1"
+        cd $wdir
     fi
 }
 
