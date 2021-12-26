@@ -15,7 +15,7 @@ while getopts "pc" o; do
     esac
 done
 
-./lnfix 1
+./lnfix -b
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     if [[ -z "$(which brew)" ]]; then
@@ -35,7 +35,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 elif [[ "$OSTYPE" == "linux"* ]]; then
     if [[ "$p" ]]; then
         sudo apt install git pkg-config python3-pip tmux vim zsh # emacs htop gnuchess
-        usr/bin/pip3 install -r "$DIR"/requirements.txt
     fi
 fi
 
