@@ -62,12 +62,12 @@ fe () { find . -name '*'"$@" -print | grep -v node_ | grep -v .git; }
 pf () { local home=$(ps aux | grep "$@" | grep -v grep); [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home"; }
 duck () { du -ckhd ${2:-1} ${1:-.} | sort -n }
 
-sshc () { ssh $name; }
-sscp () { scp $name:$@ }
+sshc () { ssh $SSHNAME; }
+sscp () { scp $SSHNAME:$@ }
 tunnel ()
 {
     kill $(pf "ssh.*$1" | awk '{print $2}') > /dev/null 2>&1
-    ssh -fgNL $1:127.0.0.1:$1 $instance -i ~/.ssh/id_rsa
+    ssh -fgNL $1:127.0.0.1:$1 $SSHNAME -i ~/.ssh/id_rsa
 }
 
 open-repo () { REPO_URL=$(git config remote.origin.url); open "${${REPO_URL/git@github.com:/https://github.com/}%%.git}"; }
