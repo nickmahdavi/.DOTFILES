@@ -288,13 +288,13 @@ set -g mouse on
 
 # replace C-b by C-a instead of using both prefixes
 # set -gu prefix2
-unbind C-a
-unbind C-b
+#unbind C-a
+#unbind C-b
 # unbind Home
 set -g prefix C-a
 set -g prefix2 C-b
-bind C-a send-prefix
-bind C-b send-prefix
+# bind C-a send-prefix
+# bind C-b send-prefix
 # bind Home send-prefix
 
 # move status line to top
