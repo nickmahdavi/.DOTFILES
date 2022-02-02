@@ -3,6 +3,7 @@
 #----------------------------------------#
 
 export PATH=$PATH:~/.bin
+export PATH=$PATH:~/.local/bin
 
 source ~/.vars.local
 
@@ -31,7 +32,7 @@ alias ip="ipconfig getifaddr en0"
 alias eip="curl ifconfig.me; echo"
 alias attach="tmux attach -t"
 alias zload="source $ZSHRC"
-alias notebook="nohup jupyter notebook > /dev/null 2>&1 & disown"
+alias notebook="nohup jupyter notebook > /dev/null 2>&1 & disown; jupyter notebook list"
 jkill () { pkill -f jupyter || echo "No running notebooks"; }
 colors() { for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done }
 
@@ -60,7 +61,7 @@ f () { find . -name "*$@*" -print; }
 fs () { find . -name "$@"'*' -print | grep -v node_ | grep -v .git; }
 fe () { find . -name '*'"$@" -print | grep -v node_ | grep -v .git; }
 pf () { local home=$(ps aux | grep "$@" | grep -v grep); [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home"; }
-duck () { du -ckhd ${2:-1} ${1:-.} | sort -n }
+duck () { du -ckhd ${2:-1} ${1:-.} | sort -h }
 
 sshc () { ssh $SSHNAME; }
 sscp () { scp $SSHNAME:$@ }
