@@ -68,7 +68,7 @@ sscp () { scp $SSHNAME:$@ }
 tunnel ()
 {
     kill $(pf "ssh.*$1" | awk '{print $2}') > /dev/null 2>&1
-    ssh -fgNL $1:127.0.0.1:$1 $SSHNAME -i ~/.ssh/id_rsa
+    ssh -fgNL $1:127.0.0.1:$1 $SSHNAME
 }
 
 open-repo () { REPO_URL=$(git config remote.origin.url); open "${${REPO_URL/git@github.com:/https://github.com/}%%.git}"; }
