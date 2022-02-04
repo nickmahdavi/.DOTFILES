@@ -35,6 +35,8 @@ alias zload="source $ZSHRC"
 colors() { for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done }
 
 alias l="ls -1Frt"
+alias ls="ls --color=always"
+alias ll="ls -AFGhlprt"
 alias grep="grep --color=always"
 
 alias g="git"
@@ -42,26 +44,19 @@ alias pip="pip3"
 alias python="python3"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    alias ls="ls -G"
-    alias ll="ls -AFhlOprt"
+    alias ls="gls --color=always"
     alias tr="gtr"
     alias sort="gsort"
-    alias gcc="gcc-$gversion"
-    alias g++="g++-$gversion"
-    alias c++="c++-$gversion"
     alias locate="locate -i"
-else
-    alias ls="ls --color=always"
-    alias ll="ls -AFGhlprt"
 fi
 
 f () { find . -name "*$@*" -print; }
 fs () { find . -name "$@"'*' -print | grep -v node_ | grep -v .git; }
 fe () { find . -name '*'"$@" -print | grep -v node_ | grep -v .git; }
 pf () { local home=$(ps aux | grep "$@" | grep -v grep); [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home"; }
-duck () { du -ckhd ${2:-1} ${1:-.} | sort -h }
+duck () { du -ckhd ${2:-1} ${1:-.} | sort -rh }
 
-sshc () { ssh $SSHNAME; }
+alias sshc="ssh $SSHNAME"
 sscp () { scp $SSHNAME:$@ }
 tunnel ()
 {
