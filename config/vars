@@ -32,8 +32,6 @@ alias ip="ipconfig getifaddr en0"
 alias eip="curl ifconfig.me; echo"
 alias attach="tmux attach -t"
 alias zload="source $ZSHRC"
-alias notebook="nohup jupyter notebook > /dev/null 2>&1 & disown; jupyter notebook list"
-jkill () { pkill -f jupyter || echo "No running notebooks"; }
 colors() { for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done }
 
 alias l="ls -1Frt"
@@ -71,6 +69,10 @@ tunnel ()
     ssh -fgNL $1:127.0.0.1:$1 $SSHNAME
 }
 
+alias jbook="nohup jupyter notebook > /dev/null 2>&1 & disown; jupyter notebook list"
+alias jlist="jupyter notebook list"
+jkill () { pkill -f jupyter || echo "No running notebooks"; }
+
 open-repo () { REPO_URL=$(git config remote.origin.url); open "${${REPO_URL/git@github.com:/https://github.com/}%%.git}"; }
 
 unactivate () { [ ! -z $(command -v deactivate) ] && deactivate; }
@@ -104,11 +106,11 @@ open ()
 
 sudo ()
 {
-    local first=$1
-    if type $first 2>/dev/null | grep -q 'function'; then
-        shift && command sudo zsh -c "$(declare -f $first);$first $*"
-    elif type $first 2>/dev/null | grep -q 'alias'; then
-        alias sudo='\sudo '
+    if type $1 2>/dev/null | grep -q 'function'; then
+        local arg1=$1
+        shift && command sudo zsh -c "$(declare -f $arg1);$arg1 $*"
+    elif type $1 2>/dev/null | grep -q 'alias'; then
+        alias sudo='sudo '
         eval "sudo $@"
     else
         command sudo "$@"
@@ -116,18 +118,17 @@ sudo ()
 }
 
 vim-pkg () {
-    local wdir=$(pwd)
     if [ -z "$1" ]; then
         echo "Must pass a package url"
     elif [ "$1" = "update" ]; then
         cd ~/.vim && git submodule update --recursive --remote
-        cd $wdir
+        cd --
     elif [ "$1" = "list" ]; then
         /bin/ls -1 $VPKG
     else
         cd $VPKG
         git submodule add -b master "$1"
-        cd $wdir
+        cd --
     fi
 }
 
