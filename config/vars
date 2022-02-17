@@ -14,7 +14,7 @@ export HOMEBREW_AUTO_UPDATE_SECS=86400
 export ZSHRC=~/.zshrc
 export VIMRC=~/.vim/vimrc
 export VPKG=~/.vim/pack/bundle/start
-export DOT=~/.DOTFILES
+export DOTFILES=~/.DOTFILES
 export VAR=~/.vars
 
 export EDITOR=vim
@@ -32,6 +32,7 @@ alias ip="ipconfig getifaddr en0"
 alias eip="curl ifconfig.me; echo"
 alias attach="tmux attach -t"
 alias zload="source $ZSHRC"
+alias dot="cd $DOTFILES"
 colors() { for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done }
 
 alias l="ls -1Frt"
@@ -53,11 +54,13 @@ fi
 f () { find . -name "*$@*" -print; }
 fs () { find . -name "$@"'*' -print | grep -v node_ | grep -v .git; }
 fe () { find . -name '*'"$@" -print | grep -v node_ | grep -v .git; }
-pf () { local home=$(ps aux | grep "$@" | grep -v grep); [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home"; }
 duck () { du -ckhd ${2:-1} ${1:-.} | sort -rh }
+pf () {
+    local home=$(ps aux | grep "$@" | grep -v grep)
+    [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home";
+}
 
 alias sshc="ssh $SSHNAME"
-sscp () { scp $SSHNAME:$@ }
 tunnel ()
 {
     kill $(pf "ssh.*$1" | awk '{print $2}') > /dev/null 2>&1
@@ -66,7 +69,7 @@ tunnel ()
 
 alias jbook="nohup jupyter notebook > /dev/null 2>&1 & disown; jupyter notebook list"
 alias jlist="jupyter notebook list"
-jkill () { pkill -f jupyter || echo "No running notebooks"; }
+alias jkill="pkill -f jupyter || echo 'No running notebooks'"
 
 open-repo () { REPO_URL=$(git config remote.origin.url); open "${${REPO_URL/git@github.com:/https://github.com/}%%.git}"; }
 
@@ -103,7 +106,7 @@ sudo ()
 {
     if type $1 2>/dev/null | grep -q 'function'; then
         local arg1=$1
-        shift && command sudo zsh -c "$(declare -f $arg1);$arg1 $*"
+        shift && command sudo zsh -c "$(declare -f $arg1); $arg1 $*"
     elif type $1 2>/dev/null | grep -q 'alias'; then
         alias sudo='sudo '
         eval "sudo $@"

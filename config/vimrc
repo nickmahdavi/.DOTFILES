@@ -27,9 +27,6 @@ nmap <leader>w :w!<cr>
 " (useful for handling the permission-denied error)
 command W w !sudo tee % > /dev/null
 
-" Smart case
-set smartcase
-
 " Timeout on esc
 set ttimeout
 set ttimeoutlen=100
@@ -184,9 +181,6 @@ au BufRead,BufNewFile Makefile* set noexpandtab
 " Mouse mode always on
 set mouse=a
 
-" Go to my notes shit
-nnoremap <Leader>no :cd /Users/nicmahd/Desktop/school/notes<CR>
-
 " Turn off search highlight
 " map <Leader><space> :noh<cr>
 map <Leader>/ :noh<cr>
@@ -225,8 +219,6 @@ map <leader>tm :tabmove
 " map <leader>h :tabprevious<cr>
 map <Leader>s :ls<CR>
 " map <Leader>g :e#<CR>
-map <Leader>g :Goyo<CR>
-map <Leader>l :Limelight<CR>
 
 " Clean this up
 nnoremap <Leader>1 :1b<CR>
@@ -241,13 +233,15 @@ nnoremap <Leader>9 :9b<CR>
 nnoremap <Leader>0 :10b<CR>
 
 " Edit the vimrc
-nnoremap <Leader>vr :e ~/.vimrc<CR>
+nnoremap <Leader>ve :e ~/.vimrc<CR>
+
+" Reload vimrc
+nnoremap <Leader>vr :source ~/.vimrc<CR>
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
 nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
 au TabLeave * let g:lasttab = tabpagenr()
-
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
@@ -305,8 +299,8 @@ endif
 " jk returns to normal mode
 let g:easyescape_chars = { "j": 1, "k": 1 }
 let g:easyescape_timeout = 100
-cnoremap jk <ESC>
 cnoremap kj <ESC>
+cnoremap jk <ESC>
 
 " Semicolon acts as colon
 vnoremap ; :
@@ -496,32 +490,5 @@ let g:airline#extensions#tabline#show_tab_nr = 1
 let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
 let g:airline#extensions#tabline#excludes = ['branches', 'index']
 let g:airline#extensions#tabline#buffer_idx_mode = 1
-
-" Color name (:help cterm-colors) or ANSI code
-let g:limelight_conceal_ctermfg = 'gray'
-let g:limelight_conceal_ctermfg = 240
-
-" Color name (:help gui-colors) or RGB color
-let g:limelight_conceal_guifg = 'DarkGray'
-let g:limelight_conceal_guifg = '#777777'
-
-" Default: 0.5
-let g:limelight_default_coefficient = 0.7
-
-" Number of preceding/following paragraphs to include (default: 0)
-let g:limelight_paragraph_span = 1
-
-" Beginning/end of paragraph
-"   When there's no empty line between the paragraphs
-"   and each paragraph starts with indentation
-let g:limelight_bop = '^\s'
-let g:limelight_eop = '\ze\n^\s'
-
-" Highlighting priority (default: 10)
-"   Set it to -1 not to overrule hlsearch
-let g:limelight_priority = -1
-
-autocmd! User GoyoEnter Limelight
-autocmd! User GoyoLeave Limelight!
 
 autocmd vimenter * highlight Normal guibg=NONE
