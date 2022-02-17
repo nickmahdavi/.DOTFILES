@@ -73,9 +73,10 @@ alias jkill="pkill -f jupyter || echo 'No running notebooks'"
 
 open-repo () { REPO_URL=$(git config remote.origin.url); open "${${REPO_URL/git@github.com:/https://github.com/}%%.git}"; }
 
-unactivate () { [ ! -z $(command -v deactivate) ] && deactivate; }
-activate ()
+venv_check ()
 {
+    [ ! -z $VIRTUAL_ENV ] && [[ $PWD/ = $VIRTUAL_ENV/* ]] && return 0
+    [ ! -z $(command -v deactivate) ] && deactivate
     declare -a paths=("bin" "env/bin" "venv/bin" "")
     for p in $paths; do
         [ -f ./"$p"/activate ] && { source ./"$p"/activate; return 0; }
@@ -83,13 +84,8 @@ activate ()
 }
 cd ()
 {
-    local dir=$PWD
     builtin cd "$@"
-
-    [[ $(pwd) == $(dirname "$VIRTUAL_ENV")/* ]] && return 0
-
-    [[ -d ./env ]] && unactivate || activate
-
+    venv_check
     return 0
 }
 open ()

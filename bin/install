@@ -8,9 +8,8 @@ DIR=$(pwd)
 
 git submodule update --init --recursive --remote --merge
 
-while getopts "pc" o; do
+while getopts "c" o; do
     case "$o" in
-        p) p=1;;
         c) c=1;;
     esac
 done
@@ -22,23 +21,17 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     fi
 
-    if [[ "$p" ]]; then
-        /opt/homebrew/bin/brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh
-        # cmake emacs gnu-chess htop nginx opencv tree
-    fi
+    /opt/homebrew/bin/brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh
 
     if [[ "$c" ]]; then
-        /opt/homebrew/bin/brew cask install apple-juice discord dozer eqmac flux google-backup-and-sync google-chrome iterm2 karabiner-elements overkill selfcontrol slack spotify the-unarchiver telegram visual-studio-code
-        # appcleaner docker eqmac firefox gimp latest omnidisksweeper ticktick vnc-viewer zotero
+        /opt/homebrew/bin/brew cask install discord dozer flux google-drive google-chrome iterm2 karabiner-elements slack spotify the-unarchiver telegram visual-studio-code
+        # appcleaner latest omnidisksweeper overkill selfcontrol ticktick vnc-viewer zotero
     fi
 
 elif [[ "$OSTYPE" == "linux"* ]]; then
-    if [[ "$p" ]]; then
-        sudo apt install git pkg-config python3-pip tmux vim zsh # emacs htop gnuchess
-    fi
+    sudo apt update
+    sudo apt install git pkg-config python3-pip tmux vim zsh
 fi
-
-# sudo ln -sfv "$DIR"/zsh/powerlevel10k/powerlevel10k.zsh-theme /usr/local/share/zsh/site-functions/prompt_powerlevel10k_setup
 
 echo "Done"
 
