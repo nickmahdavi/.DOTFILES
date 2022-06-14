@@ -29,7 +29,7 @@ mov $DIR/zsh
 mov $DIR/vim
 mov $DIR/tmux/.tmux.conf
 mov $DIR/bin
-bacup ~/.ssh/config && ln -sfv $DIR/ssh/config ~/.ssh/config
+# bacup ~/.ssh/config && ln -sfv $DIR/ssh/config ~/.ssh/config
 
 cd $DIR/config
 for f in *; do mov $DIR/config/$f; done

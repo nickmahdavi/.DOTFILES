@@ -29,7 +29,5 @@
     ccontinue = rebase --continue
 
     open = "!zsh -c \"source ~/.zshrc; open-repo\""
-[credential]
-    helper = osxkeychain
 [core]
     filemode = false
