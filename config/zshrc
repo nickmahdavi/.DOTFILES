@@ -20,6 +20,8 @@ fi
 
 # Files to source
 [ -f ~/.vars ] && source ~/.vars
+[ -f ~/.vars.local ] && source ~/.vars.local
+[ -x $(command -v thefuck) ] && eval $(thefuck --alias --enable-experimental-instant-mode)
 
 #----------------------------------------#
 #                  ZSH                   #
@@ -38,8 +40,6 @@ DISABLE_CORRECTION="true"
 
 #----- zsh prompt -----#
 
-# autoload -U promptinit; promptinit
-# prompt powerlevel10k
 source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 source ~/.p10k.zsh
 

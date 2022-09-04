@@ -3,7 +3,6 @@
 # nickmahda@gmail.com
 
 cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
-
 DIR=$(pwd)
 
 git submodule update --init --recursive --remote --merge

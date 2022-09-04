@@ -1,6 +1,4 @@
-# This is Git's per-user configuration file.
 [user]
-# Please adapt and uncomment the following lines:
     name = nickmahd
     email = nickmahda@gmail.com
 [alias]
@@ -8,26 +6,30 @@
     ldiff = diff HEAD\\^ HEAD
     lgb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches
 
-    force-pull = "!git checkout master; git branch backup; git stash; git fetch --all; git reset --hard origin/master; echo \"Old changes saved in branch backup and stashed. Please delete once finished.\""
-    up = "!f () { git pull --rebase --prune \"$@\" && git submodule update --recursive --remote --merge }; f"
-    sup = submodule update --recursive --remote --merge
+    force-pull = "!git checkout master; git stash; git switch -C backup; git stash pop; git switch master; git fetch --all; git reset --hard origin/master; git clean -fd; echo \"Old changes saved in branch backup. SAVE THESE BEFORE RUNNING THIS COMMAND AGAIN.\""
+    up = "!f () { git pull --rebase --prune \"$@\" && git sup }; f"
+    sup = submodule update --init --recursive --remote --merge
 
-    co = checkout
-    com = checkout master
+    ch = checkout
+    sw = switch
+    br = branch
 
     a = add -A
     c = commit -m
+    nc = commit --allow-empty-message -m ''
     p = "!git push -u origin $(git rev-parse --abbrev-ref HEAD)"
+
     ac = "!f () { git a && git c \"$@\"; }; f "
     cp = "!f () { git c \"$@\" && git p; }; f"
-    acp = "!f () { git a && git c \"$@\" && git p; }; f"
+    acp = "!f () { git add -A && git commit -m \"$@\" && git p; }; f"
 
-    save = !git add -A && git commit -m 'SAVEPOINT'
-    wip = commit -am "WIP"
     amend = commit -a --amend
+    cap = commit -a --amend -C HEAD
     undo = reset HEAD~1 --mixed
     ccontinue = rebase --continue
 
     open = "!zsh -c \"source ~/.zshrc; open-repo\""
 [core]
     filemode = false
+[init]
+    defaultBranch = master

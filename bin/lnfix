@@ -4,12 +4,20 @@
 
 cd $(dirname $(realpath $0))/..
 DIR=$(pwd)
+IGNORE=("p10k_backup.zsh" "ssh_config" "iterm_config.plist")
+
+ignore () {
+    for f in "${IGNORE[@]}"; do
+        [[ $f == "$1" ]] && return 0
+    done
+    return 1
+}
 
 bacup () {
     if [ -e ~/."$1" ]; then
         if [[ -L ~/."$1" ]]; then
             rm ~/."$1"
-        elif ! [[ -z $1 ]]; then
+        elif ! [[ -z $1 ]] && ! ignore $1; then
             mkdir -pv $DIR/backup
             mv -v ~/."$1" $DIR/backup/"$1"
         fi
@@ -19,17 +27,16 @@ bacup () {
 mov () {
     name=$(sed -E "s/^.*(\/|\/\.)//" <<< "$1")
     bacup $name
-    ln -sfv $1 ~/.$name
+    ignore $name && echo "Skipping $name" || ln -sfv $1 ~/.$name
 }
 
-mkdir -p ~/.ssh
+mkdir -pv ~/.ssh
 touch ~/.vars.local
 
 mov $DIR/zsh
 mov $DIR/vim
 mov $DIR/tmux/.tmux.conf
 mov $DIR/bin
-# bacup ~/.ssh/config && ln -sfv $DIR/ssh/config ~/.ssh/config
 
 cd $DIR/config
 for f in *; do mov $DIR/config/$f; done

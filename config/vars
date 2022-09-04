@@ -2,78 +2,76 @@
 #                VARIABLES               #
 #----------------------------------------#
 
-export PATH=$PATH:~/.bin
-export PATH=$PATH:~/.local/bin
+pathadd () { export PATH=$PATH:$1; }
+addpath () { export PATH=$1:$PATH; }
 
-source ~/.vars.local
+pathadd ~/.bin
+pathadd ~/.local/bin
 
-export SSHNAME=home
-
-export HOMEBREW_AUTO_UPDATE_SECS=86400
+# Mac stuff
+if [[ $OSTYPE == "darwin*" ]]; then
+    addpath /usr/local/opt/coreutils/libexec/gnubin
+    export HOMEBREW_AUTO_UPDATE_SECS=86400
+fi
 
 export ZSHRC=~/.zshrc
 export VIMRC=~/.vim/vimrc
 export VPKG=~/.vim/pack/bundle/start
-export DOTFILES=~/.DOTFILES
+export DOT=~/.DOTFILES
 export VAR=~/.vars
 
 export EDITOR=vim
 
-export gversion=9
-
-[ -d "/mnt/c" ] && export C=/mnt/c
-[ -d "/mnt/d" ] && export D=/mnt/d
+if [ -d "/mnt" ]; then for dir in $(/bin/ls /mnt | grep -v 'wsl'); do
+    export ${dir:u}="/mnt/$dir"
+done; fi
 
 #----------------------------------------#
-#            ALIASES/FUNCTIONS           #
+#                 ALIASES                #
 #----------------------------------------#
 
-alias ip="ipconfig getifaddr en0"
-alias eip="curl ifconfig.me; echo"
+alias eip="hostname -I"
 alias attach="tmux attach -t"
 alias zload="source $ZSHRC"
-alias dot="cd $DOTFILES"
-
-colors() { for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done }
+alias dot="cd $DOT"
 
 alias l="ls -1Frt"
+alias lc="$(command -v ls)"
 alias ls="ls --color=always"
 alias ll="ls -AFGhlprt"
 alias grep="grep --color=always"
+alias locate="locate -i"
 
-alias g="git"
+f () { find . -name "*$@*" -print }
+duck () { du -ckhd ${2:-1} ${1:-.} | sort -rh }
+pf () { ps aux | grep "$@" | grep -v grep }
+
+#----- SSH -----#
+
+export SSHNAME=home
+
+alias sshc="ssh $SSHNAME"
+tunnel () { ssh -fgNL $1:127.0.0.1:$1 $SSHNAME }
+tkill () { kill $(pf "ssh.*$1" | awk '{print $2}') }
+
+#----- Python -----#
+
 alias p="pip3"
 alias pi="pip install"
 alias py3="python3"
-
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    alias ls="gls --color=always"
-    alias tr="gtr"
-    alias sort="gsort"
-    alias locate="locate -i"
-fi
-
-f () { find . -name "*$@*" -print; }
-fs () { find . -name "$@"'*' -print | grep -v node_ | grep -v .git; }
-fe () { find . -name '*'"$@" -print | grep -v node_ | grep -v .git; }
-duck () { du -ckhd ${2:-1} ${1:-.} | sort -rh }
-pf () {
-    local home=$(ps aux | grep "$@" | grep -v grep)
-    [[ -z $(echo $home) ]] && echo "No local results found" || echo "$home";
-}
-
-alias sshc="ssh $SSHNAME"
-tunnel ()
-{
-    kill $(pf "ssh.*$1" | awk '{print $2}') > /dev/null 2>&1
-    ssh -fgNL $1:127.0.0.1:$1 $SSHNAME
-}
 
 alias jbook="nohup jupyter notebook > /dev/null 2>&1 & disown; jupyter notebook list"
 alias jlist="jupyter notebook list"
 alias jkill="pkill -f jupyter || echo 'No running notebooks'"
 
-open-repo () { REPO_URL=$(git config remote.origin.url); open "${${REPO_URL/git@github.com:/https://github.com/}%%.git}"; }
+#----- Git -----#
+
+alias g="git"
+
+open-repo () {
+    REPO_URL=$(git config remote.origin.url)
+    open "${${REPO_URL/git@github.com:/https://github.com/}%%.git}"
+}
 
 venv_check ()
 {
@@ -84,34 +82,8 @@ venv_check ()
         [ -f ./"$p"/activate ] && { source ./"$p"/activate; return 0; }
     done
 }
-cd ()
-{
-    builtin cd "$@"
-    venv_check
-    return 0
-}
-open ()
-{
-    if [[ "$@" ]]; then
-        command open "$@" 2> /dev/null || explorer.exe "$@" 2> /dev/null
-    else
-        command open . 2> /dev/null || explorer.exe . 2> /dev/null
-    fi
-    return 0
-}
 
-sudo ()
-{
-    if type $1 2>/dev/null | grep -q 'function'; then
-        local arg1=$1
-        shift && command sudo zsh -c "$(declare -f $arg1); $arg1 $*"
-    elif type $1 2>/dev/null | grep -q 'alias'; then
-        alias sudo='sudo '
-        eval "sudo $@"
-    else
-        command sudo "$@"
-    fi
-}
+#----- Misc utilities -----#
 
 vim-pkg () {
     if [ -z "$1" ]; then
@@ -128,3 +100,36 @@ vim-pkg () {
     fi
 }
 
+colors() {
+    for i in {0..255}; do
+        print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'};
+    done
+}
+
+#----- Builtin overrides -----#
+
+cd () {
+    builtin cd "$@" && venv_check
+    return 0
+}
+
+open () {
+    if [[ "$@" ]]; then
+        command open "$@" 2> /dev/null || explorer.exe "$@" 2> /dev/null
+    else
+        command open . 2> /dev/null || explorer.exe . 2> /dev/null
+    fi
+    return 0
+}
+
+sudo () {
+    if type $1 2>/dev/null | grep -q 'function'; then
+        local arg1=$1
+        shift && command sudo zsh -c "$(declare -f $arg1); $arg1 $*"
+    elif type $1 2>/dev/null | grep -q 'alias'; then
+        alias sudo='sudo '
+        eval "sudo $@"
+    else
+        command sudo "$@"
+    fi
+}
