@@ -1,0 +1,85 @@
+#!/bin/bash
+
+# nickmahda@gmail.com
+
+cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
+DIR=$(pwd)
+
+git submodule update --init --recursive --remote --merge
+
+while getopts "c" o; do
+    case "$o" in
+        c) c=1;;
+    esac
+done
+
+./lnfix -b
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    if [[ -z "$(which brew)" ]]; then
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    fi
+
+    /opt/homebrew/bin/brew install coreutils gcc pkg-config python tmux vim youtube-dl zsh
+
+    if [[ "$c" ]]; then
+        /opt/homebrew/bin/brew cask install discord dozer flux google-drive google-chrome iterm2 karabiner-elements slack spotify the-unarchiver telegram visual-studio-code
+        # appcleaner latest omnidisksweeper overkill selfcontrol ticktick vnc-viewer zotero
+    fi
+
+elif [[ "$OSTYPE" == "linux"* ]]; then
+    sudo apt update
+    TEMP=$(mktemp -d)
+
+    sudo apt install -y git pkg-config cargo cmake python3 tmux htop vim zsh telegram-desktop \
+                        redshift redshift-gtk wget gpg
+
+    # Alacritty
+    apt install -y libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev
+    git clone https://github.com/alacritty/alacritty.git $TEMP/alacritty
+    cd $TEMP/alacritty
+    if cargo build --release; then
+        sudo cp -r . /usr/share
+        sudo cp target/release/alacritty /usr/local/bin
+        sudo desktop-file-install extra/linux/Alacritty.desktop
+        sudo update-desktop-database
+    fi
+    cd $DIR
+
+    # AppImageLauncher
+    sudo apt install software-properties-common
+    sudo add-apt-repository ppa:appimagelauncher-team/stable && sudo apt update
+    sudo apt install -y appimagelauncher
+    mkdir ~/Applications
+
+    # Discord
+    wget -qO $TEMP/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb" &&
+    sudo apt install -y $TEMP/discord.deb
+
+    # Chrome
+    wget -qO $TEMP/chrome.deb "wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" &&
+    sudo apt install -y $TEMP/discord.deb
+
+    # Obsidian
+    latest=$(curl -s https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest)
+    wget -qO $TEMP/obsidian.AppImage $(echo $latest | grep "browser_download_url.*AppImage" | grep -v "arm" | cut -d : -f 2,3 | tr -d \")
+    ail-cli integrate $TEMP/obsidian.AppImage
+
+    # VSCode
+    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > $TEMP/ms.gpg
+    sudo install -D -o root -g root -m 644 ms.gpg /etc/apt/keyrings/packages.microsoft.gpg
+    sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+    sudo apt update
+    sudo apt install code
+
+    ### Fonts ###
+
+    mkdir -p ~/.local/share/fonts
+    wget -qP ~/.local/share/fonts/ "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/IBMPlexMono/Mono/complete/Blex%20Mono%20Nerd%20Font%20Complete%20Mono.ttf"
+    fc-cache -fv
+
+fi
+
+echo "Done"
+
+cd "$DIR" || exit

@@ -22,9 +22,9 @@ export VAR=~/.vars
 
 export EDITOR=vim
 
-if [ -d "/mnt" ]; then for dir in $(/bin/ls /mnt | grep -v 'wsl'); do
-    export ${dir:u}="/mnt/$dir"
-done; fi
+# if [ -d "/mnt" ]; then for dir in $(/bin/ls /mnt | grep -v 'wsl'); do
+#     export ${dir:u}="/mnt/$dir"
+# done; fi
 
 #----------------------------------------#
 #                 ALIASES                #
@@ -73,16 +73,6 @@ open-repo () {
     open "${${REPO_URL/git@github.com:/https://github.com/}%%.git}"
 }
 
-venv_check ()
-{
-    [ ! -z $VIRTUAL_ENV ] && [[ $PWD/ = $VIRTUAL_ENV/* ]] && return 0
-    [ ! -z $(command -v deactivate) ] && deactivate
-    declare -a paths=("bin" "env/bin" "venv/bin" "")
-    for p in $paths; do
-        [ -f ./"$p"/activate ] && { source ./"$p"/activate; return 0; }
-    done
-}
-
 #----- Misc utilities -----#
 
 vim-pkg () {
@@ -107,11 +97,6 @@ colors() {
 }
 
 #----- Builtin overrides -----#
-
-cd () {
-    builtin cd "$@" && venv_check
-    return 0
-}
 
 open () {
     if [[ "$@" ]]; then
