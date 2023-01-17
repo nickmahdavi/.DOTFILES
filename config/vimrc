@@ -212,11 +212,8 @@ map <leader>tm :tabmove
 
 " Move between tabs and buffers
 " map <leader>j :tabnext<cr>
-" map <leader>k :tabprevious<cr>
 " map <leader>l :bnext<cr>
-" map <leader>h :bprevious<cr>
-" map <leader>l :tabnext<cr>
-" map <leader>h :tabprevious<cr>
+" etc
 map <Leader>s :ls<CR>
 " map <Leader>g :e#<CR>
 
@@ -292,10 +289,6 @@ let &t_SI = "\e[5 q"
 let &t_EI = "\e[2 q"
 endif
 
-"Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-" map <space> /
-" map <c-space> ?
-
 " jk returns to normal mode
 let g:easyescape_chars = { "j": 1, "k": 1 }
 let g:easyescape_timeout = 100
@@ -328,6 +321,10 @@ nmap ∆ mz:m+<cr>`z
 nmap ˚ mz:m-2<cr>`z
 vmap ∆ :m'>+<cr>`<my`>mzgv`yo`z
 vmap ˚ :m'<-2<cr>`>my`<mzgv`yo`z
+
+" I hate windows
+execute "set <M-j>=j"
+execute "set <M-k>=k"
 
 if has("mac") || has("macunix")
 nmap <D-j> <M-j>
