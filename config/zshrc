@@ -21,7 +21,7 @@ fi
 # Files to source
 [ -f ~/.vars ] && source ~/.vars
 [ -f ~/.vars.local ] && source ~/.vars.local
-[ -x $(command -v thefuck) ] && eval $(thefuck --alias) #--enable-experimental-instant-mode)
+[ -x $(command -v thefuck) ] && eval $(thefuck --alias) # --enable-experimental-instant-mode)
 
 #----------------------------------------#
 #                  ZSH                   #

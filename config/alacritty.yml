@@ -1,0 +1,32 @@
+font:
+  normal:
+    family: "Blex Mono Nerd Font Mono"
+  size: 11.0
+
+colors:
+  primary:
+    background: '0x1b1b1b'
+    foreground: '0xf0f0f0'
+  cursor:
+    text: '0xffffff'
+  normal:
+    black: '0x000000'
+    blue: '0x57c7ff'
+    cyan: '0x9aedfe'
+    green: '0x5af78e'
+    purple: '0xff6ac1'
+    red: '0xff5c57'
+    white: '0xf1f1f0'
+    yellow: '0xf3f99d'
+  bright:
+    black: '0x686767'
+    blue: '0x57c7ff'
+    cyan: '0x9aedfe'
+    green: '0x5af78e'
+    purple: '0xff6ac1'
+    red: '0xff5c57'
+    white: '0xf1f1f0'
+    yellow: '0xf3f99d'
+
+key_bindings:
+  - { key: N, mods: Control|Shift, action: SpawnNewInstance }
