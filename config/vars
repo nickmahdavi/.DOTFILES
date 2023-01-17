@@ -5,23 +5,20 @@
 export PATH=$PATH:~/.bin
 export PATH=$PATH:~/.local/bin
 
-# Mac stuff
-if [[ $OSTYPE == "darwin"* ]]; then
+[[ $OSTYPE == "darwin"* ]] && export IS_MAC=true
+
+if $IS_MAC; then
     export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH
     export HOMEBREW_AUTO_UPDATE_SECS=86400
 fi
 
 export ZSHRC=~/.zshrc
-export VIMRC=~/.vim/vimrc
-export VPKG=~/.vim/pack/bundle/start
 export DOT=~/.DOTFILES
 export VAR=~/.vars
 
-export EDITOR=vim
-
-# if [ -d "/mnt" ]; then for dir in $(/bin/ls /mnt | grep -v 'wsl'); do
-#     export ${dir:u}="/mnt/$dir"
-# done; fi
+if [ -d "/mnt" ]; then for dir in $(/bin/ls /mnt | grep -v 'wsl'); do
+    export ${dir:u}="/mnt/$dir"
+done; fi
 
 #----------------------------------------#
 #                 ALIASES                #
@@ -29,12 +26,12 @@ export EDITOR=vim
 
 alias eip="curl ifconfig.me"
 alias iip="hostname -I"
-alias attach="tmux attach -t"
+alias att="tmux attach -t"
 alias zload="source $ZSHRC"
 alias dot="cd $DOT"
 
 alias l="ls -1Frt"
-alias lc="$(command ls)"
+alias lc="command ls"
 alias ls="ls --color=always"
 alias ll="ls -AFGhlprt"
 alias grep="grep --color=always"
@@ -46,9 +43,17 @@ pf () { ps aux | grep "$@" | grep -v grep }
 
 #----- SSH -----#
 
-export SSHNAME=home
+SSHNAME=home
+alias sshc=ssh $SSHNAME
 
-alias sshc="ssh $SSHNAME"
+wifi_get () {
+    if $IS_MAC; then
+        return "$(/Sy*/L*/Priv*/Apple8*/V*/C*/R*/airport -I | awk '/ SSID:/ {print $2}')"
+    else
+        return "$(iwgetid -r)"
+    fi
+}
+
 tunnel () { ssh -fgNL $1:127.0.0.1:$1 $SSHNAME }
 tkill () { kill $(pf "ssh.*$1" | awk '{print $2}') }
 
@@ -70,7 +75,11 @@ open-repo () {
     open "${${REPO_URL/git@github.com:/https://github.com/}%%.git}"
 }
 
-#----- Misc utilities -----#
+#----- Vim -----#
+
+export VIMRC=~/.vim/vimrc
+export VPKG=~/.vim/pack/bundle/start
+export EDITOR=vim
 
 vim-pkg () {
     if [ -z "$1" ]; then
@@ -85,12 +94,6 @@ vim-pkg () {
         git submodule add -b master "$1"
         cd --
     fi
-}
-
-colors() {
-    for i in {0..255}; do
-        print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'};
-    done
 }
 
 #----- Builtin overrides -----#
@@ -113,4 +116,12 @@ sudo () {
     else
         command sudo "$@"
     fi
+}
+
+#----- Misc -----#
+
+colors() {
+    for i in {0..255}; do
+        print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'};
+    done
 }
