@@ -2,15 +2,12 @@
 #                VARIABLES               #
 #----------------------------------------#
 
-pathadd () { export PATH=$PATH:$1; }
-addpath () { export PATH=$1:$PATH; }
-
-pathadd ~/.bin
-pathadd ~/.local/bin
+export PATH=$PATH:~/.bin
+export PATH=$PATH:~/.local/bin
 
 # Mac stuff
-if [[ $OSTYPE == "darwin*" ]]; then
-    addpath /usr/local/opt/coreutils/libexec/gnubin
+if [[ $OSTYPE == "darwin"* ]]; then
+    export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH
     export HOMEBREW_AUTO_UPDATE_SECS=86400
 fi
 
@@ -43,7 +40,7 @@ alias grep="grep --color=always"
 alias locate="locate -i"
 
 f () { find . -name "*$@*" -print }
-duck () { du -ckhd ${2:-1} ${1:-.} | sort -rh }
+duck () { du -ckhd ${2:-1} ${1:-.} | sort -h }
 pf () { ps aux | grep "$@" | grep -v grep }
 
 #----- SSH -----#
@@ -56,9 +53,8 @@ tkill () { kill $(pf "ssh.*$1" | awk '{print $2}') }
 
 #----- Python -----#
 
-alias p="pip3"
-alias pi="pip install"
-alias py3="python3"
+alias pip="pip3"
+alias python="python3"
 
 alias jbook="nohup jupyter notebook > /dev/null 2>&1 & disown; jupyter notebook list"
 alias jlist="jupyter notebook list"
