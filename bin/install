@@ -23,8 +23,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     /opt/homebrew/bin/brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh
 
     if [[ "$c" ]]; then
-        /opt/homebrew/bin/brew cask install discord dozer flux google-drive google-chrome iterm2 karabiner-elements slack spotify the-unarchiver telegram visual-studio-code
-        # appcleaner latest omnidisksweeper overkill selfcontrol ticktick vnc-viewer zotero
+        /opt/homebrew/bin/brew install --cask discord flux google-drive google-chrome iterm2 karabiner-elements obsidian scidvsmac spotify the-unarchiver telegram visual-studio-code
+        # appcleaner dozer latest omnidisksweeper overkill selfcontrol slack ticktick vnc-viewer zotero
     fi
 
 elif [[ "$OSTYPE" == "linux"* ]]; then
