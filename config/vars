@@ -16,9 +16,9 @@ export ZSHRC=~/.zshrc
 export DOT=~/.DOTFILES
 export VAR=~/.vars
 
-if [ -d "/mnt" ]; then for dir in $(/bin/ls /mnt | grep -v 'wsl'); do
-    export ${dir:u}="/mnt/$dir"
-done; fi
+# if [ -d "/mnt" ]; then for dir in $(/bin/ls /mnt | grep -v 'wsl'); do
+#     export ${dir:u}="/mnt/$dir"
+# done; fi
 
 #----------------------------------------#
 #                 ALIASES                #
