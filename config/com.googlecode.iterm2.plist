@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Actions</key>
+	<array/>
 	<key>AllowClipboardAccess</key>
 	<true/>
 	<key>AlternateMouseScroll</key>
@@ -1584,6 +1586,48 @@
 			<integer>39</integer>
 			<key>Text</key>
 			<string></string>
+		</dict>
+		<key>0x4e-0x120000-0x2d</key>
+		<dict>
+			<key>Action</key>
+			<integer>25</integer>
+			<key>Apply Mode</key>
+			<integer>0</integer>
+			<key>Escaping</key>
+			<integer>2</integer>
+			<key>Text</key>
+			<string>New Window with Current Profile
+New Window with Current Profile</string>
+			<key>Version</key>
+			<integer>2</integer>
+		</dict>
+		<key>0x54-0x120000-0x11</key>
+		<dict>
+			<key>Action</key>
+			<integer>25</integer>
+			<key>Apply Mode</key>
+			<integer>0</integer>
+			<key>Escaping</key>
+			<integer>2</integer>
+			<key>Text</key>
+			<string>New Tab with Current Profile
+New Tab with Current Profile</string>
+			<key>Version</key>
+			<integer>2</integer>
+		</dict>
+		<key>0x54-0x1a0000-0x11</key>
+		<dict>
+			<key>Action</key>
+			<integer>25</integer>
+			<key>Apply Mode</key>
+			<integer>0</integer>
+			<key>Escaping</key>
+			<integer>2</integer>
+			<key>Text</key>
+			<string>Show Tabs in Fullscreen
+Show Tabs in Fullscreen</string>
+			<key>Version</key>
+			<integer>2</integer>
 		</dict>
 		<key>0x9-0x40000</key>
 		<dict>
@@ -6364,12 +6408,14 @@
 	<key>SeparateStatusBarsPerPane</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<false/>
+	<true/>
 	<key>ShowNewOutputIndicator</key>
 	<true/>
 	<key>ShowPaneTitles</key>
 	<false/>
 	<key>SoundForEsc</key>
+	<false/>
+	<key>StatusBarIcon</key>
 	<false/>
 	<key>StatusBarPosition</key>
 	<integer>0</integer>
