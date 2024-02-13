@@ -28,7 +28,7 @@ alias eip="curl ifconfig.me"
 alias iip="hostname -I"
 alias att="tmux attach -t"
 alias zload="source $ZSHRC"
-alias dot="cd $DOT"
+# alias dot="cd $DOT"
 
 alias l="ls -1Frt"
 alias lc="command ls"

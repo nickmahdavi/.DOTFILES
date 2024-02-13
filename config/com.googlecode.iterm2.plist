@@ -1566,6 +1566,8 @@
 	<real>565500371.01250005</real>
 	<key>DeleteProfile_selection</key>
 	<integer>0</integer>
+	<key>DetectPasswordInput</key>
+	<false/>
 	<key>DimInactiveSplitPanes</key>
 	<false/>
 	<key>DimOnlyText</key>
