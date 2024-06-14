@@ -36,6 +36,7 @@ alias ls="ls --color=always"
 alias ll="ls -AFGhlprt"
 alias grep="grep --color=always"
 alias locate="locate -i"
+alias activate=". venv/bin/activate"
 
 f () { find . -name "*$@*" -print }
 duck () { du -ckhd ${2:-1} ${1:-.} | sort -h }
@@ -109,7 +110,7 @@ open () {
 
 sudo () {
     if alias "$1" &>/dev/null; then
-        echo "$(alias $1 | sed -E 's/^$1=(.*)$/\1/')" "${@:2}"
+        $(alias $1 | sed -E "s/^$1='(.*)'$/\1/") "${@:2}"
     elif type $1 2>/dev/null | grep -q 'function'; then
         local arg1=$1
         shift && command sudo zsh -c "$(declare -f $arg1); $arg1 $*"
