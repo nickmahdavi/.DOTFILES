@@ -36,7 +36,7 @@ alias ls="ls --color=always"
 alias ll="ls -AFGhlprt"
 alias grep="grep --color=always"
 alias locate="locate -i"
-alias activate=". venv/bin/activate"
+alias activate=". ./.venv/bin/activate"
 
 f () { find . -name "*$@*" -print }
 duck () { du -ckhd ${2:-1} ${1:-.} | sort -h }
