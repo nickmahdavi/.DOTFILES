@@ -42,6 +42,11 @@ f () { find . -name "*$@*" -print }
 duck () { du -ckhd ${2:-1} ${1:-.} | sort -h }
 pf () { ps aux | grep "$@" | grep -v grep }
 
+swap () {
+    local tmpfile=$(mktemp $(dirname "$1")/XXXXXX)
+    mv "$1" "$tmpfile" && mv "$2" "$1" &&  mv "$tmpfile" "$2"
+}
+
 #----- SSH -----#
 
 SSHNAME=home
