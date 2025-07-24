@@ -49,8 +49,11 @@ swap () {
 
 #----- SSH -----#
 
-SSHNAME=home
+SSHNAME=pioneer
 alias sshc=ssh $SSHNAME
+
+alias ssh-micro="aws ec2-instance-connect ssh --instance-id $AWS_MICRO_INSTANCE_ID"
+alias ssh-server="aws ec2-instance-connect ssh --instance-id $AWS_SERVER_INSTANCE_ID"
 
 wifi_get () {
     if $IS_MAC; then
