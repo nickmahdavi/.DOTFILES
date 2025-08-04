@@ -2,4 +2,4 @@
 backup/
 vim/tmp/*
 vim/*.save
-
+zsh/cache

@@ -57,9 +57,27 @@ zstyle ':completion:*' original false
 zstyle ':completion:*' preserve-prefix '//[^/]##/'
 zstyle :compinstall filename '/home/nickmahd/.zshrc'
 
-autoload -Uz compinit
-compinit
 # End of lines added by compinstall
+
+# Compile zcompdump once per day
+autoload -Uz compinit
+zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
+if [[ $zcompdump -nt /usr/share/zsh ]] && [[ ! $zcompdump.zwc -nt $zcompdump ]]; then
+    compinit -C
+else
+    compinit -i -C
+    [[ -f "$zcompdump" && ! -f "$zcompdump.zwc" ]] && zcompile "$zcompdump"
+fi
+
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+zstyle ':completion:*' accept-exact-dirs true
+zstyle ':completion:*:approximate:*' max-errors 3
+
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*' force-list always
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 
 #----- History -----#
 
@@ -133,5 +151,30 @@ esac
 # pnpm end
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Lazy load nvm
+nvm() {
+    unset -f nvm
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+    nvm "$@"
+}
+
+# Lazy load node/npm/npx
+node() {
+    unset -f node
+    nvm use default
+    node "$@"
+}
+
+npm() {
+    unset -f npm
+    nvm use default
+    npm "$@"
+}
+
+npx() {
+    unset -f npx
+    nvm use default
+    npx "$@"
+}
