@@ -28,7 +28,7 @@ alias eip="curl ifconfig.me"
 alias iip="hostname -I"
 alias att="tmux attach -t"
 alias zload="source $ZSHRC"
-# alias dot="cd $DOT"
+alias dot="cd $DOT"
 
 alias l="ls -1Frt"
 alias lc="command ls"
@@ -49,8 +49,8 @@ swap () {
 
 #----- SSH -----#
 
-SSHNAME=pioneer
-alias sshc=ssh $SSHNAME
+SSH_QUICKNAME=pioneer
+alias sshc=ssh $SSH_QUICKNAME
 
 alias ssh-micro="aws ec2-instance-connect ssh --instance-id $AWS_MICRO_INSTANCE_ID"
 alias ssh-server="aws ec2-instance-connect ssh --instance-id $AWS_SERVER_INSTANCE_ID"
@@ -129,7 +129,7 @@ sudo () {
 
 #----- Misc -----#
 
-colors() {
+colors () {
     for i in {0..255}; do
         print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'};
     done

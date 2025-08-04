@@ -17,7 +17,7 @@ bacup () {
     if [ -e ~/."$1" ]; then
         if [[ -L ~/."$1" ]]; then
             rm ~/."$1"
-        elif ! [[ -z $1 ]] && ! ignore $1; then
+        elif ! [[ -z "$1" ]] && ! ignore "$1"; then
             mkdir -pv $DIR/backup
             mv -v ~/."$1" $DIR/backup/"$1"
         fi
@@ -25,9 +25,15 @@ bacup () {
 }
 
 mov () {
-    name=$(sed -E "s/^.*(\/|\/\.)//" <<< "$1")
+    name=$(basename "$1" | sed 's/^\.//')
+
+    if ignore $name || [[ -d "$1" ]]
+        echo "Skipping $name"
+        return
+    fi
+
     bacup $name
-    ignore $name && echo "Skipping $name" || ln -sfv $1 ~/.$name
+    ln -sfv "$1" ~/.$name
 }
 
 mkdir -pv ~/.ssh

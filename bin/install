@@ -7,25 +7,20 @@ DIR=$(pwd)
 
 git submodule update --init --recursive --remote --merge
 
-while getopts "c" o; do
-    case "$o" in
-        c) c=1;;
-    esac
-done
+#while getopts "c" o; do
+#    case "$o" in
+#        c) c=1;;
+#    esac
+#done
 
 ./lnfix -b
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     if [[ -z "$(which brew)" ]]; then
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
 
-    /opt/homebrew/bin/brew install coreutils gcc nano pkg-config python tmux vim youtube-dl zsh
-
-    if [[ "$c" ]]; then
-        /opt/homebrew/bin/brew install --cask discord flux google-drive google-chrome iterm2 karabiner-elements obsidian scidvsmac spotify the-unarchiver telegram visual-studio-code
-        # appcleaner dozer latest omnidisksweeper overkill selfcontrol slack ticktick vnc-viewer zotero
-    fi
+    brew bundle
 
 elif [[ "$OSTYPE" == "linux"* ]]; then
     sudo apt update
