@@ -27,7 +27,7 @@ bacup () {
 mov () {
     name=$(basename "$1" | sed 's/^\.//')
 
-    if ignore $name || [[ -d "$1" ]]
+    if ignore $name; then
         echo "Skipping $name"
         return
     fi

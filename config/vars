@@ -38,19 +38,19 @@ alias grep="grep --color=always"
 alias locate="locate -i"
 alias activate=". ./.venv/bin/activate"
 
-f () { find . -name "*$@*" -print }
-duck () { du -ckhd ${2:-1} ${1:-.} | sort -h }
-pf () { ps aux | grep "$@" | grep -v grep }
+f () { find . -name "*$@*" -print ; }
+duck () { du -ckhd ${2:-1} ${1:-.} | sort -h ; }
+pf () { ps aux | grep "$@" | grep -v grep ; }
 
 swap () {
     local tmpfile=$(mktemp $(dirname "$1")/XXXXXX)
-    mv "$1" "$tmpfile" && mv "$2" "$1" &&  mv "$tmpfile" "$2"
+    mv "$1" "$tmpfile" && mv "$2" "$1" && mv "$tmpfile" "$2"
 }
 
 #----- SSH -----#
 
 SSH_QUICKNAME=pioneer
-alias sshc=ssh $SSH_QUICKNAME
+alias sshc="ssh $SSH_QUICKNAME"
 
 alias ssh-micro="aws ec2-instance-connect ssh --instance-id $AWS_MICRO_INSTANCE_ID"
 alias ssh-server="aws ec2-instance-connect ssh --instance-id $AWS_SERVER_INSTANCE_ID"
@@ -63,8 +63,8 @@ wifi_get () {
     fi
 }
 
-tunnel () { ssh -fgNL $1:127.0.0.1:$1 $SSHNAME }
-tkill () { kill $(pf "ssh.*$1" | awk '{print $2}') }
+tunnel () { ssh -fgNL $1:127.0.0.1:$1 $SSHNAME ; }
+tkill () { kill $(pf "ssh.*$1" | awk '{print $2}') ; }
 
 #----- Python -----#
 
