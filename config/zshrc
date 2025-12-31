@@ -178,3 +178,10 @@ npx() {
     nvm use default
     npx "$@"
 }
+
+# bun completions
+[ -s "/Users/nick/.bun/_bun" ] && source "/Users/nick/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
