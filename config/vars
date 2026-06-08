@@ -6,6 +6,9 @@ export PATH=$PATH:~/.bin
 export PATH=$PATH:~/.local/bin
 export PATH=$PATH:~/.cargo/bin
 
+# Default to false so `if $IS_MAC` doesn't run the empty string as a null
+# command (which always succeeds) on non-Mac systems.
+export IS_MAC=false
 [[ $OSTYPE == "darwin"* ]] && export IS_MAC=true
 
 if $IS_MAC; then
@@ -33,9 +36,9 @@ alias dot="cd $DOT"
 
 alias l="ls -1Frt"
 alias lc="command ls"
-alias ls="ls --color=always"
+alias ls="ls --color=auto"
 alias ll="ls -AFGhlprt"
-alias grep="grep --color=always"
+alias grep="grep --color=auto"
 alias locate="locate -i"
 alias activate=". ./.venv/bin/activate"
 
