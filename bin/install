@@ -25,10 +25,11 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 elif [[ "$OSTYPE" == "linux"* ]]; then
     sudo apt update
     sudo apt install -y git curl wget build-essential gh htop python3-pip tmux vim zsh
+    curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
 
-# uv
-curl -LsSf https://astral.sh/uv/install.sh | sh
+# claude code
+curl -fsSL https://claude.ai/install.sh | bash
 
 # nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
