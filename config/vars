@@ -40,7 +40,7 @@ alias locate="locate -i"
 alias activate=". ./.venv/bin/activate"
 
 f () { find . -name "*$@*" -print ; }
-duck () { du -ckhd ${2:-1} ${1:-.} | sort -h ; }
+duck () { du -chd ${2:-1} ${1:-.} | sort -h ; }
 pf () { ps aux | grep "$@" | grep -v grep ; }
 
 swap () {
@@ -70,6 +70,7 @@ tkill () { kill $(pf "ssh.*$1" | awk '{print $2}') ; }
 #----- Python -----#
 
 alias pip="pip3"
+alias up="uv pip"
 alias python="python3"
 
 alias jbook="nohup jupyter notebook > /dev/null 2>&1 & disown; jupyter notebook list"

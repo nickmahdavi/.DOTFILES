@@ -30,6 +30,7 @@ fi
 
 unsetopt CORRECT
 unsetopt CORRECTALL
+unsetopt NOMATCH
 setopt AUTOCD
 setopt EXTENDEDGLOB
 setopt HIST_IGNORE_ALL_DUPS

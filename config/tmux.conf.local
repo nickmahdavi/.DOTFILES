@@ -303,3 +303,18 @@ unbind C-h
 unbind C-l
 bind -r p previous-window
 bind -r n next-window
+
+bind -n C-h select-pane -L
+bind -n C-j select-pane -D
+bind -n C-k select-pane -U
+bind -n C-l select-pane -R
+
+set -g extended-keys on
+set -as terminal-features ',*:extkeys'
+
+bind I run-shell "~/.bin/tmux-agents implode"
+bind O run-shell "~/.bin/tmux-agents explode"
+
+# So you can actually read pane titles when imploded
+set -g pane-border-status top
+set -g pane-border-format " #{pane_title} "

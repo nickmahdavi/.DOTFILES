@@ -1,5 +1,5 @@
 [user]
-    name = nickmahd
+    name = nickmahdavi
     email = nickmahda@gmail.com
 [alias]
     last = log -1 HEAD
@@ -33,3 +33,12 @@
     filemode = false
 [init]
     defaultBranch = master
+[lfs "customtransfer.xet"]
+	path = git-xet
+	args = transfer
+	concurrent = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

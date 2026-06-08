@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# tmux-agents: implode windows 0-3 into a 2x2, or explode back
+
+case "$1" in
+    in|implode)
+        # Capture window IDs upfront — survive renumber-windows
+        ids=()
+        mapfile -t ids < <(tmux list-windows -F "#{window_id}" | head -4)
+
+        # Stash window names as pane titles so explode can recover them
+        for id in "${ids[@]}"; do
+            name=$(tmux display-message -p -t "$id" "#{window_name}")
+            tmux select-pane -t "$id" -T "$name"
+        done
+
+        target="${ids[0]}"
+        for id in "${ids[@]:1}"; do
+            tmux join-pane -s "$id" -t "$target"
+        done
+
+        tmux select-layout -t "$target" tiled
+        tmux rename-window -t "$target" agents
+        ;;
+
+    out|explode)
+        mapfile -t panes < <(tmux list-panes -F "#{pane_id}|#{pane_title}")
+        first_title="${panes[0]#*|}"
+        tmux rename-window "${first_title:-agent}"
+        for line in "${panes[@]:1}"; do
+            pane_id="${line%%|*}"
+            title="${line#*|}"
+            tmux break-pane -s "$pane_id" -n "${title:-agent}"
+        done
+        ;;
+
+    *) echo "usage: $0 {implode|explode}" >&2; exit 1 ;;
+esac
