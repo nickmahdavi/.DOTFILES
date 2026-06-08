@@ -1,0 +1,44 @@
+#!/bin/bash
+# Refresh everything in place. Fast, idempotent, re-runnable any time.
+# Unlike re-running install, this never re-clones or re-downloads from scratch —
+# it lets each package manager / repo decide what actually needs upgrading.
+
+# -g also updates GUI desktop apps (apt repos + flatpak)
+while getopts "g" o; do
+    case "$o" in
+        g) g=1 ;;
+    esac
+done
+
+cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
+DIR=$(pwd)
+
+# Dotfiles submodules (p10k, vim plugins, tmux, zsh plugins)
+git -C "$DIR/.." submodule update --init --recursive --remote --merge
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # `brew bundle` already only installs what's missing; --upgrade refreshes the rest
+    brew update && brew bundle --upgrade && brew cleanup
+
+elif [[ "$OSTYPE" == "linux"* ]]; then
+    sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
+
+    if [[ "$g" ]]; then
+        # Chrome/VSCode came in via apt above; flatpak handles the rest
+        command -v flatpak > /dev/null && flatpak update -y --noninteractive
+    fi
+fi
+
+# Toolchains (each is a no-op if already current)
+command -v uv         > /dev/null && uv self update
+command -v claude     > /dev/null && claude update
+command -v rustup     > /dev/null && rustup update
+
+# nvm + node LTS
+export NVM_DIR="$HOME/.nvm"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+    \. "$NVM_DIR/nvm.sh"
+    nvm install node --reinstall-packages-from=default && nvm alias default node
+fi
+
+echo "Done"

@@ -7,11 +7,12 @@ DIR=$(pwd)
 
 git submodule update --init --recursive --remote --merge
 
-#while getopts "c" o; do
-#    case "$o" in
-#        c) c=1;;
-#    esac
-#done
+# -g also installs GUI desktop apps (skip on headless servers)
+while getopts "g" o; do
+    case "$o" in
+        g) g=1 ;;
+    esac
+done
 
 ./lnfix -b
 
@@ -26,6 +27,13 @@ elif [[ "$OSTYPE" == "linux"* ]]; then
     sudo apt update
     sudo apt install -y git curl wget build-essential gh htop python3-pip tmux vim zsh
     curl -LsSf https://astral.sh/uv/install.sh | sh
+
+    if [[ "$g" ]]; then
+        source "$DIR/_linux-apps.sh"
+        setup_apt_repos
+        install_flatpaks
+        install_nerd_font
+    fi
 fi
 
 # claude code
