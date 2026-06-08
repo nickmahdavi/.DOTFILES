@@ -58,9 +58,11 @@ alias ssh-server="aws ec2-instance-connect ssh --instance-id $AWS_SERVER_INSTANC
 
 wifi_get () {
     if $IS_MAC; then
-        return "$(/Sy*/L*/Priv*/Apple8*/V*/C*/R*/airport -I | awk '/ SSID:/ {print $2}')"
+        # `airport` was removed in recent macOS; parse system_profiler instead.
+        system_profiler SPAirPortDataType 2>/dev/null \
+            | awk '/Current Network Information/{getline; gsub(/^[ \t]+|:[ \t]*$/,""); print; exit}'
     else
-        return "$(iwgetid -r)"
+        iwgetid -r
     fi
 }
 
