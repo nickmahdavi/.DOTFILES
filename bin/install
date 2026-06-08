@@ -2,8 +2,30 @@
 
 # nickmahda@gmail.com
 
+set -euo pipefail
+
 cd "$(dirname "${BASH_SOURCE[0]}")" || exit 1
 DIR=$(pwd)
+
+if [[ "$OSTYPE" == "darwin"* ]] && ! xcode-select -p &>/dev/null; then
+    echo "Installing Xcode Command Line Tools (git/clang/make)..."
+    # makes `softwareupdate` list the CLT package as installable.
+    touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+    label=$(softwareupdate -l 2>/dev/null \
+        | grep -E 'Command Line Tools' \
+        | awk -F'*' '/\*/ {print $2}' | sed -e 's/^ *Label: //' -e 's/^ *//' \
+        | sort -V | tail -n1)
+    if [[ -n "$label" ]]; then
+        softwareupdate -i "$label" --verbose
+    else
+        # Fallback: GUI installer (rare; only if softwareupdate has no label).
+        xcode-select --install
+        echo "Finish the Command Line Tools install dialog, then re-run ./install"
+        rm -f /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+        exit 1
+    fi
+    rm -f /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+fi
 
 git submodule update --init --recursive --remote --merge
 
@@ -14,7 +36,7 @@ while getopts "g" o; do
     esac
 done
 
-./lnfix -b
+./lnfix
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     if [[ -z "$(which brew)" ]]; then
@@ -45,6 +67,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 nvm install node
+
+"$DIR/gh-setup" || echo "GitHub auth skipped/failed — run ./gh-setup later."
 
 echo "Done"
 

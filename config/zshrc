@@ -34,8 +34,9 @@ unsetopt NOMATCH
 setopt AUTOCD
 setopt EXTENDEDGLOB
 setopt HIST_IGNORE_ALL_DUPS
-setopt APPEND_HISTORY
+setopt SHARE_HISTORY
 setopt MENU_COMPLETE
+setopt INTERACTIVE_COMMENTS
 DISABLE_CORRECTION="true"
 
 #----- zsh prompt -----#

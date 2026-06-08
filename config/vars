@@ -29,7 +29,6 @@ export VAR=~/.vars
 #----------------------------------------#
 
 alias eip="curl ifconfig.me"
-alias iip="hostname -I"
 alias att="tmux attach -t"
 alias zload="source $ZSHRC"
 alias dot="cd $DOT"
@@ -41,6 +40,8 @@ alias ll="ls -AFGhlprt"
 alias grep="grep --color=auto"
 alias locate="locate -i"
 alias activate=". ./.venv/bin/activate"
+
+iip () { $IS_MAC && ipconfig getifaddr en0 || hostname -I ; }
 
 f () { find . -name "*$@*" -print ; }
 duck () { du -chd ${2:-1} ${1:-.} | sort -h ; }

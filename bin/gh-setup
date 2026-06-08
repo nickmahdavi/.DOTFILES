@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -euo pipefail
+
+if ! command -v gh &>/dev/null; then
+    echo "gh not found" >&2
+    exit 1
+fi
+
+if gh auth status &>/dev/null; then
+    echo "Already authenticated with GitHub:"
+    gh auth status
+    exit 0
+fi
+
+echo "Authenticating with GitHub (HTTPS)..."
+gh auth login --hostname github.com --git-protocol https --web
+
+gh auth setup-git
+
+echo "GitHub auth complete:"
+gh auth status

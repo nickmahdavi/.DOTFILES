@@ -46,10 +46,3 @@ mov $DIR/bin
 
 cd $DIR/config
 for f in *; do mov $DIR/config/$f; done
-
-if [[ -n $1 ]]; then
-    echo "[ -f ~/.vars ] && source ~/.vars" >> ~/.bashrc
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "[ -f ~/.bashrc ] && source ~/.bashrc" >> ~/.bash_profile
-    fi
-fi
