@@ -7,14 +7,36 @@ if ! command -v gh &>/dev/null; then
     exit 1
 fi
 
+KEY="$HOME/.ssh/id_ed25519"
+KEY_PUB="$KEY.pub"
+KEY_TITLE="$(whoami)@$(hostname -s)"
+
+# Generate an SSH key if one doesn't already exist.
+if [[ -f "$KEY" ]]; then
+    echo "Using existing SSH key: $KEY"
+else
+    echo "Generating SSH key: $KEY"
+    mkdir -p "$HOME/.ssh"
+    chmod 700 "$HOME/.ssh"
+    ssh-keygen -t ed25519 -C "$KEY_TITLE" -f "$KEY" -N ""
+fi
+
 if gh auth status &>/dev/null; then
     echo "Already authenticated with GitHub:"
     gh auth status
-    exit 0
+else
+    echo "Authenticating with GitHub (SSH)..."
+    gh auth login --hostname github.com --git-protocol ssh --web
 fi
 
-echo "Authenticating with GitHub (HTTPS)..."
-gh auth login --hostname github.com --git-protocol https --web
+# Upload the public key if GitHub doesn't already have it.
+KEY_CONTENT="$(cut -d' ' -f1-2 < "$KEY_PUB")"
+if gh ssh-key list 2>/dev/null | grep -qF "$KEY_CONTENT"; then
+    echo "SSH key already registered with GitHub."
+else
+    echo "Adding SSH key to GitHub: $KEY_TITLE"
+    gh ssh-key add "$KEY_PUB" --title "$KEY_TITLE"
+fi
 
 gh auth setup-git
 
