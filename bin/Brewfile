@@ -1,5 +1,7 @@
 cask_args appdir: '/Applications'
 
+tap 'jurplel/tap'
+
 brew 'awscli'
 brew 'bat'
 brew 'coreutils'
@@ -39,6 +41,7 @@ cask 'flux-app'
 cask 'ghostty'
 cask 'glance-chamburr'
 cask 'google-chrome'
+cask 'instant-space-switcher'
 cask 'iterm2'
 cask 'karabiner-elements'
 cask 'latest'

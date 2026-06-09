@@ -1,0 +1,92 @@
+#!/bin/bash
+
+# nickmahda@gmail.com
+#
+# Applies macOS system defaults and wires up app configs that lnfix can't
+# (those living outside ~/.<name>, or applied via `defaults write`).
+# Idempotent — safe to re-run. Called from ./install inside the darwin block.
+
+set -euo pipefail
+
+if [[ "$OSTYPE" != "darwin"* ]]; then
+    echo "macos-defaults: not macOS, skipping."
+    exit 0
+fi
+
+cd "$(dirname "$(realpath "$0")")/.." || exit 1
+DIR=$(pwd)
+
+# Symlink a repo path to a destination, backing up any existing real file/dir.
+link () {
+    local src="$1" dest="$2"
+    if [[ -e "$dest" && ! -L "$dest" ]]; then
+        mkdir -pv "$DIR/backup"
+        mv -v "$dest" "$DIR/backup/$(basename "$dest").$(id -u)" 2>/dev/null || \
+            mv -v "$dest" "$DIR/backup/$(basename "$dest")"
+    fi
+    mkdir -pv "$(dirname "$dest")"
+    ln -sfnv "$src" "$dest"
+}
+
+#----------------------------------------#
+#            SYSTEM DEFAULTS             #
+#----------------------------------------#
+
+# Keyboard: fast key repeat (re-login to take effect)
+defaults write -g KeyRepeat -int 2
+defaults write -g InitialKeyRepeat -int 15
+
+# Trackpad: tap to click (built-in + bluetooth)
+defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+
+# Dock
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock tilesize -int 107
+defaults write com.apple.dock show-recents -bool false
+
+#----------------------------------------#
+#                 ITERM2                  #
+#----------------------------------------#
+
+# Load iTerm prefs from the in-repo plist (config/com.googlecode.iterm2.plist).
+defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$DIR/config"
+defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+
+#----------------------------------------#
+#          INSTANTSPACESWITCHER          #
+#----------------------------------------#
+
+iss=com.interversehq.InstantSpaceSwitcher
+defaults write "$iss" "enabled.left" -int 1
+defaults write "$iss" "enabled.right" -int 1
+defaults write "$iss" gestureSpeed -int 999999
+defaults write "$iss" osdDurationMs -int 100
+defaults write "$iss" overlayDetectionEnabled -int 0
+defaults write "$iss" showOSD -int 1
+defaults write "$iss" showOSDInMissionControl -int 0
+defaults write "$iss" swipeOverride -int 1
+
+#----------------------------------------#
+#                KARABINER                #
+#----------------------------------------#
+
+link "$DIR/config/karabiner" "$HOME/.config/karabiner"
+
+#----------------------------------------#
+#                VS CODE                  #
+#----------------------------------------#
+
+vscode_user="$HOME/Library/Application Support/Code/User"
+if [[ -d "$(dirname "$vscode_user")" ]]; then
+    link "$DIR/config/vscode/settings.json" "$vscode_user/settings.json"
+    link "$DIR/config/vscode/keybindings.json" "$vscode_user/keybindings.json"
+else
+    echo "macos-defaults: VS Code not installed, skipping its config."
+fi
+
+#----------------------------------------#
+
+killall Dock 2>/dev/null || true
+
+echo "macos-defaults: done (key-repeat changes apply after re-login)."

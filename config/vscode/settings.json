@@ -1,0 +1,24 @@
+{
+    "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
+    "workbench.colorTheme": "Catppuccin Mocha",
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "editor.fontFamily": "\"MesloLGL Nerd Font Mono\", Monaco, 'Courier New', monospace",
+    "jupyter.askForKernelRestart": false,
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false,
+        "latex": false
+    },
+    "latex-workshop.latex.autoClean.run": "onSucceeded",
+    "python.analysis.typeCheckingMode": "standard",
+    "terminal.integrated.suggest.enabled": false,
+    "jdk.telemetry.enabled": false,
+    "git.openRepositoryInParentFolders": "never",
+    "java.trace.server": "verbose",
+    "editor.wordWrap": "on",
+    "explorer.confirmDragAndDrop": false,
+    "claudeCode.preferredLocation": "panel",
+    "claudeCode.useTerminal": true
+}
