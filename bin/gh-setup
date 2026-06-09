@@ -18,7 +18,14 @@ else
     echo "Generating SSH key: $KEY"
     mkdir -p "$HOME/.ssh"
     chmod 700 "$HOME/.ssh"
-    ssh-keygen -t ed25519 -C "$KEY_TITLE" -f "$KEY" -N ""
+    ssh-keygen -t ed25519 -C "$KEY_TITLE" -f "$KEY" -N "" || {
+        echo "ssh-keygen failed" >&2; exit 1
+    }
+fi
+
+if [[ ! -f "$KEY_PUB" ]]; then
+    echo "Public key not found: $KEY_PUB" >&2
+    exit 1
 fi
 
 if gh auth status &>/dev/null; then

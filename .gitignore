@@ -3,3 +3,9 @@ backup/
 vim/tmp/*
 vim/*.save
 zsh/cache
+
+# Local secrets / machine-specific overrides (sourced by zshrc, never committed)
+.vars.local
+.vars
+.env
+.env.local

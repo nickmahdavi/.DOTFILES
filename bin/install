@@ -30,6 +30,7 @@ fi
 git submodule update --init --recursive --remote --merge
 
 # -g also installs GUI desktop apps (skip on headless servers)
+g=0  # default; otherwise `set -u` aborts at the `[[ "$g" ]]` test below
 while getopts "g" o; do
     case "$o" in
         g) g=1 ;;
@@ -52,7 +53,7 @@ elif [[ "$OSTYPE" == "linux"* ]]; then
     sudo apt install -y git curl wget build-essential gh htop python3-pip tmux vim zsh
     curl -LsSf https://astral.sh/uv/install.sh | sh
 
-    if [[ "$g" ]]; then
+    if (( g )); then
         source "$DIR/_linux-apps.sh"
         setup_apt_repos
         install_flatpaks
@@ -61,11 +62,12 @@ elif [[ "$OSTYPE" == "linux"* ]]; then
 fi
 
 # nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash \
+    || { echo "nvm install failed — skipping node setup." >&2; }
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-nvm install node
+command -v nvm &>/dev/null && nvm install node
 
 "$DIR/gh-setup" || echo "GitHub auth skipped/failed — run ./gh-setup later."
 "$DIR/claude-setup" || echo "Claude setup skipped/failed — run ./claude-setup later."
