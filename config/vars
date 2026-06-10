@@ -56,6 +56,7 @@ swap () {
 
 SSH_QUICKNAME=home
 alias sshc="ssh $SSH_QUICKNAME"
+alias sshl="ssh $LAMBDA_HOSTNAME"
 
 alias ssh-micro="aws ec2-instance-connect ssh --instance-id $AWS_MICRO_INSTANCE_ID"
 alias ssh-server="aws ec2-instance-connect ssh --instance-id $AWS_SERVER_INSTANCE_ID"

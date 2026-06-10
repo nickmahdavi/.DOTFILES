@@ -1,6 +1,7 @@
 cask_args appdir: '/Applications'
 
 tap 'jurplel/tap'
+tap 'koekeishya/formulae'
 
 brew 'awscli'
 brew 'bat'
@@ -45,7 +46,7 @@ cask 'instant-space-switcher'
 cask 'iterm2'
 cask 'karabiner-elements'
 cask 'latest'
-cask 'mactex-no-gui'  # full TeX Live, no bundled BibDesk/TeXShop/etc apps
+cask 'mactex-no-gui'
 cask 'mullvad-vpn'
 cask 'obsidian'
 cask 'omnidisksweeper'
