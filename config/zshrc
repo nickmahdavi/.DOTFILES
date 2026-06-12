@@ -102,6 +102,18 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+#----- Smart Tab: accept suggestion if shown, else complete -----#
+
+_smart_tab() {
+  if [[ -n "$POSTDISPLAY" ]]; then
+    zle autosuggest-accept
+  else
+    zle expand-or-complete
+  fi
+}
+zle -N _smart_tab
+bindkey '^I' _smart_tab
+
 #----- Highlighters -----#
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
