@@ -27,7 +27,7 @@ if [[ "$OSTYPE" == "darwin"* ]] && ! xcode-select -p &>/dev/null; then
     rm -f /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
 fi
 
-git submodule update --init --recursive --remote --merge
+git submodule update --init --recursive
 
 # -g also installs GUI desktop apps (skip on headless servers)
 g=0  # default; otherwise `set -u` aborts at the `[[ "$g" ]]` test below
@@ -51,7 +51,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 elif [[ "$OSTYPE" == "linux"* ]]; then
     sudo apt update
     sudo apt install -y git curl wget build-essential gh htop python3-pip tmux vim zsh
-    curl -LsSf https://astral.sh/uv/install.sh | sh
 
     if (( g )); then
         source "$DIR/_linux-apps.sh"
@@ -61,13 +60,19 @@ elif [[ "$OSTYPE" == "linux"* ]]; then
     fi
 fi
 
+# uv
+command -v uv &>/dev/null || curl -LsSf https://astral.sh/uv/install.sh | sh
+
 # nvm
-curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash \
-    || { echo "nvm install failed — skipping node setup." >&2; }
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-command -v nvm &>/dev/null && nvm install node
+if [[ ! -s "$NVM_DIR/nvm.sh" ]]; then
+    curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash || echo "nvm install failed; skipping node install" >&2
+fi
+if [[ -s "$NVM_DIR/nvm.sh" ]]; then
+    \. "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+    nvm install node
+fi
 
 "$DIR/gh-setup" || echo "GitHub auth skipped/failed — run ./gh-setup later."
 "$DIR/claude-setup" || echo "Claude setup skipped/failed — run ./claude-setup later."
