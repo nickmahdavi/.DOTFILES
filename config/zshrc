@@ -9,6 +9,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+[ -f ~/.vars.local ] && source ~/.vars.local
+[ -f ~/.vars ] && source ~/.vars
 
 # Reuse SSH agent socket
 if ! pgrep ssh-agent > /dev/null; then
@@ -17,10 +19,6 @@ if ! pgrep ssh-agent > /dev/null; then
 else
     export SSH_AUTH_SOCK=/tmp/ssh-auth-sock
 fi
-
-# Files to source
-[ -f ~/.vars.local ] && source ~/.vars.local
-[ -f ~/.vars ] && source ~/.vars
 
 #----------------------------------------#
 #                  ZSH                   #
@@ -114,6 +112,12 @@ _smart_tab() {
 zle -N _smart_tab
 bindkey '^I' _smart_tab
 
+_force_complete() {
+    zle expand-or-complete
+}
+zle -N _force_complete
+bindkey '^[[Z' _force_complete
+
 #----- Highlighters -----#
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
@@ -138,48 +142,35 @@ bindkey '\eOB' history-substring-search-down
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
-[ -f "/Users/nick/.ghcup/env" ] && . "/Users/nick/.ghcup/env" # ghcup-env
-
-# pnpm
-export PNPM_HOME="/Users/nick/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-export NVM_DIR="$HOME/.nvm"
-
-# Lazy load nvm
-nvm() {
-    unset -f nvm
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-    nvm "$@"
-}
-
-# Lazy load node/npm/npx
-node() {
-    unset -f node
-    nvm use default
-    node "$@"
-}
-
-npm() {
-    unset -f npm
-    nvm use default
-    npm "$@"
-}
-
-npx() {
-    unset -f npx
-    nvm use default
-    npx "$@"
-}
+# ------------------------------------------------
 
 # bun completions
 [ -s "/Users/nick/.bun/_bun" ] && source "/Users/nick/.bun/_bun"
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+sudo () {
+    if alias "$1" &>/dev/null; then
+        $(alias $1 | sed -E "s/^$1='(.*)'$/\1/") "${@:2}"
+    elif type $1 2>/dev/null | grep -q 'function'; then
+        local arg1=$1
+        shift && command sudo zsh -c "$(declare -f $arg1); $arg1 $*"
+    else
+        command sudo "$@"
+    fi
+}
+
+colors () {
+    for i in {0..255}; do
+        print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'};
+    done
+}
+
+open () {
+    if [[ "$@" ]]; then
+        command open "$@" 2> /dev/null || explorer.exe "$@" 2> /dev/null
+    else
+        command open . 2> /dev/null || explorer.exe . 2> /dev/null
+    fi
+    return 0
+}
+
+

@@ -292,8 +292,6 @@ endif
 " jk returns to normal mode
 let g:easyescape_chars = { "j": 1, "k": 1 }
 let g:easyescape_timeout = 100
-cnoremap kj <ESC>
-cnoremap jk <ESC>
 
 " Semicolon acts as colon
 vnoremap ; :

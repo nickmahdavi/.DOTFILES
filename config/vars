@@ -11,7 +11,8 @@ export PATH=$PATH:~/.cargo/bin
 export IS_MAC=false
 [[ $OSTYPE == "darwin"* ]] && export IS_MAC=true
 
-if $IS_MAC; then
+if $IS_MAC && [[ -x "/opt/homebrew/bin/brew" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
     export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH
     export HOMEBREW_AUTO_UPDATE_SECS=86400
 fi
@@ -19,6 +20,49 @@ fi
 export ZSHRC=~/.zshrc
 export DOT=~/.DOTFILES
 export VAR=~/.vars
+
+[ -f "/Users/nick/.ghcup/env" ] && . "/Users/nick/.ghcup/env" # ghcup-env
+
+# pnpm
+export PNPM_HOME="/Users/nick/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+export NVM_DIR="$HOME/.nvm"
+
+# Lazy load nvm
+nvm() {
+    unset -f nvm
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+    nvm "$@"
+}
+
+# Lazy load node/npm/npx
+node() {
+    unset -f node
+    nvm use default
+    node "$@"
+}
+
+npm() {
+    unset -f npm
+    nvm use default
+    npm "$@"
+}
+
+npx() {
+    unset -f npx
+    nvm use default
+    npx "$@"
+}
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
 
 # if [ -d "/mnt" ]; then for dir in $(/bin/ls /mnt | grep -v 'wsl'); do
 #     export ${dir:u}="/mnt/$dir"
@@ -80,9 +124,34 @@ alias pip="pip3"
 alias up="uv pip"
 alias python="python3"
 
-alias jbook="nohup jupyter notebook > /dev/null 2>&1 & disown; jupyter notebook list"
+jbook () {
+    mkdir -p ~/.jupyter
+    local port="${1:-8888}"
+    local log=~/.jupyter/jbook-"$port".log
+    nohup jupyter notebook --port="$port" > "$log" 2>&1 & disown
+    local i
+    for i in {1..30}; do
+      grep -qE 'http://(localhost|127)' "$log" && break
+      sleep 0.2
+    done
+    grep -oE 'http://[^ ]+' "$log" | tail -1
+}
+
+jkill () {
+    if [[ "$1" == "all" ]]; then
+        pkill -f jupyter || echo 'No running notebooks'
+        rm -f ~/.jupyter/jbook-*.log
+    elif [[ -n "$1" ]]; then
+        jupyter notebook stop "$1" 2>/dev/null \
+          || pkill -f "jupyter-notebook.*--port=$1" \
+          || echo "No notebook on port $1"
+        rm -f ~/.jupyter/jbook-"$1".log
+    else
+        echo "specify a port / \"all\""
+    fi
+}
+
 alias jlist="jupyter notebook list"
-alias jkill="pkill -f jupyter || echo 'No running notebooks'"
 
 #----- Git -----#
 
@@ -114,32 +183,3 @@ vim-pkg () {
     fi
 }
 
-#----- Builtin overrides -----#
-
-open () {
-    if [[ "$@" ]]; then
-        command open "$@" 2> /dev/null || explorer.exe "$@" 2> /dev/null
-    else
-        command open . 2> /dev/null || explorer.exe . 2> /dev/null
-    fi
-    return 0
-}
-
-sudo () {
-    if alias "$1" &>/dev/null; then
-        $(alias $1 | sed -E "s/^$1='(.*)'$/\1/") "${@:2}"
-    elif type $1 2>/dev/null | grep -q 'function'; then
-        local arg1=$1
-        shift && command sudo zsh -c "$(declare -f $arg1); $arg1 $*"
-    else
-        command sudo "$@"
-    fi
-}
-
-#----- Misc -----#
-
-colors () {
-    for i in {0..255}; do
-        print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'};
-    done
-}
