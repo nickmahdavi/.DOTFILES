@@ -22,6 +22,10 @@ if claude auth status &>/dev/null; then
     echo "Already authenticated with Claude:"
     claude auth status
 else
+    # `auth login` is interactive: it opens a browser and waits for a
+    # verification code on stdin. When run via `curl ... | bash`, the parent
+    # `install` script redirects this from /dev/tty so the prompt works. If you
+    # run this script standalone in a pipe, do the same: `./claude-setup </dev/tty`.
     echo "Signing in to Claude (browser)..."
     claude auth login --email "${CLAUDE_EMAIL:-nickmahda@gmail.com}"
 fi

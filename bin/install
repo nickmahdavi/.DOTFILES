@@ -86,8 +86,18 @@ if [[ -s "$NVM_DIR/nvm.sh" ]]; then
     nvm install node
 fi
 
-"$DIR/gh-setup" || echo "GitHub auth skipped/failed — run ./gh-setup later."
-"$DIR/claude-setup" || echo "Claude setup skipped/failed — run ./claude-setup later."
+# These two run interactive browser-auth flows that read a verification code
+# from stdin. When this installer is run as `curl mydomain | bash`, stdin is
+# the piped script body, not your keyboard, so those prompts hang. Redirect
+# stdin from the controlling terminal. If there's no tty (headless/CI), skip
+# rather than freeze.
+if [ -e /dev/tty ]; then
+    "$DIR/gh-setup" </dev/tty || echo "GitHub auth skipped/failed — run ./gh-setup later."
+    "$DIR/claude-setup" </dev/tty || echo "Claude setup skipped/failed — run ./claude-setup later."
+else
+    echo "No terminal available — skipping interactive GitHub/Claude auth." >&2
+    echo "After install, run ./gh-setup and ./claude-setup from a terminal." >&2
+fi
 
 echo "Done"
 
