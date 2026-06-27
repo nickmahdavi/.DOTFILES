@@ -3379,6 +3379,51 @@ Show Tabs in Fullscreen</string>
 			<string>xterm-256color</string>
 			<key>Transparency</key>
 			<real>0.0</real>
+			<key>Triggers</key>
+			<array>
+				<dict>
+					<key>action</key>
+					<string>iTermEnterWorkgroupTrigger</string>
+					<key>contentregex</key>
+					<string></string>
+					<key>disabled</key>
+					<false/>
+					<key>eventParams</key>
+					<dict>
+						<key>jobName</key>
+						<string>claude</string>
+					</dict>
+					<key>matchType</key>
+					<integer>113</integer>
+					<key>parameter</key>
+					<string>builtin.claudeCode</string>
+					<key>partial</key>
+					<false/>
+					<key>regex</key>
+					<string></string>
+				</dict>
+				<dict>
+					<key>action</key>
+					<string>iTermExitWorkgroupTrigger</string>
+					<key>contentregex</key>
+					<string></string>
+					<key>disabled</key>
+					<false/>
+					<key>eventParams</key>
+					<dict>
+						<key>jobName</key>
+						<string>claude</string>
+					</dict>
+					<key>matchType</key>
+					<integer>114</integer>
+					<key>parameter</key>
+					<string></string>
+					<key>partial</key>
+					<false/>
+					<key>regex</key>
+					<string></string>
+				</dict>
+			</array>
 			<key>Unicode Version</key>
 			<integer>9</integer>
 			<key>Unlimited Scrollback</key>
@@ -7305,7 +7350,6 @@ Show Tabs in Fullscreen</string>
 	<real>86400</real>
 	<key>ToolbeltTools</key>
 	<array>
-		<string>Profiles</string>
 		<string>Session Status</string>
 	</array>
 	<key>UIElementRequiresHotkeys</key>
@@ -8089,30 +8133,30 @@ Show Tabs in Fullscreen</string>
 	<string>/-+\~_.</string>
 	<key>Workgroups</key>
 	<data>
-	W3sidW5pcXVlSWRlbnRpZmllciI6ImJ1aWx0aW4uY2xhdWRlQ29kZSIsIm5hbWUiOiJD
-	bGF1ZGUgQ29kZSIsInNlc3Npb25zIjpbeyJ1bmlxdWVJZGVudGlmaWVyIjoiYnVpbHRp
-	bi5jbGF1ZGVDb2RlLm1haW4iLCJwZXJGaWxlQ29tbWFuZCI6IiIsInRvb2xiYXJJdGVt
-	cyI6W3sia2luZCI6Im1vZGVTd2l0Y2hlciJ9LHsia2luZCI6ImdpdFN0YXR1cyJ9XSwi
-	ZGlzcGxheU5hbWUiOiJDaGF0Iiwia2luZCI6eyJraW5kIjoicm9vdCJ9LCJjb21tYW5k
-	IjoiIiwidXJsU3RyaW5nIjoiIiwibW9kZSI6InJlZ3VsYXIifSx7InVuaXF1ZUlkZW50
-	aWZpZXIiOiJidWlsdGluLmNsYXVkZUNvZGUuZGlmZiIsInBlckZpbGVDb21tYW5kIjoi
-	Z2l0IGRpZmZ0b29sIC15IC14IHZpbWRpZmYgXFwoZ2l0QmFzZSkgLS0gXFwoZmlsZSki
-	LCJ0b29sYmFySXRlbXMiOlt7ImtpbmQiOiJtb2RlU3dpdGNoZXIifSx7ImtpbmQiOiJj
-	aGFuZ2VkRmlsZVNlbGVjdG9yIn0seyJraW5kIjoiZ2l0QmFzZVNlbGVjdG9yIn0seyJr
-	aW5kIjoibmF2aWdhdGlvbiJ9XSwicGFyZW50SUQiOiJidWlsdGluLmNsYXVkZUNvZGUu
-	bWFpbiIsImtpbmQiOnsia2luZCI6InBlZXIifSwiY29tbWFuZCI6ImdpdCBkaWZmdG9v
-	bCAteSAteCB2aW1kaWZmIFxcKGdpdEJhc2UpIiwidXJsU3RyaW5nIjoiIiwiZGlzcGxh
-	eU5hbWUiOiJEaWZmIiwibW9kZSI6InJlZ3VsYXIifSx7InVuaXF1ZUlkZW50aWZpZXIi
-	OiJidWlsdGluLmNsYXVkZUNvZGUucmV2aWV3IiwicGVyRmlsZUNvbW1hbmQiOiIiLCJ0
-	b29sYmFySXRlbXMiOlt7ImtpbmQiOiJtb2RlU3dpdGNoZXIifSx7ImtpbmQiOiJyZWxv
-	YWQifV0sInBhcmVudElEIjoiYnVpbHRpbi5jbGF1ZGVDb2RlLm1haW4iLCJraW5kIjp7
-	ImtpbmQiOiJwZWVyIn0sImNvbW1hbmQiOiJjbGF1ZGUgXFwoY29kZVJldmlld1Byb21w
-	dCkgLS1hcHBlbmQtc3lzdGVtLXByb21wdC1maWxlICdcXChpdGVybTIuYXBwQnVuZGxl
-	UGF0aClcL0NvbnRlbnRzXC9SZXNvdXJjZXNcL2NvZGUtcmV2aWV3LXN5c3RlbS1wcm9t
-	cHQudHh0JyAtLXNldHRpbmdzICdcXChpdGVybTIuYXBwQnVuZGxlUGF0aClcL0NvbnRl
-	bnRzXC9SZXNvdXJjZXNcL2NvZGUtcmV2aWV3LXNldHRpbmdzLnR4dCciLCJ1cmxTdHJp
-	bmciOiIiLCJkaXNwbGF5TmFtZSI6IkNvZGUgUmV2aWV3IiwibW9kZSI6ImNvZGVSZXZp
-	ZXcifV19XQ==
+	W3sidW5pcXVlSWRlbnRpZmllciI6ImJ1aWx0aW4uY2xhdWRlQ29kZSIsInNlc3Npb25z
+	IjpbeyJ1cmxTdHJpbmciOiIiLCJraW5kIjp7ImtpbmQiOiJyb290In0sInVuaXF1ZUlk
+	ZW50aWZpZXIiOiJidWlsdGluLmNsYXVkZUNvZGUubWFpbiIsImRpc3BsYXlOYW1lIjoi
+	Q2hhdCIsInRvb2xiYXJJdGVtcyI6W3sia2luZCI6Im1vZGVTd2l0Y2hlciJ9LHsia2lu
+	ZCI6ImdpdFN0YXR1cyJ9XSwibW9kZSI6InJlZ3VsYXIiLCJjb21tYW5kIjoiIiwicGVy
+	RmlsZUNvbW1hbmQiOiIifSx7ImtpbmQiOnsia2luZCI6InBlZXIifSwicGFyZW50SUQi
+	OiJidWlsdGluLmNsYXVkZUNvZGUubWFpbiIsInVybFN0cmluZyI6IiIsInVuaXF1ZUlk
+	ZW50aWZpZXIiOiJidWlsdGluLmNsYXVkZUNvZGUuZGlmZiIsImRpc3BsYXlOYW1lIjoi
+	RGlmZiIsInRvb2xiYXJJdGVtcyI6W3sia2luZCI6Im1vZGVTd2l0Y2hlciJ9LHsia2lu
+	ZCI6ImNoYW5nZWRGaWxlU2VsZWN0b3IifSx7ImtpbmQiOiJnaXRCYXNlU2VsZWN0b3Ii
+	fSx7ImtpbmQiOiJuYXZpZ2F0aW9uIn1dLCJtb2RlIjoicmVndWxhciIsImNvbW1hbmQi
+	OiJnaXQgZGlmZnRvb2wgLXkgLXggdmltZGlmZiBcXChnaXRCYXNlKSIsInBlckZpbGVD
+	b21tYW5kIjoiZ2l0IGRpZmZ0b29sIC15IC14IHZpbWRpZmYgXFwoZ2l0QmFzZSkgLS0g
+	XFwoZmlsZSkifSx7ImtpbmQiOnsia2luZCI6InBlZXIifSwicGFyZW50SUQiOiJidWls
+	dGluLmNsYXVkZUNvZGUubWFpbiIsInVybFN0cmluZyI6IiIsInVuaXF1ZUlkZW50aWZp
+	ZXIiOiJidWlsdGluLmNsYXVkZUNvZGUucmV2aWV3IiwiZGlzcGxheU5hbWUiOiJDb2Rl
+	IFJldmlldyIsInRvb2xiYXJJdGVtcyI6W3sia2luZCI6Im1vZGVTd2l0Y2hlciJ9LHsi
+	a2luZCI6InJlbG9hZCJ9XSwibW9kZSI6ImNvZGVSZXZpZXciLCJjb21tYW5kIjoiY2xh
+	dWRlIFxcKGNvZGVSZXZpZXdQcm9tcHQpIC0tYXBwZW5kLXN5c3RlbS1wcm9tcHQtZmls
+	ZSAnXFwoaXRlcm0yLmFwcEJ1bmRsZVBhdGgpXC9Db250ZW50c1wvUmVzb3VyY2VzXC9j
+	b2RlLXJldmlldy1zeXN0ZW0tcHJvbXB0LnR4dCcgLS1zZXR0aW5ncyAnXFwoaXRlcm0y
+	LmFwcEJ1bmRsZVBhdGgpXC9Db250ZW50c1wvUmVzb3VyY2VzXC9jb2RlLXJldmlldy1z
+	ZXR0aW5ncy50eHQnIiwicGVyRmlsZUNvbW1hbmQiOiIifV0sIm5hbWUiOiJDbGF1ZGUg
+	Q29kZSJ9XQ==
 	</data>
 	<key>findMode_iTerm</key>
 	<integer>0</integer>

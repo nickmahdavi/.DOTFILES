@@ -5,7 +5,7 @@
     "editor.fontFamily": "\"MesloLGL Nerd Font Mono\", Monaco, 'Courier New', monospace",
     "jupyter.askForKernelRestart": false,
     "github.copilot.enable": {
-        "*": true,
+        "*": false,
         "plaintext": false,
         "markdown": false,
         "scminput": false,

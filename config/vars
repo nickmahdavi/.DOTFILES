@@ -105,6 +105,8 @@ alias sshl="ssh $LAMBDA_HOSTNAME"
 alias ssh-micro="aws ec2-instance-connect ssh --instance-id $AWS_MICRO_INSTANCE_ID"
 alias ssh-server="aws ec2-instance-connect ssh --instance-id $AWS_SERVER_INSTANCE_ID"
 
+alias key="security unlock-keychain ~/Library/Keychains/login.keychain-db"
+
 wifi_get () {
     if $IS_MAC; then
         # `airport` was removed in recent macOS; parse system_profiler instead.
