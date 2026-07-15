@@ -98,9 +98,6 @@ swap () {
 
 #----- SSH -----#
 
-SSH_QUICKNAME=home
-alias sshc="ssh $SSH_QUICKNAME"
-
 alias key="security unlock-keychain ~/Library/Keychains/login.keychain-db"
 
 wifi_get () {
