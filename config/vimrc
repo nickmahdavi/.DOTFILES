@@ -1,5 +1,15 @@
 " Credit https://github.com/seagle0128/dotfiles/^[[1~blob/master/.vimrc
 
+" Shared-account support: when DOTHOME is set (lnfix -u), the dotfile tree
+" lives there instead of $HOME; pick up its .vim for plugins/packages.
+if empty($DOTHOME)
+  let $DOTHOME = $HOME
+elseif $DOTHOME !=# $HOME
+  set runtimepath^=$DOTHOME/.vim
+  set runtimepath+=$DOTHOME/.vim/after
+  let &packpath = &runtimepath
+endif
+
 """"""""""""""""""""""""""""""""""""""""
 " General
 """"""""""""""""""""""""""""""""""""""""
@@ -141,8 +151,8 @@ set ffs=unix,dos,mac
 " => Files, backups and undo
 """"""""""""""""""""""""""""""""""""""""
 " Save temp files in a special dir
-set backupdir=~/.vim/tmp//,.
-set directory=~/.vim/tmp//,.
+set backupdir=$DOTHOME/.vim/tmp//,.
+set directory=$DOTHOME/.vim/tmp//,.
 
 " Redo with U instead of Ctrl+R
 noremap U <C-R>
@@ -230,10 +240,10 @@ nnoremap <Leader>9 :9b<CR>
 nnoremap <Leader>0 :10b<CR>
 
 " Edit the vimrc
-nnoremap <Leader>ve :e ~/.vimrc<CR>
+nnoremap <Leader>ve :e $DOTHOME/.vimrc<CR>
 
 " Reload vimrc
-nnoremap <Leader>vr :source ~/.vimrc<CR>
+nnoremap <Leader>vr :source $DOTHOME/.vimrc<CR>
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1

@@ -312,8 +312,8 @@ bind -n C-l select-pane -R
 set -g extended-keys on
 set -as terminal-features ',*:extkeys'
 
-bind I run-shell "~/.bin/tmux-agents implode"
-bind O run-shell "~/.bin/tmux-agents explode"
+bind I run-shell "${DOTHOME:-$HOME}/.bin/tmux-agents implode"
+bind O run-shell "${DOTHOME:-$HOME}/.bin/tmux-agents explode"
 
 # So you can actually read pane titles when imploded
 set -g pane-border-status top

@@ -2,7 +2,11 @@
 #                VARIABLES               #
 #----------------------------------------#
 
-export PATH=$PATH:~/.bin
+# Shared-account support: DOTHOME (set by the lnfix -u dispatch in ~/.zshenv)
+# relocates the dotfile tree; solo installs fall back to $HOME.
+DH="${DOTHOME:-$HOME}"
+
+export PATH=$PATH:$DH/.bin
 export PATH=$PATH:~/.local/bin
 export PATH=$PATH:~/.cargo/bin
 
@@ -17,9 +21,17 @@ if $IS_MAC && [[ -x "/opt/homebrew/bin/brew" ]]; then
     export HOMEBREW_AUTO_UPDATE_SECS=86400
 fi
 
-export ZSHRC=~/.zshrc
-export DOT=~/.DOTFILES
-export VAR=~/.vars
+export ZSHRC=$DH/.zshrc
+export DOT=$DH/.DOTFILES
+export VAR=$DH/.vars
+
+# Shared accounts: own tmux socket (don't attach to others' sessions) and own
+# conf. TMUX_CONF also steers oh-my-tmux to $DOTHOME/.tmux.conf.local instead
+# of its $HOME/.tmux.conf autodetection.
+if [[ -n "$DOTUSER" ]]; then
+    export TMUX_CONF="$DOTHOME/.tmux.conf"
+    alias tmux='tmux -L "$DOTUSER" -f "$DOTHOME/.tmux.conf"'
+fi
 
 [ -f "/Users/nick/.ghcup/env" ] && . "/Users/nick/.ghcup/env" # ghcup-env
 
@@ -120,9 +132,9 @@ alias up="uv pip"
 alias python="python3"
 
 jbook () {
-    mkdir -p ~/.jupyter
+    mkdir -p "${JUPYTER_CONFIG_DIR:-$HOME/.jupyter}"
     local port="${1:-8888}"
-    local log=~/.jupyter/jbook-"$port".log
+    local log="${JUPYTER_CONFIG_DIR:-$HOME/.jupyter}"/jbook-"$port".log
     nohup jupyter notebook --port="$port" > "$log" 2>&1 & disown
     local i
     for i in {1..30}; do
@@ -135,12 +147,12 @@ jbook () {
 jkill () {
     if [[ "$1" == "all" ]]; then
         pkill -f jupyter || echo 'No running notebooks'
-        rm -f ~/.jupyter/jbook-*.log
+        rm -f "${JUPYTER_CONFIG_DIR:-$HOME/.jupyter}"/jbook-*.log
     elif [[ -n "$1" ]]; then
         jupyter notebook stop "$1" 2>/dev/null \
           || pkill -f "jupyter-notebook.*--port=$1" \
           || echo "No notebook on port $1"
-        rm -f ~/.jupyter/jbook-"$1".log
+        rm -f "${JUPYTER_CONFIG_DIR:-$HOME/.jupyter}"/jbook-"$1".log
     else
         echo "specify a port / \"all\""
     fi
@@ -159,15 +171,15 @@ open-repo () {
 
 #----- Vim -----#
 
-export VIMRC=~/.vim/vimrc
-export VPKG=~/.vim/pack/bundle/start
+export VIMRC=$DH/.vim/vimrc
+export VPKG=$DH/.vim/pack/bundle/start
 export EDITOR=vim
 
 vim-pkg () {
     if [ -z "$1" ]; then
         echo "Must pass a package url"
     elif [ "$1" = "update" ]; then
-        cd ~/.vim && git submodule update --recursive --remote
+        cd $DH/.vim && git submodule update --recursive --remote
         cd --
     elif [ "$1" = "list" ]; then
         /bin/ls -1 $VPKG

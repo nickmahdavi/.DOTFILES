@@ -1,10 +1,32 @@
 #!/bin/bash
 
 # nickmahda@gmail.com
+#
+# Usage:
+#   ./lnfix            symlink dotfiles into $HOME (normal, single-user)
+#   ./lnfix -u NAME    shared-account mode: symlink into $HOME/NAME
+#                      instead, install a DOTUSER dispatch block into the
+#                      shared ~/.zshenv, and print the authorized_keys line
+#                      that makes your SSH key select NAME on login.
 
 cd $(dirname $(realpath $0))/..
 DIR=$(pwd)
 IGNORE=("p10k_backup.zsh" "ssh_config" "iterm_config.plist")
+
+DOTUSER=""
+while getopts "u:" o; do
+    case "$o" in
+        u) DOTUSER="$OPTARG" ;;
+        *) echo "usage: $0 [-u name]" >&2; exit 1 ;;
+    esac
+done
+
+if [[ -n "$DOTUSER" ]]; then
+    T="$HOME/$DOTUSER"
+    mkdir -pv "$T"
+else
+    T="$HOME"
+fi
 
 ignore () {
     for f in "${IGNORE[@]}"; do
@@ -14,12 +36,12 @@ ignore () {
 }
 
 bacup () {
-    if [ -e ~/."$1" ]; then
-        if [[ -L ~/."$1" ]]; then
-            rm ~/."$1"
+    if [ -e "$T"/."$1" ]; then
+        if [[ -L "$T"/."$1" ]]; then
+            rm "$T"/."$1"
         elif ! [[ -z "$1" ]] && ! ignore "$1"; then
             mkdir -pv $DIR/backup
-            mv -v ~/."$1" $DIR/backup/"$1"
+            mv -v "$T"/."$1" $DIR/backup/"$1"
         fi
     fi
 }
@@ -33,11 +55,14 @@ mov () {
     fi
 
     bacup $name
-    ln -sfv "$1" ~/.$name
+    ln -sfv "$1" "$T"/.$name
 }
 
 mkdir -pv ~/.ssh
-touch ~/.vars.local
+touch "$T"/.vars.local
+
+# So $DOT resolves regardless of where the repo was cloned
+[[ "$DIR" != "$T/.DOTFILES" ]] && ln -sfnv "$DIR" "$T"/.DOTFILES
 
 mov $DIR/zsh
 mov $DIR/vim
@@ -46,3 +71,58 @@ mov $DIR/bin
 
 cd $DIR/config
 for f in *; do mov $DIR/config/$f; done
+
+[[ -n "$DOTUSER" ]] || exit 0
+
+#--- Shared-account mode: dispatch block + login plumbing ---#
+
+# Appended (once) to the account's real ~/.zshenv. Keyed on DOTUSER, so one
+# block serves everyone who runs `lnfix -u <them>` on this account.
+if ! grep -q "dotuser-dispatch" ~/.zshenv 2>/dev/null; then
+    cat >> ~/.zshenv <<'EOF'
+# >>> dotuser-dispatch >>> (installed by lnfix -u; do not duplicate)
+if [[ -n "$DOTUSER" && -d "$HOME/$DOTUSER" ]]; then
+    export DOTHOME="$HOME/$DOTUSER"
+    export ZDOTDIR="$DOTHOME"
+    export HISTFILE="$DOTHOME/.zsh_history"
+    export XDG_CONFIG_HOME="$DOTHOME/.config"
+    export XDG_DATA_HOME="$DOTHOME/.local/share"
+    export XDG_STATE_HOME="$DOTHOME/.local/state"
+    export XDG_CACHE_HOME="$DOTHOME/.cache"
+    export GIT_CONFIG_GLOBAL="$DOTHOME/.gitconfig"
+    export CLAUDE_CONFIG_DIR="$DOTHOME/.claude"
+    export JUPYTER_CONFIG_DIR="$DOTHOME/.jupyter"
+    export VIMINIT="let \$MYVIMRC=\"$DOTHOME/.vimrc\" | source \$MYVIMRC"
+fi
+# <<< dotuser-dispatch <<<
+EOF
+    echo "Installed dispatch block in ~/.zshenv"
+fi
+
+# Forced-command shim for sshd setups without PermitUserEnvironment: exports
+# DOTUSER, then behaves like a normal login (keeps scp/rsync/remote-cmd working).
+if [[ ! -e "$HOME/sshd-dispatch" ]]; then
+    cat > "$HOME/sshd-dispatch" <<'EOF'
+#!/bin/sh
+export DOTUSER
+if [ -n "$SSH_ORIGINAL_COMMAND" ]; then
+    exec "${SHELL:-/bin/sh}" -c "$SSH_ORIGINAL_COMMAND"
+else
+    exec "${SHELL:-/bin/sh}" -l
+fi
+EOF
+    chmod +x "$HOME/sshd-dispatch"
+    echo "Installed ~/sshd-dispatch"
+fi
+
+cat <<EOF
+
+Linked into $T. To key your login to this profile, prefix YOUR key line in
+~/.ssh/authorized_keys with one of:
+
+  environment="DOTUSER=$DOTUSER" <your key>     # needs sshd PermitUserEnvironment yes
+
+  command="DOTUSER=$DOTUSER exec \$HOME/sshd-dispatch" <your key>   # no sshd config needed
+
+Then reconnect. Non-tagged logins keep the account's stock config.
+EOF
