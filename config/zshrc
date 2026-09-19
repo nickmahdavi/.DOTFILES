@@ -110,13 +110,13 @@ _smart_tab() {
   fi
 }
 zle -N _smart_tab
-bindkey '^I' _smart_tab
+bindkey '^[[Z' _smart_tab
 
 _force_complete() {
     zle expand-or-complete
 }
 zle -N _force_complete
-bindkey '^[[Z' _force_complete
+bindkey '^I' _force_complete
 
 #----- Highlighters -----#
 

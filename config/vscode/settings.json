@@ -5,11 +5,12 @@
     "editor.fontFamily": "\"MesloLGL Nerd Font Mono\", Monaco, 'Courier New', monospace",
     "jupyter.askForKernelRestart": false,
     "github.copilot.enable": {
-        "*": false,
+        "*": true,
         "plaintext": false,
         "markdown": false,
         "scminput": false,
-        "latex": false
+        "latex": false,
+        "python": true
     },
     "latex-workshop.latex.autoClean.run": "onSucceeded",
     "python.analysis.typeCheckingMode": "standard",
@@ -20,5 +21,11 @@
     "editor.wordWrap": "on",
     "explorer.confirmDragAndDrop": false,
     "claudeCode.preferredLocation": "panel",
-    "claudeCode.useTerminal": true
+    "claudeCode.useTerminal": true,
+    "editor.quickSuggestionsDelay": 5,
+    "editor.quickSuggestions": {
+        "other": "on",
+        "comments": "off",
+        "strings": "off"
+    },
 }

@@ -110,8 +110,8 @@ wifi_get () {
     fi
 }
 
-tunnel () { ssh -fgNL $1:127.0.0.1:$1 "${2:-${LAMBDA_HOSTNAME:-$SSH_QUICKNAME}}" ; }
-tkill () { kill $(pf "ssh.*$1" | awk '{print $2}') ; }
+tunnel () { ssh -fNL "$3":127.0.0.1:"$2" "$1" ; }
+tkill () { kill $(pf "ssh -fNL $1:172.0.0.1:" | awk '{print $2}') ; }
 
 #----- Python -----#
 

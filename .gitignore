@@ -9,3 +9,7 @@ zsh/cache
 .vars
 .env
 .env.local
+
+*.swp
+*.swo
+*~

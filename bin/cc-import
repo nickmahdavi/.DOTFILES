@@ -1,0 +1,37 @@
+#!/usr/bin/env -S uv run --script
+
+# /// script
+# dependencies = ["exutil"]
+#
+# [tool.uv.sources]
+# exutil = { path = "/Users/nick/hot/exutil", editable = true }
+# ///
+
+import argparse
+import json
+import subprocess
+from pathlib import Path
+from exutil.llm.ingest import ingest, export
+
+def munge(path):
+    return str(Path(path).resolve()).replace("/", "-").replace(".", "-").replace("_", "-")
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("input", type=Path)
+    ap.add_argument("--cwd", default="/Users/nick/cc-imports") # str(Path.cwd()))
+    args = ap.parse_args()
+
+    version = subprocess.run(["claude", "--version"], capture_output=True).stdout.split()[0].decode("utf-8")
+
+    conversation = ingest(args.input)
+    out, session_id = export(conversation, args.cwd, version)
+
+    dir = Path.home() / ".claude" / "projects" / munge(args.cwd)
+    dir.mkdir(parents=True, exist_ok=True)
+    dest = dir / f"{session_id}.jsonl"
+    dest.write_text("\n".join([json.dumps(r) for r in out]))
+    print(f"Done (wrote {len(out) - 1} messages). cd {args.cwd} && claude --resume {session_id}")
+
+if __name__ == "__main__":
+    main()
